@@ -24,7 +24,6 @@ activePlayer = 1
 viableMoves = True
 
 def convert_row_to_num(character):
-    print("sent character", character)
     letters = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
     for i in range(0, len(letters)):
         if character == letters[i]:
