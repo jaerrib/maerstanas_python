@@ -165,7 +165,9 @@ while viableMoves():
     # displays only usable board positions - NOT the edges
     for i in range(1, 8):
         for j in range(1, 8):
-            print(board[i][j], end="")
+            icons = ['-', '\u25CB', '\u25CF']
+            icon = icons[board[i][j]]
+            print(icon, end="")
         print()
 
     for playerNumber in (1, 2):
