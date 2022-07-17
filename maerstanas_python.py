@@ -2,147 +2,178 @@ from os import system
 
 clear = lambda: system('clear')
 
-# Initialize board positions, scores and active player
+# Initializes board and values
 board = []
-for i in range(9):
+
+# Creates the 9x9 grid
+for row_num in range(9):
     row = []
-    for j in range(9):
+    for col_num in range(9):
         row.append(0)
     board.append(row)
 
-# Assign edges
-for i in range(9):
-    board[0][i] = 'E'
-    board[8][i] = 'E'
-for i in range(1, 8):
-    board[i][0] = 'E'
-    board[i][8] = 'E'
+# Assigns an "E" to all edge positions for use in positional
+# comparison functions
+for col_num in range(9):
+    board[0][col_num] = 'E'
+    board[8][col_num] = 'E'
+for row_num in range(1, 8):
+    board[row_num][0] = 'E'
+    board[row_num][8] = 'E'
 
-scoreP1 = 0
-scoreP2 = 0
-activePlayer = 1
-viableMoves = True
+active_player = 1
+viable_moves = True
+
 
 def convert_row_to_num(character):
-    letters = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-    for i in range(0, len(letters)):
-        if character == letters[i]:
-            return (i + 1)
+    # Converts player's letter input to a number usable by various functions
+    # Other letters will return 0, which is outside confines of the board
+    upper_letters = ("ABCDEFG")
+    lower_letters = ("abcdefg")
+    for letter in range(0, len(upper_letters)):
+        if character == upper_letters[letter] \
+            or character == lower_letters[letter]:
+            return (letter + 1)
+    return 0
 
-def check_player_hinges(moveRow, moveCol):
-    stoneAbove = board[moveRow - 1][moveCol]
-    stoneLeft = board[moveRow][moveCol - 1]
-    stoneRight = board[moveRow][moveCol + 1]
-    stoneBelow = board[moveRow + 1][moveCol]
+
+def check_player_hinges(move_row, move_col):
+    # Determines adjacent stone values and assigns them to a list
+    stoneAbove = board[move_row - 1][move_col]
+    stoneLeft = board[move_row][move_col - 1]
+    stoneRight = board[move_row][move_col + 1]
+    stoneBelow = board[move_row + 1][move_col]
     adjacent_stones = [stoneAbove, stoneLeft, stoneRight, stoneBelow]
+    
+    # Counts the number of hinges a potential position would have
     hinges = 0
-    for i in range(0, len(adjacent_stones)):
-        positionCheck = adjacent_stones[i]
-        if positionCheck != 0:
+    for position in range(0, len(adjacent_stones)):
+        position_check = adjacent_stones[position]
+        if position_check != 0:
             hinges += 1
     if hinges > 3:
         return True
     else:
         return False
 
+
 def hinge_check(row, col):
+    # Determines adjacent stone values and assigns them to a list
     stoneAbove = board[row - 1][col]
     stoneLeft = board[row][col - 1]
     stoneRight = board[row][col + 1]
     stoneBelow = board[row + 1][col]
     adjacent_stones = [stoneAbove, stoneLeft, stoneRight, stoneBelow]
+    
+    # Counts the number of hinges each adjacent stone has    
     hinges = 0
     for i in range(0, len(adjacent_stones)):
-        positionCheck = adjacent_stones[i]
-        if positionCheck == 'E':
+        position_check = adjacent_stones[i]
+        if position_check == 'E':
             hinges += 1
-        elif positionCheck == 1 or positionCheck == 2:
+        elif position_check==1 or position_check==2:
             hinges += 1
         else:
             pass
     return hinges
 
-def check_adjacent_stones(moveRow, moveCol):
-    stoneAbove = [moveRow - 1, moveCol]
-    stoneLeft = [moveRow, moveCol - 1]
-    stoneRight = [moveRow, moveCol + 1]
-    stoneBelow = [moveRow + 1, moveCol]
+
+def check_adjacent_stones(move_row, move_col):
+    # Determines adjacent stone positions and assigns them to a list
+    stoneAbove = [move_row - 1, move_col]
+    stoneLeft = [move_row, move_col - 1]
+    stoneRight = [move_row, move_col + 1]
+    stoneBelow = [move_row + 1, move_col]
     adjacent_stones = [stoneAbove, stoneLeft, stoneRight, stoneBelow]
+    
+    # Counts the number of hinges each adjacent stone has
+    # Vacant (value 0) and edge positions are ignored
     for i in range(0, len(adjacent_stones)):
         row = int(adjacent_stones[i][0])
         col = int(adjacent_stones[i][1])
-        boardValue = board[row][col]
-        if boardValue == 'E' or boardValue == 0:
+        board_value = board[row][col]
+        if board_value=='E' or board_value==0:
             pass
-        elif boardValue == 1 or boardValue == 2:
+        elif board_value==1 or board_value==2:
             if hinge_check(row, col) >= 3:
                 return True
     return False
 
-def change_player(activePlayer):
-    if activePlayer == 1:
+
+def change_player(active_player):
+    if active_player == 1:
         return 2
-    elif activePlayer == 2:
+    elif active_player == 2:
         return 1
 
-def validate_move(moveRow, moveCol, activePlayer):
-    if moveRow >= 1 and moveRow < (len(board)-1) and moveCol >= 1 and moveCol < (len(board)-1):
-        playerMove = board[moveRow][moveCol]
+
+def validate_move(move_row, move_col, active_player):
+    if move_row>=1 and move_row<(len(board)-1) \
+        and move_col>=1 and move_col<(len(board)-1):
+        player_move = board[move_row][move_col]
     else:
         print("Invalid move. Outside board confines")
         input("Press <Enter> to continue")
         return
-    if playerMove != 0:
+    if player_move != 0:
         print("Invalid move. Space occupied")
         input("Press <Enter> to continue")
         return False
     else:
-        if check_player_hinges(moveRow, moveCol):
+        if check_player_hinges(move_row, move_col):
             print("Invalid move. Move would cause 4 immediate hinges.")
             input("Press <Enter> to continue")
             return False
-        elif check_adjacent_stones(moveRow, moveCol):
+        elif check_adjacent_stones(move_row, move_col):
             print("Invalid move. An adjacent stone would have 4 hinges.")
             input("Press <Enter> to continue")
             return False
         else:
-            #print("Valid")
-            board[moveRow][moveCol] = activePlayer          # Assigns player input to board position
+            board[move_row][move_col] = active_player
             return True
 
-def check_score(playerNumber):
+
+def check_score(player_number):
     score = 0
-    # check vertical hinges
+
+    # Scores all vertical hinges
     for row in range(1, len(board)):
         for col in range(0, len(board)):
-            boardPosition = board[row][col]
-            comparisonPosition = board[row - 1][col]
-            if comparisonPosition == playerNumber and boardPosition == playerNumber:
+            board_position = board[row][col]
+            comparison_position = board[row - 1][col]
+            if comparison_position==player_number \
+                and board_position==player_number:
                 score += 1
-            elif comparisonPosition == 'E' and boardPosition == playerNumber:
+            elif comparison_position=='E' and board_position==player_number:
                 score += 1
-            elif boardPosition == 'E' and comparisonPosition == playerNumber:
+            elif board_position=='E' and comparison_position==player_number:
                 score += 1
             else:
                 pass
 
-# check horizontal hinges
+    # Scores all horizontal hinges
     for row in range(1, (len(board))):
         for col in range(0, (len(board))):
-            boardPosition = board[row][col]
-            comparisonPosition = board[row][col-1]
-            if comparisonPosition == playerNumber and boardPosition == playerNumber:
+            board_position = board[row][col]
+            comparison_position = board[row][col-1]
+            if comparison_position==player_number \
+                and board_position==player_number:
                 score += 1
-            elif comparisonPosition == 'E' and boardPosition == playerNumber:
+            elif comparison_position=='E' and board_position==player_number:
                 score += 1
-            elif boardPosition == 'E' and comparisonPosition == playerNumber:
+            elif board_position=='E' and comparison_position==player_number:
                 score += 1
             else:
                 pass
     return score
 
-def viableMoves():
+
+def viable_moves():
+    # Cycles through board positions starting at 1,1. If a position would
+    # be valid, viable_moves is True play is allowed to continue. If a
+    # a position is not valid, the next position is assessed.
     score = 0
+    print(len(board))
     for row in range(1, len(board)):
         for col in range(1, len(board)):
             if board[row][col] != 0:
@@ -155,32 +186,35 @@ def viableMoves():
                 else:
                     return True
 
-# Main loop
 
-
-
-while viableMoves():
+# Main game loop
+while viable_moves():
     clear()
 
-    # displays only usable board positions - NOT the edges
-    for i in range(1, 8):
-        for j in range(1, 8):
+    # Displays only the playable board positions, NOT the edges
+    for row in range(1, 8):
+        for col in range(1, 8):
             icons = ['-', '\u25CB', '\u25CF']
-            icon = icons[board[i][j]]
+            icon = icons[board[row][col]]
             print(icon, end="")
         print()
 
-    for playerNumber in (1, 2):
-        print("Player", playerNumber, "score:", check_score(playerNumber))
+    for player_number in (1, 2):
+        print("Player", player_number, "score:", check_score(player_number))
     print()
 
-    print("Player ", activePlayer, "'s turn")
-    enteredMove = (input("Enter row letter and column number - with no spaces - to place your stone: "))      # Accept input from player for stone placement
-    moveRow = convert_row_to_num(enteredMove[0])
-    moveCol = int(enteredMove[1])
-    if validate_move(moveRow, moveCol, activePlayer):
-        # Change active player
-        activePlayer = change_player(activePlayer)
+    print("Player", active_player, "'s turn")
+    entered_move = (
+        input("Enter row letter and column number - with no spaces - to " \
+            "place your stone: ")
+    )
+    move_row = convert_row_to_num(entered_move[0])
+    move_col = int(entered_move[1])
+    if validate_move(move_row, move_col, active_player):
+        active_player = change_player(active_player)
+        # Additional code assigns active player number to the unused board
+        # position at 0,0 for a planned game save/load feature
+        # board[0][0] = active_player
 
 if check_score(1) == check_score(2):
     print("It's a tie!")
