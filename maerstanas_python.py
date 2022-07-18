@@ -191,7 +191,9 @@ def viable_moves():
 while viable_moves():
     clear()
 
-    # Displays only the playable board positions, NOT the edges
+    # Displays only the playable board positions, NOT the edges and
+    # exchanges the numerical values for a dash or unicode characters.
+    # This is for display purposes only to simulate stones on a gameboard.
     for row in range(1, 8):
         for col in range(1, 8):
             icons = ['-', '\u25CB', '\u25CF']
