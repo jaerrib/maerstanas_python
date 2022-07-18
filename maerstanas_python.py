@@ -200,10 +200,11 @@ while viable_moves():
         print()
 
     for player_number in (1, 2):
-        print("Player", player_number, "score:", check_score(player_number))
+        score = check_score(player_number)
+        print("Player {}'s score: {}".format(player_number, score))
     print()
 
-    print("Player", active_player, "'s turn")
+    print("Player {}'s turn".format(active_player))
     entered_move = (
         input("Enter row letter and column number - with no spaces - to " \
             "place your stone: ")
