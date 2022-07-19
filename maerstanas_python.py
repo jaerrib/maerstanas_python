@@ -19,10 +19,6 @@ for row_num in range(1, 8):
 
 active_player = 1
 
-
-# viable_moves = True
-
-
 def convert_row_to_num(character):
     # Converts player's letter input to a number usable by various functions
     # Other letters will return 0, which is outside confines of the board
