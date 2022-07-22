@@ -19,6 +19,19 @@ for row_num in range(1, 8):
 
 active_player = 1
 
+
+def print_board(board_array):
+    # Displays only the playable board positions, NOT the edges and
+    # exchanges the numerical values for a dash or unicode characters.
+    # This is for display purposes only to simulate stones on a game board.
+    for row_index in range(1, 8):
+        for col_index in range(1, 8):
+            icons = ['-', '\u25CB', '\u25CF']
+            icon = icons[board_array[row_index][col_index]]
+            print(icon, end="")
+        print()
+
+
 def convert_row_to_num(character):
     # Converts player's letter input to a number usable by various functions
     # Other letters will return 0, which is outside confines of the board
@@ -183,15 +196,7 @@ def viable_moves():
 while viable_moves():
     system('clear')
 
-    # Displays only the playable board positions, NOT the edges and
-    # exchanges the numerical values for a dash or unicode characters.
-    # This is for display purposes only to simulate stones on a game board.
-    for row in range(1, 8):
-        for col in range(1, 8):
-            icons = ['-', '\u25CB', '\u25CF']
-            icon = icons[board[row][col]]
-            print(icon, end="")
-        print()
+    print_board(board)
 
     for player_number in (1, 2):
         score = check_score(player_number)
