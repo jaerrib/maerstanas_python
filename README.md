@@ -1,7 +1,7 @@
 # maerstanas_python
 
 ## Overview
-**Mærstánas** is a free libre open source abstract strategy game. Gameplay involves players alternately placing stones within the squares of a 7x7 grid with the goal of creating connection points between their own pieces. Scoring is based on the number of these connections. Its development is hosted on Github at <https://github.com/jaerrib/maerstanas>.
+**Mærstánas** is a free libre open source abstract strategy game. Gameplay involves players alternately placing stones within the squares of a 7x7 grid with the goal of creating connection points between their own pieces. Scoring is based on the number of these connections. Its development is hosted on Codeberg at <https://codeberg.org/jaerrib/maerstanas>.
 
 > Mærstánas means *boundary stones* in Anglo-Saxon (Old English).
 
