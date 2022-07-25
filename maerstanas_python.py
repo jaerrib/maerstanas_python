@@ -1,4 +1,6 @@
 from os import system
+import sys
+import secrets
 
 # Initializes board and values and creates the 9x9 grid
 board = []
@@ -16,8 +18,6 @@ for col_num in range(9):
 for row_num in range(1, 8):
     board[row_num][0] = 'E'
     board[row_num][8] = 'E'
-
-active_player = 1
 
 
 def print_board(board_array):
@@ -114,26 +114,26 @@ def change_player(player):
         return 1
 
 
-def validate_move(row_number, col_number, player):
+def valid_move(row_number, col_number, player):
     if 1 <= row_number < (len(board) - 1) \
             and 1 <= col_number < (len(board) - 1):
         player_move = board[row_number][col_number]
     else:
-        print("Invalid move. Outside board confines")
-        input("Press <Enter> to continue")
+        # print("Invalid move. Outside board confines")
+        # input("Press <Enter> to continue")
         return
     if player_move != 0:
-        print("Invalid move. Space occupied")
-        input("Press <Enter> to continue")
+        # print("Invalid move. Space occupied")
+        # input("Press <Enter> to continue")
         return False
     else:
         if check_player_hinges(row_number, col_number):
-            print("Invalid move. Move would cause 4 immediate hinges.")
-            input("Press <Enter> to continue")
+            # print("Invalid move. Move would cause 4 immediate hinges.")
+            # input("Press <Enter> to continue")
             return False
         elif check_adjacent_stones(row_number, col_number):
-            print("Invalid move. An adjacent stone would have 4 hinges.")
-            input("Press <Enter> to continue")
+            # print("Invalid move. An adjacent stone would have 4 hinges.")
+            # input("Press <Enter> to continue")
             return False
         else:
             board[row_number][col_number] = player
@@ -192,33 +192,98 @@ def viable_moves():
                     return True
 
 
-# Main game loop
-while viable_moves():
-    system('clear')
+def computer_move(computer_player):
+    # Pseudo AI placeholder using random moves
+    valid = False
+    while not valid:
+        rand_row = secrets.randbelow(7) + 1
+        rand_col = secrets.randbelow(7) + 1
+        valid = valid_move(rand_row, rand_col, computer_player)
+    # converted_row = "ABCDEFG"[rand_row - 1]
+    # print("Computer played {}{}".format(converted_row, rand_col))
+    return change_player(computer_player)
 
-    print_board(board)
 
-    for player_number in (1, 2):
-        score = check_score(player_number)
-        print("Player {}'s score: {}".format(player_number, score))
-    print()
+def one_player_game():
+    active_player = 1
+    # Main game loop
+    while viable_moves():
+        system('clear')
 
-    print("Player {}'s turn".format(active_player))
-    entered_move = (
-        input("Enter row letter and column number - with no spaces - to "
-              "place your stone: ")
-    )
-    move_row = convert_row_to_num(entered_move[0])
-    move_col = int(entered_move[1])
-    if validate_move(move_row, move_col, active_player):
-        active_player = change_player(active_player)
+        print_board(board)
+
+        for player_number in (1, 2):
+            score = check_score(player_number)
+            if player_number == 1:
+                print("Player {}'s score: {}".format(player_number, score))
+            else:
+                print("Computer's score: {}".format(score))
+        print()
+
+        if active_player == 1:
+            print("Player {}'s turn".format(active_player))
+            entered_move = (
+                input("Enter row letter and column number - with no spaces - to "
+                      "place your stone: ")
+            )
+            move_row = convert_row_to_num(entered_move[0])
+            move_col = int(entered_move[1])
+            if valid_move(move_row, move_col, active_player):
+                active_player = change_player(active_player)
+        else:
+            # print("Computer played ", computer_move(active_player))
+            computer_move(active_player)
+            active_player = change_player(active_player)
+            input("Press <Enter> to continue")
         # Additional code assigns active player number to the unused board
         # position at 0,0 for a planned game save/load feature
         # board[0][0] = player
+    if check_score(1) == check_score(2):
+        print("It's a tie!")
+    elif check_score(1) > check_score(2):
+        print("Player 1 wins!")
+    else:
+        print("Computer wins!")
 
-if check_score(1) == check_score(2):
-    print("It's a tie!")
-elif check_score(1) > check_score(2):
-    print("Player 1 wins!")
+
+def two_player_game():
+    active_player = 1
+    # Main game loop
+    while viable_moves():
+        system('clear')
+
+        print_board(board)
+
+        for player_number in (1, 2):
+            score = check_score(player_number)
+            print("Player {}'s score: {}".format(player_number, score))
+        print()
+
+        print("Player {}'s turn".format(active_player))
+        entered_move = (
+            input("Enter row letter and column number - with no spaces - to "
+                  "place your stone: ")
+        )
+        move_row = convert_row_to_num(entered_move[0])
+        move_col = int(entered_move[1])
+        if valid_move(move_row, move_col, active_player):
+            active_player = change_player(active_player)
+            # Additional code assigns active player number to the unused board
+            # position at 0,0 for a planned game save/load feature
+            # board[0][0] = player
+    if check_score(1) == check_score(2):
+        print("It's a tie!")
+    elif check_score(1) > check_score(2):
+        print("Player 1 wins!")
+    else:
+        print("Player 2 wins!")
+
+
+num_players = input("1 or 2 player game? ")
+if num_players == '1':
+    one_player_game()
+elif num_players == '2':
+    two_player_game()
 else:
-    print("Player 2 wins!")
+    print("Invalid entry")
+sys.exit()
