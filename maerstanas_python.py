@@ -35,12 +35,10 @@ def print_board(board_array):
 def convert_row_to_num(character):
     # Converts player's letter input to a number usable by various functions
     # Other letters will return 0, which is outside confines of the board
-    upper_letters = "ABCDEFG"
-    lower_letters = "abcdefg"
-    for letter in range(0, len(upper_letters)):
-        if character == upper_letters[letter] \
-                or character == lower_letters[letter]:
-            return letter + 1
+    letter = character.upper()
+    possible_rows = "ABCDEFG"
+    if letter in possible_rows:
+        return possible_rows.index(letter) + 1
     return 0
 
 
