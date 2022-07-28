@@ -78,8 +78,6 @@ def hinge_check(row_number, col_number):
             hinges += 1
         elif position_check == 1 or position_check == 2:
             hinges += 1
-        else:
-            pass
     return hinges
 
 
@@ -119,7 +117,7 @@ def valid_move(row_number, col_number, player):
     else:
         # print("Invalid move. Outside board confines")
         # input("Press <Enter> to continue")
-        return
+        return False
     if player_move != 0:
         # print("Invalid move. Space occupied")
         # input("Press <Enter> to continue")
@@ -153,8 +151,7 @@ def check_score(player):
                 calculated_score += 1
             elif board_position == 'E' and comparison_position == player:
                 calculated_score += 1
-            else:
-                pass
+
 
     # Scores all horizontal hinges
     for row_index in range(1, (len(board))):
@@ -168,8 +165,6 @@ def check_score(player):
                 calculated_score += 1
             elif board_position == 'E' and comparison_position == player:
                 calculated_score += 1
-            else:
-                pass
     return calculated_score
 
 
