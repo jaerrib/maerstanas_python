@@ -2,6 +2,7 @@ from os import system
 import sys
 import secrets
 
+
 # Initializes board and values and creates the 9x9 grid
 board = []
 for row_num in range(9):
@@ -24,7 +25,11 @@ def print_board(board_array):
     # Displays only the playable board positions, NOT the edges and
     # exchanges the numerical values for a dash or unicode characters.
     # This is for display purposes only to simulate stones on a game board.
+    print('  1234567')
     for row_index in range(1, 8):
+        row_letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+        row_letter = row_letters[row_index - 1]
+        print(row_letter, '', end="")
         for col_index in range(1, 8):
             icons = ['-', '\u25CB', '\u25CF']
             icon = icons[board_array[row_index][col_index]]
@@ -151,7 +156,6 @@ def check_score(player):
                 calculated_score += 1
             elif board_position == 'E' and comparison_position == player:
                 calculated_score += 1
-
 
     # Scores all horizontal hinges
     for row_index in range(1, (len(board))):
