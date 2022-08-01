@@ -4,7 +4,9 @@ import secrets
 
 
 def create_board():
-    # Initializes board and values and creates the 9x9 grid
+    """
+    Initializes board and values and creates the 9x9 grid
+    """
     board = []
     for row_num in range(9):
         row = []
@@ -24,9 +26,11 @@ def create_board():
 
 
 def print_board(board_array):
-    # Displays only the playable board positions, NOT the edges and
-    # exchanges the numerical values for a dash or unicode characters.
-    # This is for display purposes only to simulate stones on a game board.
+    """
+    Displays only the playable board positions, NOT the edges and
+    exchanges the numerical values for a dash or unicode characters.
+    This is for display purposes only to simulate stones on a game board.
+    """
     print('  1234567')
     for row_index in range(1, 8):
         row_letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
@@ -40,8 +44,10 @@ def print_board(board_array):
 
 
 def convert_row_to_num(character):
-    # Converts player's letter input to a number usable by various functions
-    # Other letters will return 0, which is outside confines of the board
+    """
+    Converts player's letter input to a number usable by various functions.
+    Other letters will return 0, which is outside confines of the board.
+    """
     letter = character.upper()
     possible_rows = "ABCDEFG"
     if letter in possible_rows:
@@ -49,18 +55,35 @@ def convert_row_to_num(character):
     return 0
 
 
+def find_adjacent(board, row_number, col_number):
+    """
+    Returns values for positions adjacent to a given board position
+    """
+    position_above = board[row_number - 1][col_number]
+    position_left = board[row_number][col_number - 1]
+    position_right = board[row_number][col_number + 1]
+    position_below = board[row_number + 1][col_number]
+    adjacent_positions = [
+        position_above,
+        position_left,
+        position_right,
+        position_below
+    ]
+    return adjacent_positions
+
+
 def check_player_hinges(board, row_number, col_number):
+    """
+    Evaluates the number of hinges a player move would have
+    if played at a given board position
+    """
     # Determines adjacent stone values and assigns them to a list
-    stone_above = board[row_number - 1][col_number]
-    stone_left = board[row_number][col_number - 1]
-    stone_right = board[row_number][col_number + 1]
-    stone_below = board[row_number + 1][col_number]
-    adjacent_stones = [stone_above, stone_left, stone_right, stone_below]
+    adjacent_positions = find_adjacent(board, row_number, col_number)
 
     # Counts the number of hinges a potential position would have
     hinges = 0
-    for position in range(0, len(adjacent_stones)):
-        position_check = adjacent_stones[position]
+    for position in range(0, len(adjacent_positions)):
+        position_check = adjacent_positions[position]
         if position_check != 0:
             hinges += 1
     if hinges > 3:
@@ -71,16 +94,12 @@ def check_player_hinges(board, row_number, col_number):
 
 def hinge_check(board, row_number, col_number):
     # Determines adjacent stone values and assigns them to a list
-    stone_above = board[row_number - 1][col_number]
-    stone_left = board[row_number][col_number - 1]
-    stone_right = board[row_number][col_number + 1]
-    stone_below = board[row_number + 1][col_number]
-    adjacent_stones = [stone_above, stone_left, stone_right, stone_below]
+    adjacent_positions = find_adjacent(board, row_number, col_number)
 
     # Counts the number of hinges each adjacent stone has    
     hinges = 0
-    for i in range(0, len(adjacent_stones)):
-        position_check = adjacent_stones[i]
+    for i in range(0, len(adjacent_positions)):
+        position_check = adjacent_positions[i]
         if position_check == 'E':
             hinges += 1
         elif position_check == 1 or position_check == 2:
@@ -90,17 +109,13 @@ def hinge_check(board, row_number, col_number):
 
 def check_adjacent_stones(board, row_number, col_number):
     # Determines adjacent stone positions and assigns them to a list
-    stone_above = [row_number - 1, col_number]
-    stone_left = [row_number, col_number - 1]
-    stone_right = [row_number, col_number + 1]
-    stone_below = [row_number + 1, col_number]
-    adjacent_stones = [stone_above, stone_left, stone_right, stone_below]
+    adjacent_positions = find_adjacent(board, row_number, col_number)
 
     # Counts the number of hinges each adjacent stone has
     # Vacant (value 0) and edge positions are ignored
-    for i in range(0, len(adjacent_stones)):
-        row_position = int(adjacent_stones[i][0])
-        col_position = int(adjacent_stones[i][1])
+    for i in range(0, len(adjacent_positions)):
+        row_position = int(adjacent_positions[i][0])
+        col_position = int(adjacent_positions[i][1])
         board_value = board[row_position][col_position]
         if board_value == 'E' or board_value == 0:
             pass
@@ -223,7 +238,7 @@ def one_player_game():
         if active_player == 1:
             print("Player {}'s turn".format(active_player))
             entered_move = (
-                input("Enter row letter and column number - with no spaces - to "
+                input("Enter row and column - with no spaces - to "
                       "place your stone: ")
             )
             move_row = convert_row_to_num(entered_move[0])
