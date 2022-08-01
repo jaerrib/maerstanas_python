@@ -77,7 +77,6 @@ def check_player_hinges(board, row_number, col_number):
     Evaluates the number of hinges a player move would have
     if played at a given board position
     """
-    # Determines adjacent stone values and assigns them to a list
     adjacent_positions = find_adjacent(board, row_number, col_number)
 
     # Counts the number of hinges a potential position would have
@@ -93,10 +92,10 @@ def check_player_hinges(board, row_number, col_number):
 
 
 def hinge_check(board, row_number, col_number):
-    # Determines adjacent stone values and assigns them to a list
+    """
+    Counts the number of hinges a stone at a given position has
+    """
     adjacent_positions = find_adjacent(board, row_number, col_number)
-
-    # Counts the number of hinges each adjacent stone has    
     hinges = 0
     for i in range(0, len(adjacent_positions)):
         position_check = adjacent_positions[i]
@@ -108,7 +107,11 @@ def hinge_check(board, row_number, col_number):
 
 
 def check_adjacent_stones(board, row_number, col_number):
-    # Determines adjacent stone positions and assigns them to a list
+    """
+    Determines if a move made at a given board position would cause any
+    adjacent stones to have more than 3 hinges. Edge and empty/vacant board
+    positions are ignored as they would zero hinges.
+    """
     adjacent_positions = find_adjacent(board, row_number, col_number)
 
     # Counts the number of hinges each adjacent stone has
@@ -133,6 +136,17 @@ def change_player(player):
 
 
 def valid_move(board, row_number, col_number, player):
+    """
+    Determines if a potential move would be valid by doing the following:
+    (1) Checking if the coordinates are within the confines of the board
+    (2) Checking if the position is occupied
+    (3) Checking if the move would create 4 immediate hinges
+    (4) Checking if the move would cause any adjacent stones to have more than
+    3 hinges
+    If the move is valid, the player number is assigned to the board position
+    Additional code remains from debugging but may be reimplemented to help
+    players who are still learning the game
+    """
     if 1 <= row_number < (len(board) - 1) \
             and 1 <= col_number < (len(board) - 1):
         player_move = board[row_number][col_number]
@@ -190,9 +204,12 @@ def check_score(board, player):
 
 
 def viable_moves(board):
-    # Cycles through board positions starting at 1,1. If a position is
-    # valid, viable_moves is True play is allowed to continue. If a
-    # position is not valid, the next position is assessed.
+    """
+    Cycles through board positions starting at A1 (1,1). If a position is
+    valid, viable_moves is True and play is allowed to continue. If a
+    position is not valid, the next position is assessed until the entire
+    board has been checked.
+    """
     for row_index in range(1, len(board)):
         for col_index in range(1, len(board)):
             if board[row_index][col_index] != 0:
