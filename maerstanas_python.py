@@ -13,15 +13,14 @@ def create_board():
         for col_num in range(9):
             row.append(0)
         board.append(row)
-
-    # Assigns an "E" to all edge positions for use in positional
+    # Assigns a 3 to all edge positions for use in positional
     # comparison functions
     for col_num in range(9):
-        board[0][col_num] = 'E'
-        board[8][col_num] = 'E'
+        board[0][col_num] = 3
+        board[8][col_num] = 3
     for row_num in range(1, 8):
-        board[row_num][0] = 'E'
-        board[row_num][8] = 'E'
+        board[row_num][0] = 3
+        board[row_num][8] = 3
     return board
 
 
@@ -55,19 +54,19 @@ def convert_row_to_num(character):
     return 0
 
 
-def find_adjacent(board, row_number, col_number):
+def find_adjacent(row_number, col_number):
     """
-    Returns values for positions adjacent to a given board position
+    Returns assigned value for positions adjacent to a given board position
     """
-    position_above = board[row_number - 1][col_number]
-    position_left = board[row_number][col_number - 1]
-    position_right = board[row_number][col_number + 1]
-    position_below = board[row_number + 1][col_number]
+    # position_above = board[row_number - 1][col_number]
+    # position_left = board[row_number][col_number - 1]
+    # position_right = board[row_number][col_number + 1]
+    # position_below = board[row_number + 1][col_number]
     adjacent_positions = [
-        position_above,
-        position_left,
-        position_right,
-        position_below
+        [row_number - 1, col_number],
+        [row_number, col_number - 1],
+        [row_number, col_number + 1],
+        [row_number + 1, col_number]
     ]
     return adjacent_positions
 
@@ -77,12 +76,13 @@ def check_player_hinges(board, row_number, col_number):
     Evaluates the number of hinges a player move would have
     if played at a given board position
     """
-    adjacent_positions = find_adjacent(board, row_number, col_number)
-
+    adjacent_positions = find_adjacent(row_number, col_number)
     # Counts the number of hinges a potential position would have
     hinges = 0
     for position in range(0, len(adjacent_positions)):
-        position_check = adjacent_positions[position]
+        row_to_check = adjacent_positions[position][0]
+        col_to_check = adjacent_positions[position][1]
+        position_check = board[row_to_check][col_to_check]
         if position_check != 0:
             hinges += 1
     if hinges > 3:
@@ -95,11 +95,13 @@ def hinge_check(board, row_number, col_number):
     """
     Counts the number of hinges a stone at a given position has
     """
-    adjacent_positions = find_adjacent(board, row_number, col_number)
+    adjacent_positions = find_adjacent(row_number, col_number)
     hinges = 0
-    for i in range(0, len(adjacent_positions)):
-        position_check = adjacent_positions[i]
-        if position_check == 'E':
+    for position in range(0, len(adjacent_positions)):
+        row_to_check = adjacent_positions[position][0]
+        col_to_check = adjacent_positions[position][1]
+        position_check = board[row_to_check][col_to_check]
+        if position_check == 3:
             hinges += 1
         elif position_check == 1 or position_check == 2:
             hinges += 1
@@ -112,15 +114,14 @@ def check_adjacent_stones(board, row_number, col_number):
     adjacent stones to have more than 3 hinges. Edge and empty/vacant board
     positions are ignored as they would zero hinges.
     """
-    adjacent_positions = find_adjacent(board, row_number, col_number)
-
+    adjacent_positions = find_adjacent(row_number, col_number)
     # Counts the number of hinges each adjacent stone has
-    # Vacant (value 0) and edge positions are ignored
+    # Open (value 0) and edge (value 3) positions are ignored
     for i in range(0, len(adjacent_positions)):
         row_position = int(adjacent_positions[i][0])
         col_position = int(adjacent_positions[i][1])
         board_value = board[row_position][col_position]
-        if board_value == 'E' or board_value == 0:
+        if board_value == 3 or board_value == 0:
             pass
         elif board_value == 1 or board_value == 2:
             if hinge_check(board, row_position, col_position) >= 3:
@@ -183,9 +184,9 @@ def check_score(board, player):
             if comparison_position == player \
                     and board_position == player:
                 calculated_score += 1
-            elif comparison_position == 'E' and board_position == player:
+            elif comparison_position == 3 and board_position == player:
                 calculated_score += 1
-            elif board_position == 'E' and comparison_position == player:
+            elif board_position == 3 and comparison_position == player:
                 calculated_score += 1
 
     # Scores all horizontal hinges
@@ -196,9 +197,9 @@ def check_score(board, player):
             if comparison_position == player \
                     and board_position == player:
                 calculated_score += 1
-            elif comparison_position == 'E' and board_position == player:
+            elif comparison_position == 3 and board_position == player:
                 calculated_score += 1
-            elif board_position == 'E' and comparison_position == player:
+            elif board_position == 3 and comparison_position == player:
                 calculated_score += 1
     return calculated_score
 
@@ -225,34 +226,52 @@ def viable_moves(board):
 
 def computer_move(board, computer_player):
     # Pseudo AI placeholder using random moves
+    row = 0
+    col = 0
     valid = False
     while not valid:
-        rand_row = secrets.randbelow(7) + 1
-        rand_col = secrets.randbelow(7) + 1
-        valid = valid_move(board, rand_row, rand_col, computer_player)
-    # converted_row = "ABCDEFG"[rand_row - 1]
-    # print("Computer played {}{}".format(converted_row, rand_col))
-    return change_player(computer_player)
+        row = secrets.randbelow(7) + 1
+        col = secrets.randbelow(7) + 1
+        valid = valid_move(board, row, col, computer_player)
+    converted_row = "ABCDEFG"[row - 1]
+    combined_text = converted_row + str(col)
+    return combined_text
 
 
-def one_player_game():
+def get_players():
+    players = ["computer", "computer"]
+    # Uncomment the next line to test 2 computer players
+    # return players
+    number_players = int(input("1 or 2 player game?"))
+    if number_players == 2:
+        players = ["human", "human"]
+    elif number_players == 1:
+        human_player = int(input("Would you like to be player 1 or 2?"))
+        if human_player == 1 or human_player == 2:
+            players[human_player - 1] = "human"
+        else:
+            get_players()
+    else:
+        get_players()
+    return players
+
+
+def play_game(players):
     board = create_board()
     active_player = 1
-    # Main game loop
+    player1 = players[0]
+    player2 = players[1]
+
     while viable_moves(board):
         system('clear')
 
         print_board(board)
-
-        for player_number in (1, 2):
-            score = check_score(board, player_number)
-            if player_number == 1:
-                print("Player {}'s score: {}".format(player_number, score))
-            else:
-                print("Computer's score: {}".format(score))
+        score_p1 = check_score(board, 1)
+        score_p2 = check_score(board, 1)
+        print("Player 1 ({}) score: {}".format(player1, score_p1))
+        print("Player 2 ({}) score: {}".format(player2, score_p2))
         print()
-
-        if active_player == 1:
+        if active_player == 1 and player1 == "human":
             print("Player {}'s turn".format(active_player))
             entered_move = (
                 input("Enter row and column - with no spaces - to "
@@ -262,14 +281,27 @@ def one_player_game():
             move_col = int(entered_move[1])
             if valid_move(board, move_row, move_col, active_player):
                 active_player = change_player(active_player)
-        else:
-            # print("Computer played ", computer_move(active_player))
-            computer_move(board, active_player)
+        elif active_player == 1 and player1 == "computer":
+            print(f"Player {active_player} (computer) played ",
+                  computer_move(board, active_player))
             active_player = change_player(active_player)
             input("Press <Enter> to continue")
-        # Additional code assigns active player number to the unused board
-        # position at 0,0 for a planned game save/load feature
-        # board[0][0] = player
+        elif active_player == 2 and player2 == "human":
+            print("Player {}'s turn".format(active_player))
+            entered_move = (
+                input("Enter row and column - with no spaces - to "
+                      "place your stone: ")
+            )
+            move_row = convert_row_to_num(entered_move[0])
+            move_col = int(entered_move[1])
+            if valid_move(board, move_row, move_col, active_player):
+                active_player = change_player(active_player)
+        elif active_player == 2 and player2 == "computer":
+            print(f"Player {active_player} (computer) played ",
+                  computer_move(board, active_player))
+            active_player = change_player(active_player)
+            input("Press <Enter> to continue")
+
     if check_score(board, 1) == check_score(board, 2):
         print("It's a tie!")
     elif check_score(board, 1) > check_score(board, 2):
@@ -278,45 +310,16 @@ def one_player_game():
         print("Computer wins!")
 
 
-def two_player_game():
-    board = create_board()
-    active_player = 1
-    # Main game loop
-    while viable_moves(board):
+def main_loop():
+    continue_play = True
+    while continue_play:
         system('clear')
-
-        print_board(board)
-
-        for player_number in (1, 2):
-            score = check_score(board, player_number)
-            print("Player {}'s score: {}".format(player_number, score))
-        print()
-
-        print("Player {}'s turn".format(active_player))
-        entered_move = (
-            input("Enter row letter and column number - with no spaces - to "
-                  "place your stone: ")
-        )
-        move_row = convert_row_to_num(entered_move[0])
-        move_col = int(entered_move[1])
-        if valid_move(board, move_row, move_col, active_player):
-            active_player = change_player(active_player)
-            # Additional code assigns active player number to the unused board
-            # position at 0,0 for a planned game save/load feature
-            # board[0][0] = player
-    if check_score(board, 1) == check_score(board, 2):
-        print("It's a tie!")
-    elif check_score(board, 1) > check_score(board, 2):
-        print("Player 1 wins!")
-    else:
-        print("Player 2 wins!")
+        players = get_players()
+        play_game(players)
+        play_again = input("Play a new game (y/n)?")
+        if play_again == "n" or play_again == "N":
+            continue_play = False
 
 
-num_players = input("1 or 2 player game? ")
-if num_players == '1':
-    one_player_game()
-elif num_players == '2':
-    two_player_game()
-else:
-    print("Invalid entry")
+main_loop()
 sys.exit()
