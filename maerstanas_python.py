@@ -283,11 +283,17 @@ def play_game(players):
             active_player = change_player(active_player)
             input("Press <Enter> to continue")
 
-    # Need to display last move made and update board here before declaring
-    # which player won
-    if check_score(board, 1) == check_score(board, 2):
+    system('clear')
+
+    print_board(board)
+    score_p1 = check_score(board, 1)
+    score_p2 = check_score(board, 2)
+    print(f"Player 1 ({player1}) score: {score_p1}")
+    print(f"Player 1 ({player2}) score: {score_p2}")
+    print()
+    if score_p1 == score_p2:
         print("It's a tie!")
-    elif check_score(board, 1) > check_score(board, 2):
+    elif score_p1 > score_p2:
         print(f"Player 1 ({player1}) wins!")
     else:
         print(f"Player 2 ({player2}) wins!")
