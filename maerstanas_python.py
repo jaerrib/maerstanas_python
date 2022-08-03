@@ -58,10 +58,6 @@ def find_adjacent(row_number, col_number):
     """
     Returns assigned value for positions adjacent to a given board position
     """
-    # position_above = board[row_number - 1][col_number]
-    # position_left = board[row_number][col_number - 1]
-    # position_right = board[row_number][col_number + 1]
-    # position_below = board[row_number + 1][col_number]
     adjacent_positions = [
         [row_number - 1, col_number],
         [row_number, col_number - 1],
@@ -302,12 +298,14 @@ def play_game(players):
             active_player = change_player(active_player)
             input("Press <Enter> to continue")
 
+    # Need to display last move made and update board here before declaring
+    # which player won
     if check_score(board, 1) == check_score(board, 2):
         print("It's a tie!")
     elif check_score(board, 1) > check_score(board, 2):
-        print("Player 1 wins!")
+        print(f"Player 1 ({player1}) wins!")
     else:
-        print("Computer wins!")
+        print(f"Player 2 ({player2}) wins!")
 
 
 def main_loop():
@@ -316,9 +314,8 @@ def main_loop():
         system('clear')
         players = get_players()
         play_game(players)
-        play_again = input("Play a new game (y/n)?")
-        if play_again == "n" or play_again == "N":
-            continue_play = False
+        play_again = input("Play a new game (y/n)?").lower()
+        continue_play = play_again == "y"
 
 
 main_loop()
