@@ -263,7 +263,7 @@ def play_game(players):
 
         print_board(board)
         score_p1 = check_score(board, 1)
-        score_p2 = check_score(board, 1)
+        score_p2 = check_score(board, 2)
         print(f"Player 1 ({player1}) score: {score_p1}")
         print(f"Player 1 ({player2}) score: {score_p2}")
         print()
