@@ -264,11 +264,11 @@ def play_game(players):
         print_board(board)
         score_p1 = check_score(board, 1)
         score_p2 = check_score(board, 1)
-        print("Player 1 ({}) score: {}".format(player1, score_p1))
-        print("Player 2 ({}) score: {}".format(player2, score_p2))
+        print(f"Player 1 ({player1}) score: {score_p1}")
+        print(f"Player 1 ({player2}) score: {score_p2}")
         print()
-        if active_player == 1 and player1 == "human":
-            print("Player {}'s turn".format(active_player))
+        if players[active_player - 1] == "human":
+            print(f"Player {active_player}'s turn")
             entered_move = (
                 input("Enter row and column - with no spaces - to "
                       "place your stone: ")
@@ -277,22 +277,7 @@ def play_game(players):
             move_col = int(entered_move[1])
             if valid_move(board, move_row, move_col, active_player):
                 active_player = change_player(active_player)
-        elif active_player == 1 and player1 == "computer":
-            print(f"Player {active_player} (computer) played ",
-                  computer_move(board, active_player))
-            active_player = change_player(active_player)
-            input("Press <Enter> to continue")
-        elif active_player == 2 and player2 == "human":
-            print("Player {}'s turn".format(active_player))
-            entered_move = (
-                input("Enter row and column - with no spaces - to "
-                      "place your stone: ")
-            )
-            move_row = convert_row_to_num(entered_move[0])
-            move_col = int(entered_move[1])
-            if valid_move(board, move_row, move_col, active_player):
-                active_player = change_player(active_player)
-        elif active_player == 2 and player2 == "computer":
+        else:
             print(f"Player {active_player} (computer) played ",
                   computer_move(board, active_player))
             active_player = change_player(active_player)
