@@ -1,45 +1,7 @@
 from os import system
-import sys
+from board_func import *
+# from computer_moves import *
 import secrets
-
-
-def create_board():
-    """
-    Initializes board and values and creates the 9x9 grid
-    """
-    board = []
-    for row_num in range(9):
-        row = []
-        for col_num in range(9):
-            row.append(0)
-        board.append(row)
-    # Assigns a 3 to all edge positions for use in positional
-    # comparison functions
-    for col_num in range(9):
-        board[0][col_num] = 3
-        board[8][col_num] = 3
-    for row_num in range(1, 8):
-        board[row_num][0] = 3
-        board[row_num][8] = 3
-    return board
-
-
-def print_board(board_array):
-    """
-    Displays only the playable board positions, NOT the edges and
-    exchanges the numerical values for a dash or unicode characters.
-    This is for display purposes only to simulate stones on a game board.
-    """
-    print('  1234567')
-    for row_index in range(1, 8):
-        row_letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
-        row_letter = row_letters[row_index - 1]
-        print(row_letter, '', end="")
-        for col_index in range(1, 8):
-            icons = ['-', '\u25CB', '\u25CF']
-            icon = icons[board_array[row_index][col_index]]
-            print(icon, end="")
-        print()
 
 
 def convert_row_to_num(character):
@@ -220,36 +182,19 @@ def viable_moves(board):
                     return True
 
 
-def computer_move(board, computer_player):
-    # Pseudo AI placeholder using random moves
-    row = 0
-    col = 0
-    valid = False
-    while not valid:
-        row = secrets.randbelow(7) + 1
-        col = secrets.randbelow(7) + 1
-        valid = valid_move(board, row, col, computer_player)
-    converted_row = "ABCDEFG"[row - 1]
-    combined_text = converted_row + str(col)
-    return combined_text
-
-
-def get_players():
-    players = ["computer", "computer"]
-    # Uncomment the next line to test 2 computer players
-    # return players
-    number_players = int(input("1 or 2 player game?"))
-    if number_players == 2:
-        players = ["human", "human"]
-    elif number_players == 1:
-        human_player = int(input("Would you like to be player 1 or 2?"))
-        if human_player == 1 or human_player == 2:
-            players[human_player - 1] = "human"
-        else:
-            get_players()
+def determine_winner(board, player1, player2):
+    print_board(board)
+    score_p1 = check_score(board, 1)
+    score_p2 = check_score(board, 2)
+    print(f"Player 1 ({player1}) score: {score_p1}")
+    print(f"Player 1 ({player2}) score: {score_p2}")
+    print()
+    if score_p1 == score_p2:
+        print("It's a tie!")
+    elif score_p1 > score_p2:
+        print(f"Player 1 ({player1}) wins!")
     else:
-        get_players()
-    return players
+        print(f"Player 2 ({player2}) wins!")
 
 
 def play_game(players):
@@ -282,32 +227,21 @@ def play_game(players):
                   computer_move(board, active_player))
             active_player = change_player(active_player)
             input("Press <Enter> to continue")
-
+    determine_winner(board, player1, player2)
     system('clear')
 
-    print_board(board)
-    score_p1 = check_score(board, 1)
-    score_p2 = check_score(board, 2)
-    print(f"Player 1 ({player1}) score: {score_p1}")
-    print(f"Player 1 ({player2}) score: {score_p2}")
-    print()
-    if score_p1 == score_p2:
-        print("It's a tie!")
-    elif score_p1 > score_p2:
-        print(f"Player 1 ({player1}) wins!")
-    else:
-        print(f"Player 2 ({player2}) wins!")
 
-
-def main_loop():
-    continue_play = True
-    while continue_play:
-        system('clear')
-        players = get_players()
-        play_game(players)
-        play_again = input("Play a new game (y/n)?").lower()
-        continue_play = play_again == "y"
-
-
-main_loop()
-sys.exit()
+def computer_move(board, computer_player):
+    """
+    Pseudo AI placeholder that generates random moves for computer player
+    """
+    row = 0
+    col = 0
+    valid = False
+    while not valid:
+        row = secrets.randbelow(7) + 1
+        col = secrets.randbelow(7) + 1
+        valid = valid_move(board, row, col, computer_player)
+        converted_row = "ABCDEFG"[row - 1]
+    combined_text = converted_row + str(col)
+    return combined_text
