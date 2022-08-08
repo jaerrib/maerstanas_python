@@ -134,8 +134,8 @@ def check_score(board, player):
     calculated_score: int = 0
 
     # Scores all vertical hinges
-    for row_index in range(1, len(board)):
-        for col_index in range(0, len(board)):
+    for row_index in range(1, 9):
+        for col_index in range(0, 9):
             board_position = board[row_index][col_index]
             comparison_position = board[row_index - 1][col_index]
             if comparison_position == player \
@@ -147,8 +147,8 @@ def check_score(board, player):
                 calculated_score += 1
 
     # Scores all horizontal hinges
-    for row_index in range(1, (len(board))):
-        for col_index in range(0, (len(board))):
+    for row_index in range(1, 9):
+        for col_index in range(0, 9):
             board_position = board[row_index][col_index]
             comparison_position = board[row_index][col_index - 1]
             if comparison_position == player \
@@ -168,8 +168,8 @@ def viable_moves(board):
     position is not valid, the next position is assessed until the entire
     board has been checked.
     """
-    for row_index in range(1, len(board)):
-        for col_index in range(1, len(board)):
+    for row_index in range(1, 9):
+        for col_index in range(1, 9):
             if board[row_index][col_index] != 0:
                 pass
             else:
