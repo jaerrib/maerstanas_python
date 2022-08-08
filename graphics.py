@@ -1,6 +1,7 @@
 import pygame
 from numpy import trunc
-from game_logic import *
+from game_logic import check_score, viable_moves, valid_move, create_board,\
+    determine_winner
 pygame.init()
 surface = pygame.display.set_mode((700, 700))
 
@@ -39,12 +40,11 @@ def position_round(col, row):
     return x_draw, y_draw
 
 
-def gui_loop_test():
+def gui_loop_test(color_scheme, players):
     """
     Currently broken placeholder code
     """
     board = create_board()
-    players = ["human", "human"]
     active_player = 1
     player1 = players[0]
     player2 = players[1]

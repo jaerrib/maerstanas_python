@@ -1,6 +1,5 @@
 from os import system
-from board_func import *
-# from computer_moves import *
+from board_func import create_board, print_board
 import secrets
 
 
@@ -235,7 +234,7 @@ def computer_move(board, computer_player):
     """
     Pseudo AI placeholder that generates random moves for computer player
     """
-    row = 0
+    converted_row = "Z"
     col = 0
     valid = False
     while not valid:
