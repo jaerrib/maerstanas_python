@@ -1,5 +1,5 @@
 from os import system
-from board_func import create_board, print_board
+from board import Board
 import secrets
 
 
@@ -182,7 +182,7 @@ def viable_moves(board):
 
 
 def determine_winner(board, player1, player2):
-    print_board(board)
+    board.print()
     score_p1 = check_score(board, 1)
     score_p2 = check_score(board, 2)
     print(f"Player 1 ({player1}) score: {score_p1}")
@@ -197,17 +197,17 @@ def determine_winner(board, player1, player2):
 
 
 def play_game(players):
-    board = create_board()
+    board = Board()
     active_player = 1
     player1 = players[0]
     player2 = players[1]
 
-    while viable_moves(board):
+    while viable_moves(board.data):
         system('clear')
 
-        print_board(board)
-        score_p1 = check_score(board, 1)
-        score_p2 = check_score(board, 2)
+        board.print()
+        score_p1 = check_score(board.data, 1)
+        score_p2 = check_score(board.data, 2)
         print(f"Player 1 ({player1}) score: {score_p1}")
         print(f"Player 1 ({player2}) score: {score_p2}")
         print()
@@ -219,14 +219,14 @@ def play_game(players):
             )
             move_row = convert_row_to_num(entered_move[0])
             move_col = int(entered_move[1])
-            if valid_move(board, move_row, move_col, active_player):
+            if valid_move(board.data, move_row, move_col, active_player):
                 active_player = change_player(active_player)
         else:
             print(f"Player {active_player} (computer) played ",
-                  computer_move(board, active_player))
+                  computer_move(board.data, active_player))
             active_player = change_player(active_player)
             input("Press <Enter> to continue")
-    determine_winner(board, player1, player2)
+    determine_winner(board.data, player1, player2)
     system('clear')
 
 
