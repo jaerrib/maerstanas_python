@@ -181,10 +181,32 @@ def viable_moves(board):
                     return True
 
 
+def remaining_moves(board):
+    """
+    Cycles through board positions starting at A1 (1,1). If a position is
+    valid, viable_moves is True and play is allowed to continue. If a
+    position is not valid, the next position is assessed until the entire
+    board has been checked.
+    """
+    possible_moves = 0
+    for row_index in range(1, 9):
+        for col_index in range(1, 9):
+            if board[row_index][col_index] != 0:
+                pass
+            else:
+                if check_player_hinges(board, row_index, col_index):
+                    pass
+                elif check_adjacent_stones(board, row_index, col_index):
+                    pass
+                else:
+                    possible_moves += 1
+    return possible_moves
+
+
 def determine_winner(board, player1, player2):
     board.print()
-    score_p1 = check_score(board, 1)
-    score_p2 = check_score(board, 2)
+    score_p1 = check_score(board.data, 1)
+    score_p2 = check_score(board.data, 2)
     print(f"Player 1 ({player1}) score: {score_p1}")
     print(f"Player 1 ({player2}) score: {score_p2}")
     print()
@@ -210,6 +232,7 @@ def play_game(players):
         score_p2 = check_score(board.data, 2)
         print(f"Player 1 ({player1}) score: {score_p1}")
         print(f"Player 1 ({player2}) score: {score_p2}")
+        print(f"Moves remaining {remaining_moves(board.data)}.")
         print()
         if players[active_player - 1] == "human":
             print(f"Player {active_player}'s turn")
