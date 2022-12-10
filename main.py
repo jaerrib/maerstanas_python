@@ -12,7 +12,7 @@ res = (900, 900)
 # opens up a window
 surface = pygame.display.set_mode(res)
 screen_display = pygame.display
-screen_display.set_caption('Maerstanas_python')
+screen_display.set_caption('Mǽrstánas_python')
 
 # white color
 color = "white"
@@ -35,7 +35,7 @@ height = surface.get_height()
 smallfont = pygame.font.SysFont('Corbel', (round(width * .05)))
 
 # rendering a text written in this font
-game_title = smallfont.render('Maerstanas', True, color)
+game_title = smallfont.render('Mǽrstánas', True, color)
 one_player_first = smallfont.render('1 player (first)', True, color)
 one_player_second = smallfont.render('1 player (second)', True, color)
 two_player = smallfont.render('2 player game', True, color)
