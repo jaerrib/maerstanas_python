@@ -7,7 +7,7 @@
 
 ## Project goals
 The goals of this project are:
-- To improve my ability to code in Python
-- To create an initial terminal-based video game version of **Mǽrstánas** that can run on Linux
-- To create a GUI version of **Mǽrstánas** that can run on Linux
-- To have the game distributed via flatpak
+- [ ] To improve my ability to code in Python *(ongoing)*
+- [x] To create an initial terminal-based video game version of **Mǽrstánas** that can run on Linux
+- [x] To create a GUI version of **Mǽrstánas** that can run on Linux
+- [ ] To have the game distributed via flatpak
