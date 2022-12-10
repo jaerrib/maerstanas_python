@@ -105,8 +105,8 @@ def valid_move(board, row_number, col_number, player):
     Additional code remains from debugging but may be reimplemented to help
     players who are still learning the game
     """
-    if 1 <= row_number < (len(board) - 1) \
-            and 1 <= col_number < (len(board) - 1):
+    if 1 <= row_number < 9 \
+            and 1 <= col_number < 9:
         player_move = board[row_number][col_number]
     else:
         # print("Invalid move. Outside board confines")
@@ -188,7 +188,7 @@ def remaining_moves(board):
     position is not valid, the next position is assessed until the entire
     board has been checked.
     """
-    possible_moves = 0
+    possible_moves = []
     for row_index in range(1, 9):
         for col_index in range(1, 9):
             if board[row_index][col_index] != 0:
@@ -199,23 +199,27 @@ def remaining_moves(board):
                 elif check_adjacent_stones(board, row_index, col_index):
                     pass
                 else:
-                    possible_moves += 1
+                    possible_moves.append([row_index, col_index])
+    # print(possible_moves)
     return possible_moves
 
 
 def determine_winner(board, player1, player2):
-    board.print()
-    score_p1 = check_score(board.data, 1)
-    score_p2 = check_score(board.data, 2)
+    score_p1 = check_score(board, 1)
+    score_p2 = check_score(board, 2)
     print(f"Player 1 ({player1}) score: {score_p1}")
-    print(f"Player 1 ({player2}) score: {score_p2}")
+    print(f"Player 2 ({player2}) score: {score_p2}")
     print()
     if score_p1 == score_p2:
         print("It's a tie!")
+        result = "tie"
     elif score_p1 > score_p2:
         print(f"Player 1 ({player1}) wins!")
+        result = "player 1"
     else:
         print(f"Player 2 ({player2}) wins!")
+        result = "player 2"
+    return result, score_p1, score_p2
 
 
 def play_game(players):
@@ -232,7 +236,7 @@ def play_game(players):
         score_p2 = check_score(board.data, 2)
         print(f"Player 1 ({player1}) score: {score_p1}")
         print(f"Player 1 ({player2}) score: {score_p2}")
-        print(f"Moves remaining {remaining_moves(board.data)}.")
+        # print(f"Moves remaining {remaining_moves(board.data)}.")
         print()
         if players[active_player - 1] == "human":
             print(f"Player {active_player}'s turn")
@@ -242,7 +246,7 @@ def play_game(players):
             )
             move_row = convert_row_to_num(entered_move[0])
             move_col = int(entered_move[1])
-            if valid_move(board.data, move_row, move_col, active_player):
+            if valid_move(board, move_row, move_col, active_player):
                 active_player = change_player(active_player)
         else:
             print(f"Player {active_player} (computer) played ",
@@ -258,12 +262,24 @@ def computer_move(board, computer_player):
     Pseudo AI placeholder that generates random moves for computer player
     """
     converted_row = "Z"
+    row = 0
     col = 0
     valid = False
+    """
+    Need to look at this section. If pseudo AI is picking from remaining moves
+    then there's no need to revalidate its selection.
+    """
+    print("Computer thinking", end="")
     while not valid:
-        row = secrets.randbelow(7) + 1
-        col = secrets.randbelow(7) + 1
+        comp_move = secrets.choice(remaining_moves(board))
+        row = comp_move[0]
+        col = comp_move[1]
+        # row = secrets.randbelow(7) + 1
+        # col = secrets.randbelow(7) + 1
+        print("...", end="")
         valid = valid_move(board, row, col, computer_player)
         converted_row = "ABCDEFG"[row - 1]
     combined_text = converted_row + str(col)
-    return combined_text
+    print("\n")
+    print(f"Computer played {combined_text}")
+    return row, col

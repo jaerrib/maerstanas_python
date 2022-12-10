@@ -1,16 +1,19 @@
 import pygame
+from board import Board
 from numpy import trunc
-from game_logic import check_score, viable_moves, valid_move, create_board,\
-    determine_winner
+from game_logic import check_score, viable_moves, valid_move, \
+    determine_winner, change_player, computer_move, remaining_moves
+
 pygame.init()
-surface = pygame.display.set_mode((700, 700))
+surface = pygame.display.set_mode((900, 900))
 
 
 def draw_board(color_scheme):
     light_color = color_scheme[0]
     dark_color = color_scheme[1]
+    # x, y = (700, 700)
     x, y = surface.get_size()
-    cell_size = y / 2
+    cell_size = y / 7
     for y_pos in range(7):
         y = y_pos * cell_size
         if y_pos % 2 == 0:
@@ -30,54 +33,268 @@ def draw_board(color_scheme):
     pygame.display.flip()
 
 
-def position_round(col, row):
+def convert_pos(col, row):
+    """
+    Test code to see if positions can be variable based on screen size
+    x, y = surface.get_size()
+    """
+    x, y = surface.get_size()
+    cell_size = y / 7
+    cell_modifier = cell_size / 2
+    row_pos = int(trunc(row / cell_size))
+    col_pos = int(trunc(col / cell_size))
+    x_index = col_pos + 1
+    y_index = row_pos + 1
+    x_draw = (col_pos * cell_size) + cell_modifier
+    y_draw = (row_pos * cell_size) + cell_modifier
+    """
     row_pos = int(trunc(row / 100))
     col_pos = int(trunc(col / 100))
-    # index = (y_pos + 1, x_pos + 1)
-    # valid_move(index)
+    x_index = col_pos + 1
+    y_index = row_pos + 1
     x_draw = (col_pos * 100) + 50
     y_draw = (row_pos * 100) + 50
-    return x_draw, y_draw
+    """
+    return x_draw, y_draw, x_index, y_index
 
 
 def gui_loop_test(color_scheme, players):
     """
     Currently broken placeholder code
     """
-    board = create_board()
+    board = Board()
+    active_player = 1
+    # player1 = players[0]
+    # player2 = players[1]
+    draw_board(color_scheme)
+    colors = [color_scheme[2], color_scheme[3]]
+    running = True
+    while running:
+        for event in pygame.event.get():
+            # print(f"Moves remaining {remaining_moves(board.data)}.")
+            active_color = colors[active_player - 1]
+            # if active player is computer then make computer move and
+            # change players
+            if players[active_player - 1] == "Computer":
+                if len(remaining_moves(board.data)) < 1:
+                    running = False
+                else:
+                    ai_row, ai_col = computer_move(board.data, active_player)
+                    # converted_pos = convert_pos(ai_move[1], ai_move[0])
+                    # if len(remaining_moves(board.data)) == 1:
+                    #    x_draw = remaining_moves(board.data)[0][1]
+                    #    y_draw = remaining_moves(board.data)[0][0]
+                    x_draw = ((ai_col - 1) * 100) + 50
+                    y_draw = ((ai_row - 1) * 100) + 50
+                    pygame.draw.circle(surface,
+                                       active_color,
+                                       (x_draw, y_draw),
+                                       35)
+                    pygame.draw.circle(surface,
+                                       pygame.Color(32, 32, 32, a=32),
+                                       (x_draw, y_draw),
+                                       35,
+                                       width=5)
+                    active_player = change_player(active_player)
+                    pygame.display.flip()
+
+            # score_p1 = check_score(board.data, 1)
+            # score_p2 = check_score(board.data, 2)
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONUP and \
+                    players[active_player - 1] == "Human":
+                x, y = pygame.mouse.get_pos()
+                converted_pos = convert_pos(x, y)
+                if valid_move(board.data,
+                              converted_pos[3],
+                              converted_pos[2],
+                              active_player):
+                    pygame.draw.circle(surface,
+                                       active_color,
+                                       (converted_pos[0],
+                                        converted_pos[1]),
+                                       35)
+                    pygame.draw.circle(surface,
+                                       pygame.Color(32, 32, 32, a=32),
+                                       (converted_pos[0],
+                                        converted_pos[1]),
+                                       35,
+                                       width=5)
+                    active_player = change_player(active_player)
+                    print(active_player)
+            if len(remaining_moves(board.data)) < 1:
+                running = False
+        pygame.display.flip()
+
+
+def display_game_results(winner, score_p1, score_p2, player1, player2):
+    # stores the width of the
+    # screen into a variable
+    width = surface.get_width()
+    txt_color = (255, 255, 255)
+    # defining text area size
+    b_width = round(width / 2)
+    b_height = 40
+    offset = 7
+
+    smallfont = pygame.font.SysFont('Corbel', round((width * .05)))
+    p1_score_txt = smallfont.render(
+        f"Player 1 ({player1}) score: {score_p1}",
+        True,
+        txt_color
+    )
+    p2_score_txt = smallfont.render(
+        f"Player 2 ({player2}) score: {score_p2}",
+        True,
+        txt_color
+    )
+    result_txt = ""
+    if winner == "tie":
+        result_txt = smallfont.render(
+            "It's a tie!",
+            True,
+            txt_color
+        )
+    elif winner == "player 1":
+        result_txt = smallfont.render(
+            f"Player 1 ({player1}) wins!",
+            True,
+            txt_color
+        )
+    elif winner == "player2":
+        result_txt = smallfont.render(
+            f"Player 2 ({player2}) wins!",
+            True,
+            txt_color
+        )
+    continue_text = smallfont.render(
+        "Click to continue",
+        True,
+        txt_color
+    )
+
+    b_left_pos = width / 4
+    # b_left_pos = (width / 2) - (b_width / 2)
+    title_pos = 170
+    b1_y_pos = title_pos + (b_height * 2)
+    b2_y_pos = title_pos + (b_height * 4)
+    b3_y_pos = title_pos + (b_height * 6)
+
+    # drawing transparent rectangles to make text easier to see
+    box_color = (0, 0, 0, 128)
+
+    pygame.draw.rect(
+        surface,
+        box_color,
+        [b_left_pos, title_pos, b_width, b_height]
+    )
+    pygame.draw.rect(
+        surface,
+        box_color,
+        [b_left_pos, b1_y_pos, b_width, b_height]
+    )
+    pygame.draw.rect(
+        surface,
+        box_color,
+        [b_left_pos, b2_y_pos, b_width, b_height]
+    )
+    pygame.draw.rect(
+        surface,
+        box_color,
+        [b_left_pos, b3_y_pos, b_width, b_height]
+    )
+
+    # superimposing the text onto our button
+    surface.blit(p1_score_txt, (b_left_pos + offset, title_pos + offset))
+    surface.blit(p2_score_txt, (b_left_pos + offset, b1_y_pos + offset))
+    surface.blit(result_txt, (b_left_pos + offset, b2_y_pos + offset))
+    surface.blit(continue_text, (b_left_pos + offset, b3_y_pos + offset))
+    pygame.display.flip()
+    # pygame.time.delay(5000)
+
+
+def gui_loop_test2(color_scheme, players):
+    """
+    Currently broken placeholder code
+    """
+    board = Board()
     active_player = 1
     player1 = players[0]
     player2 = players[1]
+    surface.fill("black")
     draw_board(color_scheme)
+    colors = [color_scheme[2], color_scheme[3]]
+    running = True
 
-    while viable_moves(board):
-        pygame.display.flip()
-        score_p1 = check_score(board, 1)
-        score_p2 = check_score(board, 2)
-        print(f"Player 1 ({player1}) score: {score_p1}")
-        print(f"Player 1 ({player2}) score: {score_p2}")
-        print()
-        if players[active_player - 1] == "human":
-            print(f"Player {active_player}'s turn")
-            # entered_move = (
-            #    input("Enter row and column - with no spaces - to "
-            #          "place your stone: ")
-            # )
-            active_color = ["white", "black"]
-            running = True
-            while running:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        running = False
-                    if event.type == pygame.MOUSEBUTTONUP:
-                        x, y = pygame.mouse.get_pos()
-                        draw_pos = position_round(x, y)
-                        if valid_move(board, draw_pos[1], draw_pos[0],
-                                      active_player):
-                            pygame.draw.circle(surface,
-                                               active_color[active_player - 1],
-                                               draw_pos, 35)
-                            pygame.display.flip()
-    determine_winner(board, player1, player2)
+    while running:
+        for event in pygame.event.get():
+            active_color = colors[active_player - 1]
+            # if active player is computer then make computer move and
+            # change players
+            if players[active_player - 1] == "Computer":
+                if len(remaining_moves(board.data)) < 1:
+                    running = False
+                else:
+                    ai_row, ai_col = computer_move(board.data,
+                                                   active_player)
+                    x, y = surface.get_size()
+                    cell_size = y / 7
+                    cell_modifier = cell_size / 2
+
+                    x_draw = ((ai_col - 1) * cell_size) + cell_modifier
+                    y_draw = ((ai_row - 1) * cell_size) + cell_modifier
+                    pygame.draw.circle(surface,
+                                       active_color,
+                                       (x_draw, y_draw),
+                                       35)
+                    pygame.draw.circle(surface,
+                                       pygame.Color(32, 32, 32, a=32),
+                                       (x_draw, y_draw),
+                                       35,
+                                       width=5)
+                    active_player = change_player(active_player)
+                    pygame.display.flip()
+
+            # score_p1 = check_score(board.data, 1)
+            # score_p2 = check_score(board.data, 2)
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONUP and \
+                    players[active_player - 1] == "Human":
+                x, y = pygame.mouse.get_pos()
+                converted_pos = convert_pos(x, y)
+                if valid_move(board.data,
+                              converted_pos[3],
+                              converted_pos[2],
+                              active_player):
+                    pygame.draw.circle(surface,
+                                       active_color,
+                                       (converted_pos[0],
+                                        converted_pos[1]),
+                                       35)
+                    pygame.draw.circle(surface,
+                                       pygame.Color(32, 32, 32, a=32),
+                                       (converted_pos[0],
+                                        converted_pos[1]),
+                                       35,
+                                       width=5)
+                    active_player = change_player(active_player)
+                    pygame.display.flip()
+            if len(remaining_moves(board.data)) < 1:
+                running = False
+            pygame.display.flip()
+        # pygame.display.flip()
+
+    winner, score_p1, score_p2 = determine_winner(board.data, player1, player2) 
+    display_game_results(winner, score_p1, score_p2, player1, player2)
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                waiting = False
+            if event.type == pygame.MOUSEBUTTONUP:
+                waiting = False
+        
     # quit pygame after closing window
-    pygame.quit()
+    # pygame.quit()
