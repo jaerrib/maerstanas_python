@@ -1,4 +1,4 @@
-from graphics import gui_loop_test2
+from graphics import game_loop
 import pygame
 
 pygame.init()
@@ -85,15 +85,15 @@ def determine_action():
     
     if b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and b1_y_pos <= mouse[1] <= (b1_y_pos + b_height):
-        gui_loop_test2(colors, ["Human", "Computer"])
+        game_loop(colors, ["Human", "Computer"])
         return
     elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and b2_y_pos <= mouse[1] <= (b2_y_pos + b_height):
-        gui_loop_test2(colors, ["Computer", "Human"])
+        game_loop(colors, ["Computer", "Human"])
         return
     elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and b3_y_pos <= mouse[1] <= (b3_y_pos + b_height):
-        gui_loop_test2(colors, ["Human", "Human"])
+        game_loop(colors, ["Human", "Human"])
         return
     elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and b4_y_pos <= mouse[1] <= (b4_y_pos + b_height):
@@ -101,7 +101,7 @@ def determine_action():
         return
     elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and title_pos <= mouse[1] <= (title_pos + b_height):
-        gui_loop_test2(colors, ["Computer", "Computer"])
+        game_loop(colors, ["Computer", "Computer"])
         return
     
 

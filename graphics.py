@@ -49,76 +49,6 @@ def convert_pos(col, row):
     return x_draw, y_draw, x_index, y_index
 
 
-def gui_loop_test(color_scheme, players):
-    """
-    Currently broken placeholder code
-    """
-    board = Board()
-    active_player = 1
-    # player1 = players[0]
-    # player2 = players[1]
-    draw_board(color_scheme)
-    colors = [color_scheme[2], color_scheme[3]]
-    running = True
-    while running:
-        for event in pygame.event.get():
-            # print(f"Moves remaining {remaining_moves(board.data)}.")
-            active_color = colors[active_player - 1]
-            # if active player is computer then make computer move and
-            # change players
-            if players[active_player - 1] == "Computer":
-                if len(remaining_moves(board.data)) < 1:
-                    running = False
-                else:
-                    ai_row, ai_col = computer_move(board.data, active_player)
-                    # converted_pos = convert_pos(ai_move[1], ai_move[0])
-                    # if len(remaining_moves(board.data)) == 1:
-                    #    x_draw = remaining_moves(board.data)[0][1]
-                    #    y_draw = remaining_moves(board.data)[0][0]
-                    x_draw = ((ai_col - 1) * 100) + 50
-                    y_draw = ((ai_row - 1) * 100) + 50
-                    pygame.draw.circle(surface,
-                                       active_color,
-                                       (x_draw, y_draw),
-                                       35)
-                    pygame.draw.circle(surface,
-                                       pygame.Color(32, 32, 32, a=32),
-                                       (x_draw, y_draw),
-                                       35,
-                                       width=5)
-                    active_player = change_player(active_player)
-                    pygame.display.flip()
-
-            # score_p1 = check_score(board.data, 1)
-            # score_p2 = check_score(board.data, 2)
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEBUTTONUP and \
-                    players[active_player - 1] == "Human":
-                x, y = pygame.mouse.get_pos()
-                converted_pos = convert_pos(x, y)
-                if valid_move(board.data,
-                              converted_pos[3],
-                              converted_pos[2],
-                              active_player):
-                    pygame.draw.circle(surface,
-                                       active_color,
-                                       (converted_pos[0],
-                                        converted_pos[1]),
-                                       35)
-                    pygame.draw.circle(surface,
-                                       pygame.Color(32, 32, 32, a=32),
-                                       (converted_pos[0],
-                                        converted_pos[1]),
-                                       35,
-                                       width=5)
-                    active_player = change_player(active_player)
-                    print(active_player)
-            if len(remaining_moves(board.data)) < 1:
-                running = False
-        pygame.display.flip()
-
-
 def display_game_results(winner, score_p1, score_p2, player1, player2):
     # stores the width of the
     # screen into a variable
@@ -205,7 +135,7 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
     # pygame.time.delay(5000)
 
 
-def gui_loop_test2(color_scheme, players):
+def game_loop(color_scheme, players):
     """
     Currently broken placeholder code
     """
