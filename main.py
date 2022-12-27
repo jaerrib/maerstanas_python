@@ -32,7 +32,7 @@ width = surface.get_width()
 height = surface.get_height()
 
 # defining a font
-smallfont = pygame.font.SysFont('Corbel', (round(width * .05)))
+smallfont = pygame.font.Font('NotoSans-Regular.ttf', (round(width * .025)))
 
 # rendering a text written in this font
 game_title = smallfont.render('Mǽrstánas', True, color)

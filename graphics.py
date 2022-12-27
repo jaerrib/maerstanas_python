@@ -138,7 +138,7 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
     b_height = 40
     offset = 7
 
-    smallfont = pygame.font.SysFont('Corbel', round((width * .05)))
+    smallfont = pygame.font.Font('NotoSans-Regular.ttf', (round(width * .025)))
     p1_score_txt = smallfont.render(
         f"Player 1 ({player1}) score: {score_p1}",
         True,
