@@ -6,7 +6,7 @@ from game_logic import check_score, viable_moves, valid_move, \
 
 pygame.init()
 surface = pygame.display.set_mode((900, 900))
-
+stone_click = pygame.mixer.Sound("click.wav")
 
 def draw_board(color_scheme):
     light_color = color_scheme[0]
@@ -255,6 +255,8 @@ def gui_loop_test2(color_scheme, players):
                                        width=5)
                     active_player = change_player(active_player)
                     pygame.display.flip()
+                    pygame.mixer.Sound.play(stone_click)
+                    pygame.time.wait(1000)
 
             # score_p1 = check_score(board.data, 1)
             # score_p2 = check_score(board.data, 2)
@@ -281,6 +283,8 @@ def gui_loop_test2(color_scheme, players):
                                        width=5)
                     active_player = change_player(active_player)
                     pygame.display.flip()
+                    pygame.mixer.Sound.play(stone_click)
+                    pygame.time.wait(1000)
             if len(remaining_moves(board.data)) < 1:
                 running = False
             pygame.display.flip()
