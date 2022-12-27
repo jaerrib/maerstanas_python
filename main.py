@@ -77,33 +77,29 @@ def check_hover_status():
             color_light,
             [b_left_pos, b4_y_pos, b_width, b_height]
         )
-    return
 
 
 def determine_action():
-    # determines action to take based on mouse position
+    """
+    Determines action to take based on mouse position
+    """
     
     if b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and b1_y_pos <= mouse[1] <= (b1_y_pos + b_height):
         game_loop(colors, ["Human", "Computer"])
-        return
     elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and b2_y_pos <= mouse[1] <= (b2_y_pos + b_height):
         game_loop(colors, ["Computer", "Human"])
-        return
     elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and b3_y_pos <= mouse[1] <= (b3_y_pos + b_height):
         game_loop(colors, ["Human", "Human"])
-        return
     elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and b4_y_pos <= mouse[1] <= (b4_y_pos + b_height):
         pygame.quit()
-        return
     elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and title_pos <= mouse[1] <= (title_pos + b_height):
         game_loop(colors, ["Computer", "Computer"])
-        return
-    
+
 
 while True:
 
