@@ -132,6 +132,19 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
     pygame.display.flip()
 
 
+def draw_stone(color, xpos, ypos):
+    pygame.draw.circle(surface,
+                       color,
+                       (xpos, ypos),
+                       35)
+    pygame.draw.circle(surface,
+                       pygame.Color(32, 32, 32, a=32),
+                       (xpos, ypos),
+                       35,
+                       width=5)
+    pygame.display.flip()
+
+
 def game_loop(color_scheme, players):
     board = Board()
     active_player = 1
@@ -159,17 +172,8 @@ def game_loop(color_scheme, players):
 
                     x_draw = ((ai_col - 1) * cell_size) + cell_modifier
                     y_draw = ((ai_row - 1) * cell_size) + cell_modifier
-                    pygame.draw.circle(surface,
-                                       active_color,
-                                       (x_draw, y_draw),
-                                       35)
-                    pygame.draw.circle(surface,
-                                       pygame.Color(32, 32, 32, a=32),
-                                       (x_draw, y_draw),
-                                       35,
-                                       width=5)
+                    draw_stone(active_color,x_draw,y_draw)
                     active_player = change_player(active_player)
-                    pygame.display.flip()
                     pygame.mixer.Sound.play(stone_click)
                     pygame.time.wait(1000)
 
@@ -183,19 +187,10 @@ def game_loop(color_scheme, players):
                               converted_pos[3],
                               converted_pos[2],
                               active_player):
-                    pygame.draw.circle(surface,
-                                       active_color,
-                                       (converted_pos[0],
-                                        converted_pos[1]),
-                                       35)
-                    pygame.draw.circle(surface,
-                                       pygame.Color(32, 32, 32, a=32),
-                                       (converted_pos[0],
-                                        converted_pos[1]),
-                                       35,
-                                       width=5)
+                    draw_stone(active_color,
+                               converted_pos[0],
+                               converted_pos[1])
                     active_player = change_player(active_player)
-                    pygame.display.flip()
                     pygame.mixer.Sound.play(stone_click)
                     pygame.time.wait(1000)
             if len(remaining_moves(board.data)) < 1:
