@@ -1,8 +1,8 @@
 import pygame
 from board import Board
 from numpy import trunc
-from game_logic import check_score, viable_moves, valid_move, \
-    determine_winner, change_player, computer_move, remaining_moves
+from game_logic import valid_move, determine_winner, change_player, \
+    computer_move, remaining_moves
 
 pygame.init()
 surface = pygame.display.set_mode((900, 900))
@@ -50,11 +50,10 @@ def convert_pos(col, row):
 
 
 def display_game_results(winner, score_p1, score_p2, player1, player2):
-    # stores the width of the
-    # screen into a variable
+    # stores the width of the screen into a variable
     width = surface.get_width()
     text_color = "white"
-    # defining text area size
+    # defines text area size based on width of screen
     b_width = round(width / 2)
     b_height = 40
     offset = 7
@@ -96,7 +95,6 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
     )
 
     b_left_pos = width / 4
-    # b_left_pos = (width / 2) - (b_width / 2)
     title_pos = 170
     b1_y_pos = title_pos + (b_height * 2)
     b2_y_pos = title_pos + (b_height * 4)
@@ -132,13 +130,9 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
     surface.blit(result_txt, (b_left_pos + offset, b2_y_pos + offset))
     surface.blit(continue_text, (b_left_pos + offset, b3_y_pos + offset))
     pygame.display.flip()
-    # pygame.time.delay(5000)
 
 
 def game_loop(color_scheme, players):
-    """
-    Currently broken placeholder code
-    """
     board = Board()
     active_player = 1
     player1 = players[0]
@@ -179,8 +173,6 @@ def game_loop(color_scheme, players):
                     pygame.mixer.Sound.play(stone_click)
                     pygame.time.wait(1000)
 
-            # score_p1 = check_score(board.data, 1)
-            # score_p2 = check_score(board.data, 2)
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONUP and \
@@ -209,7 +201,6 @@ def game_loop(color_scheme, players):
             if len(remaining_moves(board.data)) < 1:
                 running = False
             pygame.display.flip()
-        # pygame.display.flip()
 
     winner, score_p1, score_p2 = determine_winner(board.data, player1, player2) 
     display_game_results(winner, score_p1, score_p2, player1, player2)
@@ -220,6 +211,3 @@ def game_loop(color_scheme, players):
                 waiting = False
             if event.type == pygame.MOUSEBUTTONUP:
                 waiting = False
-        
-    # quit pygame after closing window
-    # pygame.quit()

@@ -99,8 +99,8 @@ def valid_move(board, row_number, col_number, player):
     (1) Checking if the coordinates are within the confines of the board
     (2) Checking if the position is occupied
     (3) Checking if the move would create 4 immediate hinges
-    (4) Checking if the move would cause any adjacent stones to have more than
-    3 hinges
+    (4) Checking if the move would cause any adjacent stones to have more
+    than 3 hinges
     If the move is valid, the player number is assigned to the board position
     Additional code remains from debugging but may be reimplemented to help
     players who are still learning the game
@@ -131,6 +131,10 @@ def valid_move(board, row_number, col_number, player):
 
 
 def check_score(board, player):
+    """
+    Evaluates the score of current board positions, first looping through the
+    vertical hinges then the horizontal ones.
+    """
     calculated_score: int = 0
 
     # Scores all vertical hinges
@@ -184,9 +188,8 @@ def viable_moves(board):
 def remaining_moves(board):
     """
     Cycles through board positions starting at A1 (1,1). If a position is
-    valid, viable_moves is True and play is allowed to continue. If a
-    position is not valid, the next position is assessed until the entire
-    board has been checked.
+    a potentially valid move, it is appended to an array which is then used
+    when the pseudo AI randomly selects its move.
     """
     possible_moves = []
     for row_index in range(1, 9):
@@ -265,17 +268,11 @@ def computer_move(board, computer_player):
     row = 0
     col = 0
     valid = False
-    """
-    Need to look at this section. If pseudo AI is picking from remaining moves
-    then there's no need to revalidate its selection.
-    """
     print("Computer thinking", end="")
     while not valid:
         comp_move = secrets.choice(remaining_moves(board))
         row = comp_move[0]
         col = comp_move[1]
-        # row = secrets.randbelow(7) + 1
-        # col = secrets.randbelow(7) + 1
         print("...", end="")
         valid = valid_move(board, row, col, computer_player)
         converted_row = "ABCDEFG"[row - 1]
