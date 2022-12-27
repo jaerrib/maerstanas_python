@@ -1,5 +1,3 @@
-from os import system
-from board import Board
 import secrets
 
 
@@ -102,28 +100,22 @@ def valid_move(board, row_number, col_number, player):
     (4) Checking if the move would cause any adjacent stones to have more
     than 3 hinges
     If the move is valid, the player number is assigned to the board position
-    Additional code remains from debugging but may be reimplemented to help
-    players who are still learning the game
     """
     if 1 <= row_number < 9 \
             and 1 <= col_number < 9:
         player_move = board[row_number][col_number]
     else:
-        # print("Invalid move. Outside board confines")
-        # input("Press <Enter> to continue")
+        # Invalid move - outside board confines
         return False
     if player_move != 0:
-        # print("Invalid move. Space occupied")
-        # input("Press <Enter> to continue")
+        # Invalid move - space occupied
         return False
     else:
         if check_player_hinges(board, row_number, col_number):
-            # print("Invalid move. Move would cause 4 immediate hinges.")
-            # input("Press <Enter> to continue")
+            # Invalid move - move would cause 4 immediate hinges
             return False
         elif check_adjacent_stones(board, row_number, col_number):
-            # print("Invalid move. An adjacent stone would have 4 hinges.")
-            # input("Press <Enter> to continue")
+            # Invalid move - an adjacent stone would have 4 hinges
             return False
         else:
             board[row_number][col_number] = player
@@ -203,61 +195,19 @@ def remaining_moves(board):
                     pass
                 else:
                     possible_moves.append([row_index, col_index])
-    # print(possible_moves)
     return possible_moves
 
 
-def determine_winner(board, player1, player2):
+def determine_winner(board):
     score_p1 = check_score(board, 1)
     score_p2 = check_score(board, 2)
-    print(f"Player 1 ({player1}) score: {score_p1}")
-    print(f"Player 2 ({player2}) score: {score_p2}")
-    print()
     if score_p1 == score_p2:
-        print("It's a tie!")
         result = "tie"
     elif score_p1 > score_p2:
-        print(f"Player 1 ({player1}) wins!")
         result = "player 1"
     else:
-        print(f"Player 2 ({player2}) wins!")
         result = "player 2"
     return result, score_p1, score_p2
-
-
-def play_game(players):
-    board = Board()
-    active_player = 1
-    player1 = players[0]
-    player2 = players[1]
-
-    while viable_moves(board.data):
-        system('clear')
-
-        board.print()
-        score_p1 = check_score(board.data, 1)
-        score_p2 = check_score(board.data, 2)
-        print(f"Player 1 ({player1}) score: {score_p1}")
-        print(f"Player 1 ({player2}) score: {score_p2}")
-        # print(f"Moves remaining {remaining_moves(board.data)}.")
-        print()
-        if players[active_player - 1] == "human":
-            print(f"Player {active_player}'s turn")
-            entered_move = (
-                input("Enter row and column - with no spaces - to "
-                      "place your stone: ")
-            )
-            move_row = convert_row_to_num(entered_move[0])
-            move_col = int(entered_move[1])
-            if valid_move(board, move_row, move_col, active_player):
-                active_player = change_player(active_player)
-        else:
-            print(f"Player {active_player} (computer) played ",
-                  computer_move(board.data, active_player))
-            active_player = change_player(active_player)
-            input("Press <Enter> to continue")
-    determine_winner(board.data, player1, player2)
-    system('clear')
 
 
 def computer_move(board, computer_player):
@@ -268,15 +218,9 @@ def computer_move(board, computer_player):
     row = 0
     col = 0
     valid = False
-    print("Computer thinking", end="")
     while not valid:
         comp_move = secrets.choice(remaining_moves(board))
         row = comp_move[0]
         col = comp_move[1]
-        print("...", end="")
         valid = valid_move(board, row, col, computer_player)
-        converted_row = "ABCDEFG"[row - 1]
-    combined_text = converted_row + str(col)
-    print("\n")
-    print(f"Computer played {combined_text}")
     return row, col

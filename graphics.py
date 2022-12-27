@@ -78,13 +78,13 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
         )
     elif winner == "player 1":
         result_txt = smallfont.render(
-            f"Player 1 ({player1}) wins!",
+            f"Player 1 wins!",
             True,
             text_color
         )
     elif winner == "player2":
         result_txt = smallfont.render(
-            f"Player 2 ({player2}) wins!",
+            f"Player 2 wins!",
             True,
             text_color
         )
@@ -202,7 +202,7 @@ def game_loop(color_scheme, players):
                 running = False
             pygame.display.flip()
 
-    winner, score_p1, score_p2 = determine_winner(board.data, player1, player2) 
+    winner, score_p1, score_p2 = determine_winner(board.data)
     display_game_results(winner, score_p1, score_p2, player1, player2)
     waiting = True
     while waiting:
