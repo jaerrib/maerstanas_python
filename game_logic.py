@@ -214,7 +214,6 @@ def computer_move(board, computer_player):
     """
     Pseudo AI placeholder that generates random moves for computer player
     """
-    converted_row = "Z"
     row = 0
     col = 0
     valid = False
