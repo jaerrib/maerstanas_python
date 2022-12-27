@@ -15,14 +15,14 @@ width = surface.get_width()
 height = surface.get_height()
 
 # defines the font to be used
-smallfont = pygame.font.Font('NotoSans-Regular.ttf', (round(width * .025)))
+text_font = pygame.font.Font('NotoSans-Regular.ttf', (round(width * .025)))
 
 # rendering a text written in this font
-game_title = smallfont.render('Mǽrstánas', True, text_color)
-one_player_first = smallfont.render('1 player (first)', True, text_color)
-one_player_second = smallfont.render('1 player (second)', True, text_color)
-two_player = smallfont.render('2 player game', True, text_color)
-quit_text = smallfont.render('quit', True, text_color)
+game_title = text_font.render('Mǽrstánas', True, text_color)
+one_player_first = text_font.render('1 player (first)', True, text_color)
+one_player_second = text_font.render('1 player (second)', True, text_color)
+two_player = text_font.render('2 player game', True, text_color)
+quit_text = text_font.render('quit', True, text_color)
 offset = 7
 
 # defining button size

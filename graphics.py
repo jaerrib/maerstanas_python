@@ -58,37 +58,37 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
     b_height = 40
     offset = 7
 
-    smallfont = pygame.font.Font('NotoSans-Regular.ttf', (round(width * .025)))
-    p1_score_txt = smallfont.render(
+    text_font = pygame.font.Font('NotoSans-Regular.ttf', (round(width * .025)))
+    p1_score_txt = text_font.render(
         f"Player 1 ({player1}) score: {score_p1}",
         True,
         text_color
     )
-    p2_score_txt = smallfont.render(
+    p2_score_txt = text_font.render(
         f"Player 2 ({player2}) score: {score_p2}",
         True,
         text_color
     )
     result_txt = ""
     if winner == "tie":
-        result_txt = smallfont.render(
+        result_txt = text_font.render(
             "It's a tie!",
             True,
             text_color
         )
     elif winner == "player 1":
-        result_txt = smallfont.render(
+        result_txt = text_font.render(
             f"Player 1 wins!",
             True,
             text_color
         )
     elif winner == "player2":
-        result_txt = smallfont.render(
+        result_txt = text_font.render(
             f"Player 2 wins!",
             True,
             text_color
         )
-    continue_text = smallfont.render(
+    continue_text = text_font.render(
         "Click to continue",
         True,
         text_color
