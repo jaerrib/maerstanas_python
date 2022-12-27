@@ -1,45 +1,28 @@
 from graphics import gui_loop_test2
 import pygame
 
-# import sys
-
-# initializing the constructor
 pygame.init()
-
-# screen resolution
 res = (900, 900)
-
-# opens up a window
 surface = pygame.display.set_mode(res)
 screen_display = pygame.display
 screen_display.set_caption('Mǽrstánas_python')
 
-# white color
-color = "white"
-
-# light shade of the button
+text_color = "white"
 color_light = "ivory4"
 
-# dark shade of the button
-color_dark = "ivory4"
-
-# stores the width of the
-# screen into a variable
+# stores the width and height of the screen into a variable
 width = surface.get_width()
-
-# stores the height of the
-# screen into a variable
 height = surface.get_height()
 
-# defining a font
+# defines the font to be used
 smallfont = pygame.font.Font('NotoSans-Regular.ttf', (round(width * .025)))
 
 # rendering a text written in this font
-game_title = smallfont.render('Mǽrstánas', True, color)
-one_player_first = smallfont.render('1 player (first)', True, color)
-one_player_second = smallfont.render('1 player (second)', True, color)
-two_player = smallfont.render('2 player game', True, color)
-quit_text = smallfont.render('quit', True, color)
+game_title = smallfont.render('Mǽrstánas', True, text_color)
+one_player_first = smallfont.render('1 player (first)', True, text_color)
+one_player_second = smallfont.render('1 player (second)', True, text_color)
+two_player = smallfont.render('2 player game', True, text_color)
+quit_text = smallfont.render('quit', True, text_color)
 offset = 7
 
 # defining button size
@@ -65,8 +48,7 @@ colors = color_schemes[color_choice[1]]
 
 
 def check_hover_status():
-    # if mouse is hovered on a button it
-    # changes to lighter shade
+    # if mouse is hovered on a button it changes to lighter shade
     if b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and b1_y_pos <= mouse[1] <= (b1_y_pos + b_height):
         pygame.draw.rect(
@@ -103,7 +85,6 @@ def determine_action():
     
     if b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and b1_y_pos <= mouse[1] <= (b1_y_pos + b_height):
-        # pygame.time.delay(1500)
         gui_loop_test2(colors, ["Human", "Computer"])
         return
     elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
@@ -135,11 +116,9 @@ while True:
         if ev.type == pygame.MOUSEBUTTONUP:
             determine_action()
 
-        # fills the screen with a color
         surface.fill("black")
 
-        # stores the (x,y) coordinates into
-        # the variable as a tuple
+        # stores the (x,y) coordinates into the variable as a tuple
         mouse = pygame.mouse.get_pos()
 
         check_hover_status()

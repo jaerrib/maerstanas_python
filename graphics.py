@@ -11,7 +11,6 @@ stone_click = pygame.mixer.Sound("click.wav")
 def draw_board(color_scheme):
     light_color = color_scheme[0]
     dark_color = color_scheme[1]
-    # x, y = (700, 700)
     x, y = surface.get_size()
     cell_size = y / 7
     for y_pos in range(7):
@@ -47,14 +46,6 @@ def convert_pos(col, row):
     y_index = row_pos + 1
     x_draw = (col_pos * cell_size) + cell_modifier
     y_draw = (row_pos * cell_size) + cell_modifier
-    """
-    row_pos = int(trunc(row / 100))
-    col_pos = int(trunc(col / 100))
-    x_index = col_pos + 1
-    y_index = row_pos + 1
-    x_draw = (col_pos * 100) + 50
-    y_draw = (row_pos * 100) + 50
-    """
     return x_draw, y_draw, x_index, y_index
 
 
@@ -132,7 +123,7 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
     # stores the width of the
     # screen into a variable
     width = surface.get_width()
-    txt_color = (255, 255, 255)
+    text_color = "white"
     # defining text area size
     b_width = round(width / 2)
     b_height = 40
@@ -142,36 +133,36 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
     p1_score_txt = smallfont.render(
         f"Player 1 ({player1}) score: {score_p1}",
         True,
-        txt_color
+        text_color
     )
     p2_score_txt = smallfont.render(
         f"Player 2 ({player2}) score: {score_p2}",
         True,
-        txt_color
+        text_color
     )
     result_txt = ""
     if winner == "tie":
         result_txt = smallfont.render(
             "It's a tie!",
             True,
-            txt_color
+            text_color
         )
     elif winner == "player 1":
         result_txt = smallfont.render(
             f"Player 1 ({player1}) wins!",
             True,
-            txt_color
+            text_color
         )
     elif winner == "player2":
         result_txt = smallfont.render(
             f"Player 2 ({player2}) wins!",
             True,
-            txt_color
+            text_color
         )
     continue_text = smallfont.render(
         "Click to continue",
         True,
-        txt_color
+        text_color
     )
 
     b_left_pos = width / 4
