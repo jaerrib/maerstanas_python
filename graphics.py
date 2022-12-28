@@ -5,14 +5,26 @@ from game_logic import valid_move, determine_winner, change_player, \
     computer_move, remaining_moves
 
 pygame.init()
-surface = pygame.display.set_mode((900, 900))
+
+# Gets display dimensions then sets the board size and surface variables
+display_data = pygame.display.Info()
+screen_width, screen_height = (display_data.current_w, display_data.current_h)
+width, height = (screen_height, screen_height)
+
+surface = pygame.display.set_mode((screen_width,screen_height),
+                                  pygame.FULLSCREEN)
+
 stone_click = pygame.mixer.Sound("click.wav")
+
+offset = int(round((width / 100) - 2))
+b_width = int(round(width / 2))
+b_height = int(round(((width / offset) * 2) / 5))
 
 def draw_board(color_scheme):
     light_color = color_scheme[0]
     dark_color = color_scheme[1]
-    x, y = surface.get_size()
-    cell_size = y / 7
+    cell_size = height / 7
+
     for y_pos in range(7):
         y = y_pos * cell_size
         if y_pos % 2 == 0:
@@ -33,12 +45,7 @@ def draw_board(color_scheme):
 
 
 def convert_pos(col, row):
-    """
-    Test code to see if positions can be variable based on screen size
-    x, y = surface.get_size()
-    """
-    x, y = surface.get_size()
-    cell_size = y / 7
+    cell_size = height / 7
     cell_modifier = cell_size / 2
     row_pos = int(trunc(row / cell_size))
     col_pos = int(trunc(col / cell_size))
@@ -50,14 +57,7 @@ def convert_pos(col, row):
 
 
 def display_game_results(winner, score_p1, score_p2, player1, player2):
-    # stores the width of the screen into a variable
-    width = surface.get_width()
     text_color = "white"
-    # defines text area size based on width of screen
-    b_width = round(width / 2)
-    b_height = 40
-    offset = 7
-
     text_font = pygame.font.Font('NotoSans-Regular.ttf', (round(width * .025)))
     p1_score_txt = text_font.render(
         f"Player 1 ({player1}) score: {score_p1}",
@@ -94,11 +94,11 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
         text_color
     )
 
-    b_left_pos = width / 4
-    title_pos = 170
-    b1_y_pos = title_pos + (b_height * 2)
-    b2_y_pos = title_pos + (b_height * 4)
-    b3_y_pos = title_pos + (b_height * 6)
+    b_left_pos = int(round((width / 2) - (b_width / 2)))
+    top_pos = int(round(width * .1))
+    b1_y_pos = int(top_pos + (b_height * 2))
+    b2_y_pos = int(top_pos + (b_height * 4))
+    b3_y_pos = int(top_pos + (b_height * 6))
 
     # drawing transparent rectangles to make text easier to see
     box_color = (0, 0, 0, 128)
@@ -106,7 +106,7 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
     pygame.draw.rect(
         surface,
         box_color,
-        [b_left_pos, title_pos, b_width, b_height]
+        [b_left_pos, top_pos, b_width, b_height]
     )
     pygame.draw.rect(
         surface,
@@ -125,23 +125,25 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
     )
 
     # superimposing the text onto our button
-    surface.blit(p1_score_txt, (b_left_pos + offset, title_pos + offset))
+    surface.blit(p1_score_txt, (b_left_pos + offset, top_pos + offset))
     surface.blit(p2_score_txt, (b_left_pos + offset, b1_y_pos + offset))
     surface.blit(result_txt, (b_left_pos + offset, b2_y_pos + offset))
     surface.blit(continue_text, (b_left_pos + offset, b3_y_pos + offset))
     pygame.display.flip()
 
 
-def draw_stone(color, xpos, ypos):
+def draw_stone(color, x_pos, y_pos):
+    stone_size = int(round(height * .05))
+    border = int(round(stone_size * .15))
     pygame.draw.circle(surface,
                        color,
-                       (xpos, ypos),
-                       35)
+                       (x_pos, y_pos),
+                       stone_size)
     pygame.draw.circle(surface,
                        pygame.Color(32, 32, 32, a=32),
-                       (xpos, ypos),
-                       35,
-                       width=5)
+                       (x_pos, y_pos),
+                       stone_size,
+                       width=border)
     pygame.display.flip()
 
 

@@ -2,40 +2,42 @@ from graphics import game_loop
 import pygame
 
 pygame.init()
-res = (900, 900)
-surface = pygame.display.set_mode(res)
+
+# Gets display dimensions then sets the board size and surface variables
+display_data = pygame.display.Info()
+screen_width, screen_height = (display_data.current_w, display_data.current_h)
+width, height = (screen_height, screen_height)
+
+surface = pygame.display.set_mode((screen_width,screen_height),
+                                  pygame.FULLSCREEN)
 screen_display = pygame.display
 screen_display.set_caption('Mǽrstánas_python')
 
 text_color = "white"
 color_light = "ivory4"
 
-# stores the width and height of the screen into a variable
-width = surface.get_width()
-height = surface.get_height()
-
-# defines the font to be used
+# Defines the font to be used
 text_font = pygame.font.Font('NotoSans-Regular.ttf', (round(width * .025)))
 
-# rendering a text written in this font
+# Rendering the text
 game_title = text_font.render('Mǽrstánas', True, text_color)
 one_player_first = text_font.render('1 player (first)', True, text_color)
 one_player_second = text_font.render('1 player (second)', True, text_color)
 two_player = text_font.render('2 player game', True, text_color)
 quit_text = text_font.render('quit', True, text_color)
-offset = 7
+offset = int(round((width / 100) - 2))
 
 # defining button size
-b_width = (width / 7) * 2
-b_height = 40
+b_width = int(round((width / offset) * 2))
+b_height = int(round(b_width / 5))
 
 # defining button positions
-b_left_pos = (width / 2) - (b_width / 2)
-title_pos = 170
-b1_y_pos = title_pos + (b_height * 2)
-b2_y_pos = title_pos + (b_height * 4)
-b3_y_pos = title_pos + (b_height * 6)
-b4_y_pos = title_pos + (b_height * 8)
+b_left_pos = int(round((width / 2) - (b_width / 2)))
+top_pos = int(round(width * .1))
+b1_y_pos = int(top_pos + (b_height * 2))
+b2_y_pos = int(top_pos + (b_height * 3))
+b3_y_pos = int(top_pos + (b_height * 4))
+b4_y_pos = int(top_pos + (b_height * 5))
 
 # define game options
 player_type = ["Human", "Computer"]
@@ -97,7 +99,7 @@ def determine_action():
             and b4_y_pos <= mouse[1] <= (b4_y_pos + b_height):
         pygame.quit()
     elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
-            and title_pos <= mouse[1] <= (title_pos + b_height):
+            and top_pos <= mouse[1] <= (top_pos + b_height):
         game_loop(colors, ["Computer", "Computer"])
 
 
@@ -108,7 +110,7 @@ while True:
         if ev.type == pygame.QUIT:
             pygame.quit()
 
-            # checks if a mouse is clicked
+        # checks if a mouse is clicked
         if ev.type == pygame.MOUSEBUTTONUP:
             determine_action()
 
@@ -120,7 +122,7 @@ while True:
         check_hover_status()
 
         # superimposing the text onto our button
-        surface.blit(game_title, (b_left_pos+offset, title_pos+offset))
+        surface.blit(game_title, (b_left_pos + offset, top_pos + offset))
         surface.blit(one_player_first, (b_left_pos+offset, b1_y_pos+offset))
         surface.blit(one_player_second, (b_left_pos+offset, b2_y_pos+offset))
         surface.blit(two_player, (b_left_pos+offset, b3_y_pos+offset))
