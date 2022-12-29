@@ -1,5 +1,8 @@
 import secrets
+from pygame import mixer
 
+mixer.init()
+invalid_move = mixer.Sound("sound/invalid.wav")
 
 def convert_row_to_num(character):
     """
@@ -106,16 +109,20 @@ def valid_move(board, row_number, col_number, player):
         player_move = board[row_number][col_number]
     else:
         # Invalid move - outside board confines
+        mixer.Sound.play(invalid_move)
         return False
     if player_move != 0:
         # Invalid move - space occupied
+        mixer.Sound.play(invalid_move)
         return False
     else:
         if check_player_hinges(board, row_number, col_number):
             # Invalid move - move would cause 4 immediate hinges
+            mixer.Sound.play(invalid_move)
             return False
         elif check_adjacent_stones(board, row_number, col_number):
             # Invalid move - an adjacent stone would have 4 hinges
+            mixer.Sound.play(invalid_move)
             return False
         else:
             board[row_number][col_number] = player

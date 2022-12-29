@@ -14,7 +14,10 @@ width, height = (screen_height, screen_height)
 surface = pygame.display.set_mode((screen_width,screen_height),
                                   pygame.FULLSCREEN)
 
-stone_click = pygame.mixer.Sound("click.wav")
+stone_click = pygame.mixer.Sound("sound/stone.wav")
+win = pygame.mixer.Sound("sound/win.wav")
+lose = pygame.mixer.Sound("sound/lose.wav")
+tie = pygame.mixer.Sound("sound/tie.wav")
 
 offset = int(round((width / 100) - 2))
 b_width = int(round(width / 2))
@@ -54,6 +57,19 @@ def convert_pos(col, row):
     x_draw = (col_pos * cell_size) + cell_modifier
     y_draw = (row_pos * cell_size) + cell_modifier
     return x_draw, y_draw, x_index, y_index
+
+
+def play_game_over_sound(winner, player1, player2):
+    if winner == "tie":
+        pygame.mixer.Sound.play(tie)
+    elif player1 == player2:
+        pygame.mixer.Sound.play(win)
+    elif player1 == "Computer" and winner == "player 1":
+        pygame.mixer.Sound.play(lose)
+    elif player2 == "Computer" and winner == "player 2":
+        pygame.mixer.Sound.play(lose)
+    else:
+        pygame.mixer.Sound.play(win)
 
 
 def display_game_results(winner, score_p1, score_p2, player1, player2):
@@ -123,6 +139,8 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
         box_color,
         [b_left_pos, b3_y_pos, b_width, b_height]
     )
+
+    play_game_over_sound(winner, player1, player2)
 
     # superimposing the text onto our button
     surface.blit(p1_score_txt, (b_left_pos + offset, top_pos + offset))
