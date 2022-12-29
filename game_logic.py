@@ -2,7 +2,7 @@ import secrets
 from pygame import mixer
 
 mixer.init()
-invalid_move = mixer.Sound("sound/invalid.wav")
+invalid_move = mixer.Sound("sound/invalid.ogg")
 
 def convert_row_to_num(character):
     """

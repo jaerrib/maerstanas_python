@@ -14,10 +14,10 @@ width, height = (screen_height, screen_height)
 surface = pygame.display.set_mode((screen_width,screen_height),
                                   pygame.FULLSCREEN)
 
-stone_click = pygame.mixer.Sound("sound/stone.wav")
-win = pygame.mixer.Sound("sound/win.wav")
-lose = pygame.mixer.Sound("sound/lose.wav")
-tie = pygame.mixer.Sound("sound/tie.wav")
+stone_click = pygame.mixer.Sound("sound/stone.ogg")
+win = pygame.mixer.Sound("sound/win.ogg")
+lose = pygame.mixer.Sound("sound/lose.ogg")
+tie = pygame.mixer.Sound("sound/tie.ogg")
 
 offset = int(round((width / 100) - 2))
 b_width = int(round(width / 2))
