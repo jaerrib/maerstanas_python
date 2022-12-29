@@ -41,12 +41,7 @@ b4_y_pos = int(top_pos + (b_height * 5))
 
 # define game options
 player_type = ["Human", "Computer"]
-color_choice = ["Brown", "Monochrome"]
-color_schemes = {
-    "Brown": ["tan", "tan4", "red", "blue"],
-    "Monochrome": ["ivory3", "ivory4", "black", "white"],
-}
-colors = color_schemes[color_choice[1]]
+colors = ["tan", "tan4", "black", "white"]
 
 
 def check_hover_status():
