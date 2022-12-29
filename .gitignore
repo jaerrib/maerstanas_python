@@ -1,0 +1,9 @@
+.idea/maerstanas_python.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/.gitignore
+__pycache__/board.cpython-311.pyc
+__pycache__/game_logic.cpython-311.pyc
+__pycache__/graphics.cpython-311.pyc
