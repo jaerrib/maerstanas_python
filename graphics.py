@@ -8,7 +8,7 @@ pygame.init()
 
 display_data = pygame.display.Info()
 screen_width, screen_height = (display_data.current_w, display_data.current_h)
-width, height = (screen_height, screen_height)
+board_width, board_height = (screen_height, screen_height)
 
 surface = pygame.display.set_mode((screen_width,screen_height),
                                   pygame.FULLSCREEN)
@@ -18,37 +18,25 @@ win = pygame.mixer.Sound("sound/win.ogg")
 lose = pygame.mixer.Sound("sound/lose.ogg")
 tie = pygame.mixer.Sound("sound/tie.ogg")
 
-offset = int(round((width / 100) - 2))
-b_width = int(round(width / 2))
-b_height = int(round(((width / offset) * 2) / 5))
+cell_size = int(round(board_height / 7))
+cell_modifier = int(round(cell_size * .1))
 
-def draw_board(color_scheme):
-    light_color = color_scheme[0]
-    dark_color = color_scheme[1]
-    cell_size = height / 7
+stone_size = int(round(cell_size * .80))
+stone_dimensions = (stone_size, stone_size)
 
-    for y_pos in range(7):
-        y = y_pos * cell_size
-        if y_pos % 2 == 0:
-            color1 = light_color
-            color2 = dark_color
-        else:
-            color1 = dark_color
-            color2 = light_color
-        for x_pos in range(7):
-            x = x_pos * cell_size
-            if x_pos % 2 == 0:
-                pygame.draw.rect(surface, color1,
-                                 pygame.Rect(x, y, cell_size, cell_size))
-            elif x_pos % 2 != 0:
-                pygame.draw.rect(surface, color2,
-                                 pygame.Rect(x, y, cell_size, cell_size))
-    pygame.display.flip()
+dark_stone = pygame.image.load("images/dark_stone.svg")
+dark_stone = pygame.transform.smoothscale(dark_stone, stone_dimensions)
+light_stone = pygame.image.load("images/light_stone.svg")
+light_stone = pygame.transform.smoothscale(light_stone, stone_dimensions)
+board_img = pygame.image.load("images/board.svg")
+board_img = pygame.transform.smoothscale(board_img, (board_width, board_height))
+
+offset = int(round((board_width / 100) - 2))
+b_width = int(round(board_width / 2))
+b_height = int(round(((board_width / offset) * 2) / 5))
 
 
 def convert_pos(col, row):
-    cell_size = height / 7
-    cell_modifier = cell_size / 2
     row_pos = int(trunc(row / cell_size))
     col_pos = int(trunc(col / cell_size))
     x_index = col_pos + 1
@@ -73,7 +61,8 @@ def play_game_over_sound(winner, player1, player2):
 
 def display_game_results(winner, score_p1, score_p2, player1, player2):
     text_color = "white"
-    text_font = pygame.font.Font('NotoSans-Regular.ttf', (round(width * .025)))
+    text_font = pygame.font.Font('NotoSans-Regular.ttf',
+                                 (round(board_width * .025)))
     p1_score_txt = text_font.render(
         f"Player 1 ({player1}) score: {score_p1}",
         True,
@@ -109,13 +98,13 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
         text_color
     )
 
-    b_left_pos = int(round((width / 2) - (b_width / 2)))
-    top_pos = int(round(width * .1))
+    b_left_pos = int(round((board_width / 2) - (b_width / 2)))
+    top_pos = int(round(board_width * .1))
     b1_y_pos = int(top_pos + (b_height * 2))
     b2_y_pos = int(top_pos + (b_height * 4))
     b3_y_pos = int(top_pos + (b_height * 6))
 
-    box_color = (0, 0, 0, 128)
+    box_color = "black"
 
     pygame.draw.rect(
         surface,
@@ -148,17 +137,14 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
 
 
 def draw_stone(color, x_pos, y_pos):
-    stone_size = int(round(height * .05))
-    border = int(round(stone_size * .15))
-    pygame.draw.circle(surface,
-                       color,
-                       (x_pos, y_pos),
-                       stone_size)
-    pygame.draw.circle(surface,
-                       pygame.Color(32, 32, 32, a=32),
-                       (x_pos, y_pos),
-                       stone_size,
-                       width=border)
+
+    print(x_pos, y_pos)
+
+
+    if color == "black":
+        surface.blit(dark_stone, (x_pos, y_pos))
+    if color == "white":
+        surface.blit(light_stone, (x_pos, y_pos))
     pygame.display.flip()
 
 
@@ -167,8 +153,7 @@ def game_loop(color_scheme, players):
     active_player = 1
     player1 = players[0]
     player2 = players[1]
-    surface.fill("black")
-    draw_board(color_scheme)
+    surface.blit(board_img, (0,0))
     colors = [color_scheme[2], color_scheme[3]]
     running = True
 
@@ -177,21 +162,18 @@ def game_loop(color_scheme, players):
             active_color = colors[active_player - 1]
 
             if players[active_player - 1] == "Computer":
+                pygame.time.wait(500)
                 if len(remaining_moves(board.data)) < 1:
                     running = False
                 else:
                     ai_row, ai_col = computer_move(board.data,
                                                    active_player)
-                    x, y = surface.get_size()
-                    cell_size = y / 7
-                    cell_modifier = cell_size / 2
 
                     x_draw = ((ai_col - 1) * cell_size) + cell_modifier
                     y_draw = ((ai_row - 1) * cell_size) + cell_modifier
                     draw_stone(active_color,x_draw,y_draw)
                     active_player = change_player(active_player)
                     pygame.mixer.Sound.play(stone_click)
-                    pygame.time.wait(1000)
 
             if event.type == pygame.QUIT:
                 running = False
@@ -208,7 +190,7 @@ def game_loop(color_scheme, players):
                                converted_pos[1])
                     active_player = change_player(active_player)
                     pygame.mixer.Sound.play(stone_click)
-                    pygame.time.wait(1000)
+                    pygame.time.wait(250)
             if len(remaining_moves(board.data)) < 1:
                 running = False
             pygame.display.flip()

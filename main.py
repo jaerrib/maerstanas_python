@@ -13,9 +13,10 @@ screen_display.set_caption('Mǽrstánas_python')
 
 text_color = "white"
 color_light = "ivory4"
+title_font = pygame.font.Font('NotoSans-Regular.ttf', (round(width * .035)))
 text_font = pygame.font.Font('NotoSans-Regular.ttf', (round(width * .025)))
 
-game_title = text_font.render('Mǽrstánas', True, text_color)
+game_title = title_font.render('Mǽrstánas', True, text_color)
 one_player_first = text_font.render('1 player (first)', True, text_color)
 one_player_second = text_font.render('1 player (second)', True, text_color)
 two_player = text_font.render('2 player game', True, text_color)
