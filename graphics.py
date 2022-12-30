@@ -2,13 +2,13 @@ import pygame
 from board import Board
 from numpy import trunc
 from game_logic import valid_move, determine_winner, change_player, \
-    computer_move, remaining_moves
+    computer_move, remaining_moves, check_score
 
 pygame.init()
 
 display_data = pygame.display.Info()
 screen_width, screen_height = (display_data.current_w, display_data.current_h)
-board_size = min(screen_width, screen_height)
+board_size = min(screen_width, screen_height) * .9
 
 surface = pygame.display.set_mode((screen_width,screen_height),
                                   pygame.FULLSCREEN)
@@ -98,6 +98,42 @@ def draw_stone(color, x_pos, y_pos):
     stone = pygame.image.load("images/"+color+"_stone.svg")
     stone = pygame.transform.smoothscale(stone, stone_dimensions)
     surface.blit(stone, (x_pos, y_pos))
+
+
+def display_score(board, players):
+    player1 = players[0]
+    player2 = players[1]
+    score_p1 = check_score(board, 1)
+    score_p2 = check_score(board, 2)
+    text_color = "white"
+    box_color = "black"
+    vert_pos = board_size + offset
+    p1_score_pos = offset
+    p2_score_pos = (board_size / 2) + offset
+    text_font = pygame.font.Font('NotoSans-Regular.ttf',
+                                 (round(board_size * .025)))
+
+    score_dict = dict(
+        p1=["Player 1 ("+player1+") score: "+str(score_p1), p1_score_pos],
+        p2=["Player 2 ("+player2+") score: "+str(score_p2), p2_score_pos],
+    )
+
+    text_surfaces = {}
+
+    for key in score_dict:
+        text = score_dict[key][0]
+        text_surfaces[key] = text_font.render(text, True, text_color, box_color)
+
+    # for i in results_dict:
+    #     pygame.draw.rect(
+    #         surface,
+    #         box_color,
+    #         [b_left_pos, results_dict[i][1], b_width, b_height]
+    #     )
+
+    for j in text_surfaces:
+        surface.blit(text_surfaces[j],
+                     (score_dict[j][1], vert_pos))
     pygame.display.flip()
 
 
@@ -149,6 +185,7 @@ def game_loop(players):
                     pygame.time.wait(250)
             if len(remaining_moves(board.data)) < 1:
                 running = False
+            display_score(board.data, players)
             pygame.display.flip()
 
     winner, score_p1, score_p2 = determine_winner(board.data)
