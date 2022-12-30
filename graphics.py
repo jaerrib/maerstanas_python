@@ -119,17 +119,9 @@ def display_score(board, players):
     )
 
     text_surfaces = {}
-
     for key in score_dict:
         text = score_dict[key][0]
         text_surfaces[key] = text_font.render(text, True, text_color, box_color)
-
-    # for i in results_dict:
-    #     pygame.draw.rect(
-    #         surface,
-    #         box_color,
-    #         [b_left_pos, results_dict[i][1], b_width, b_height]
-    #     )
 
     for j in text_surfaces:
         surface.blit(text_surfaces[j],
@@ -160,7 +152,6 @@ def game_loop(players):
                 else:
                     ai_row, ai_col = computer_move(board.data,
                                                    active_player)
-
                     x_draw = ((ai_col - 1) * cell_size) + cell_modifier
                     y_draw = ((ai_row - 1) * cell_size) + cell_modifier
                     draw_stone(active_color,x_draw,y_draw)
