@@ -6,7 +6,6 @@ from game_logic import valid_move, determine_winner, change_player, \
 
 pygame.init()
 
-# Gets display dimensions then sets the board size and surface variables
 display_data = pygame.display.Info()
 screen_width, screen_height = (display_data.current_w, display_data.current_h)
 width, height = (screen_height, screen_height)
@@ -116,7 +115,6 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
     b2_y_pos = int(top_pos + (b_height * 4))
     b3_y_pos = int(top_pos + (b_height * 6))
 
-    # drawing transparent rectangles to make text easier to see
     box_color = (0, 0, 0, 128)
 
     pygame.draw.rect(
@@ -142,7 +140,6 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
 
     play_game_over_sound(winner, player1, player2)
 
-    # superimposing the text onto our button
     surface.blit(p1_score_txt, (b_left_pos + offset, top_pos + offset))
     surface.blit(p2_score_txt, (b_left_pos + offset, b1_y_pos + offset))
     surface.blit(result_txt, (b_left_pos + offset, b2_y_pos + offset))
@@ -178,8 +175,7 @@ def game_loop(color_scheme, players):
     while running:
         for event in pygame.event.get():
             active_color = colors[active_player - 1]
-            # if active player is computer then make computer move and
-            # change players
+
             if players[active_player - 1] == "Computer":
                 if len(remaining_moves(board.data)) < 1:
                     running = False
