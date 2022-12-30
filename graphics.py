@@ -25,8 +25,10 @@ stone_size = int(round(cell_size * .80))
 stone_dimensions = (stone_size, stone_size)
 
 offset = int(round((board_size / 100) - 2))
+top_pos = int(round(board_size * .1))
 b_width = int(round(board_size / 2))
 b_height = int(round(((board_size / offset) * 2) / 5))
+b_left_pos = int(round((board_size / 2) - (b_width / 2)))
 
 
 def convert_pos(col, row):
@@ -54,78 +56,41 @@ def play_game_over_sound(winner, player1, player2):
 
 def display_game_results(winner, score_p1, score_p2, player1, player2):
     text_color = "white"
+    box_color = "black"
     text_font = pygame.font.Font('NotoSans-Regular.ttf',
                                  (round(board_size * .025)))
-    p1_score_txt = text_font.render(
-        f"Player 1 ({player1}) score: {score_p1}",
-        True,
-        text_color
-    )
-    p2_score_txt = text_font.render(
-        f"Player 2 ({player2}) score: {score_p2}",
-        True,
-        text_color
-    )
-    result_txt = ""
     if winner == "tie":
-        result_txt = text_font.render(
-            "It's a tie!",
-            True,
-            text_color
-        )
-    elif winner == "player 1":
-        result_txt = text_font.render(
-            f"Player 1 wins!",
-            True,
-            text_color
-        )
-    elif winner == "player2":
-        result_txt = text_font.render(
-            f"Player 2 wins!",
-            True,
-            text_color
-        )
-    continue_text = text_font.render(
-        "Click to continue",
-        True,
-        text_color
-    )
+        result_txt = "It's a tie!"
+    else:
+        result_txt = winner.capitalize()+" wins!"
 
-    b_left_pos = int(round((board_size / 2) - (b_width / 2)))
-    top_pos = int(round(board_size * .1))
-    b1_y_pos = int(top_pos + (b_height * 2))
-    b2_y_pos = int(top_pos + (b_height * 4))
-    b3_y_pos = int(top_pos + (b_height * 6))
+    results_dict = dict(line1=["Player 1 "+player1+" score: "+str(score_p1),
+                               top_pos],
+                        line2=["Player 2 "+player2+" score: "+str(score_p2),
+                               int(top_pos + (b_height * 2))],
+                        line3=[result_txt,
+                               int(top_pos + (b_height * 4))],
+                        line4=["Click to continue",
+                               int(top_pos + (b_height * 6))],
+                        )
+    text_surfaces = {}
 
-    box_color = "black"
+    for key in results_dict:
+        text = results_dict[key][0]
+        text_surfaces[key] = text_font.render(text, True, text_color)
 
-    pygame.draw.rect(
-        surface,
-        box_color,
-        [b_left_pos, top_pos, b_width, b_height]
-    )
-    pygame.draw.rect(
-        surface,
-        box_color,
-        [b_left_pos, b1_y_pos, b_width, b_height]
-    )
-    pygame.draw.rect(
-        surface,
-        box_color,
-        [b_left_pos, b2_y_pos, b_width, b_height]
-    )
-    pygame.draw.rect(
-        surface,
-        box_color,
-        [b_left_pos, b3_y_pos, b_width, b_height]
-    )
+    for i in results_dict:
+        pygame.draw.rect(
+            surface,
+            box_color,
+            [b_left_pos, results_dict[i][1], b_width, b_height]
+            )
+
+    for j in text_surfaces:
+        surface.blit(text_surfaces[j],
+                     (b_left_pos + offset, results_dict[j][1] + offset))
 
     play_game_over_sound(winner, player1, player2)
-
-    surface.blit(p1_score_txt, (b_left_pos + offset, top_pos + offset))
-    surface.blit(p2_score_txt, (b_left_pos + offset, b1_y_pos + offset))
-    surface.blit(result_txt, (b_left_pos + offset, b2_y_pos + offset))
-    surface.blit(continue_text, (b_left_pos + offset, b3_y_pos + offset))
     pygame.display.flip()
 
 

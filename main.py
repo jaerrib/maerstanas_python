@@ -9,85 +9,60 @@ board_size = min(screen_width, screen_height)
 surface = pygame.display.set_mode((screen_width,screen_height),
                                   pygame.FULLSCREEN)
 screen_display = pygame.display
-screen_display.set_caption('Mǽrstánas_python')
+screen_display.set_caption("Mǽrstánas_python")
 
 text_color = "white"
 color_light = "ivory4"
-title_font = pygame.font.Font('NotoSans-Regular.ttf', (round(board_size * .035)))
-text_font = pygame.font.Font('NotoSans-Regular.ttf', (round(board_size * .025)))
+display_font = "NotoSans-Regular.ttf"
+title_font = pygame.font.Font(display_font, (round(board_size * .035)))
+text_font = pygame.font.Font(display_font, (round(board_size * .025)))
 
-game_title = title_font.render('Mǽrstánas', True, text_color)
-one_player_first = text_font.render('1 player (first)', True, text_color)
-one_player_second = text_font.render('1 player (second)', True, text_color)
-two_player = text_font.render('2 player game', True, text_color)
-quit_text = text_font.render('quit', True, text_color)
+game_title = title_font.render("Mǽrstánas", True, text_color)
 offset = int(round((board_size / 100) - 2))
-
-b_width = int(round((board_size / offset) * 2))
-b_height = int(round(b_width / 5))
-
-b_left_pos = int(round((board_size / 2) - (b_width / 2)))
 top_pos = int(round(board_size * .1))
-b1_y_pos = int(top_pos + (b_height * 2))
-b2_y_pos = int(top_pos + (b_height * 3))
-b3_y_pos = int(top_pos + (b_height * 4))
-b4_y_pos = int(top_pos + (b_height * 5))
+b_width = int(round((board_size / offset) * 3))
+b_height = int(round(b_width / 5))
+b_left_pos = int(round((board_size / 2) - (b_width / 2)))
+
+options = dict(option1=["Human vs Computer", int(top_pos + (b_height * 2))],
+               option2=["Computer vs Human", int(top_pos + (b_height * 3))],
+               option3=["Human vs Human", int(top_pos + (b_height * 4))],
+               option4=["Computer vs Computer", int(top_pos + (b_height * 5))],
+               option5=["Quit Game", int(top_pos + (b_height * 6))],
+               )
+text_surfaces = {}
+
+for key in options:
+    text = options[key][0]
+    text_surfaces[key] = text_font.render(text, True, text_color)
 
 
 def check_hover_status():
-    if b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
-            and b1_y_pos <= mouse[1] <= (b1_y_pos + b_height):
-        pygame.draw.rect(
-            surface,
-            color_light,
-            [b_left_pos, b1_y_pos, b_width, b_height]
-        )
-    elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
-            and b2_y_pos <= mouse[1] <= (b2_y_pos + b_height):
-        pygame.draw.rect(
-            surface,
-            color_light,
-            [b_left_pos, b2_y_pos, b_width, b_height]
-        )
-    elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
-            and b3_y_pos <= mouse[1] <= (b3_y_pos + b_height):
-        pygame.draw.rect(
-            surface,
-            color_light,
-            [b_left_pos, b3_y_pos, b_width, b_height]
-        )
-    elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
-            and b4_y_pos <= mouse[1] <= (b4_y_pos + b_height):
-        pygame.draw.rect(
-            surface,
-            color_light,
-            [b_left_pos, b4_y_pos, b_width, b_height]
-        )
+    for i in options:
+        if b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
+            and options[i][1] <= mouse[1] <= options[i][1] + b_height:
+            pygame.draw.rect(
+                surface,
+                color_light,
+                [b_left_pos, options[i][1], b_width, b_height]
+            )
 
 
 def determine_action():
-
-    if b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
-            and b1_y_pos <= mouse[1] <= (b1_y_pos + b_height):
-        game_loop(["Human", "Computer"])
-    elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
-            and b2_y_pos <= mouse[1] <= (b2_y_pos + b_height):
-        game_loop(["Computer", "Human"])
-    elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
-            and b3_y_pos <= mouse[1] <= (b3_y_pos + b_height):
-        game_loop(["Human", "Human"])
-    elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
-            and b4_y_pos <= mouse[1] <= (b4_y_pos + b_height):
-        pygame.quit()
-    elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
-            and top_pos <= mouse[1] <= (top_pos + b_height):
-        game_loop(["Computer", "Computer"])
+    for i in options:
+        if b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
+                and options[i][1] <= mouse[1] <= options[i][1] + b_height:
+            choice = options[i][0]
+            if choice == "Quit Game":
+                pygame.quit()
+            else:
+                words = choice.split(' vs ')
+                game_loop(players=(words[0], words[1]))
 
 
 while True:
 
     for ev in pygame.event.get():
-
         if ev.type == pygame.QUIT:
             pygame.quit()
         if ev.type == pygame.MOUSEBUTTONUP:
@@ -96,8 +71,7 @@ while True:
         mouse = pygame.mouse.get_pos()
         check_hover_status()
         surface.blit(game_title, (b_left_pos + offset, top_pos + offset))
-        surface.blit(one_player_first, (b_left_pos+offset, b1_y_pos+offset))
-        surface.blit(one_player_second, (b_left_pos+offset, b2_y_pos+offset))
-        surface.blit(two_player, (b_left_pos+offset, b3_y_pos+offset))
-        surface.blit(quit_text, (b_left_pos+offset, b4_y_pos+offset))
+        for key in text_surfaces:
+            surface.blit(text_surfaces[key],
+                         (b_left_pos+offset, options[key][1]+offset))
         pygame.display.update()
