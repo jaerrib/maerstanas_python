@@ -8,7 +8,7 @@ pygame.init()
 
 display_data = pygame.display.Info()
 screen_width, screen_height = (display_data.current_w, display_data.current_h)
-board_width, board_height = (screen_height, screen_height)
+board_size = min(screen_width, screen_height)
 
 surface = pygame.display.set_mode((screen_width,screen_height),
                                   pygame.FULLSCREEN)
@@ -18,7 +18,7 @@ win = pygame.mixer.Sound("sound/win.ogg")
 lose = pygame.mixer.Sound("sound/lose.ogg")
 tie = pygame.mixer.Sound("sound/tie.ogg")
 
-cell_size = int(round(board_height / 7))
+cell_size = int(round(board_size / 7))
 cell_modifier = int(round(cell_size * .1))
 
 stone_size = int(round(cell_size * .80))
@@ -29,11 +29,11 @@ dark_stone = pygame.transform.smoothscale(dark_stone, stone_dimensions)
 light_stone = pygame.image.load("images/light_stone.svg")
 light_stone = pygame.transform.smoothscale(light_stone, stone_dimensions)
 board_img = pygame.image.load("images/board.svg")
-board_img = pygame.transform.smoothscale(board_img, (board_width, board_height))
+board_img = pygame.transform.smoothscale(board_img, (board_size, board_size))
 
-offset = int(round((board_width / 100) - 2))
-b_width = int(round(board_width / 2))
-b_height = int(round(((board_width / offset) * 2) / 5))
+offset = int(round((board_size / 100) - 2))
+b_width = int(round(board_size / 2))
+b_height = int(round(((board_size / offset) * 2) / 5))
 
 
 def convert_pos(col, row):
@@ -62,7 +62,7 @@ def play_game_over_sound(winner, player1, player2):
 def display_game_results(winner, score_p1, score_p2, player1, player2):
     text_color = "white"
     text_font = pygame.font.Font('NotoSans-Regular.ttf',
-                                 (round(board_width * .025)))
+                                 (round(board_size * .025)))
     p1_score_txt = text_font.render(
         f"Player 1 ({player1}) score: {score_p1}",
         True,
@@ -98,8 +98,8 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
         text_color
     )
 
-    b_left_pos = int(round((board_width / 2) - (b_width / 2)))
-    top_pos = int(round(board_width * .1))
+    b_left_pos = int(round((board_size / 2) - (b_width / 2)))
+    top_pos = int(round(board_size * .1))
     b1_y_pos = int(top_pos + (b_height * 2))
     b2_y_pos = int(top_pos + (b_height * 4))
     b3_y_pos = int(top_pos + (b_height * 6))

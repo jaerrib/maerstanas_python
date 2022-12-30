@@ -5,7 +5,7 @@ pygame.init()
 
 display_data = pygame.display.Info()
 screen_width, screen_height = (display_data.current_w, display_data.current_h)
-width, height = (screen_height, screen_height)
+board_size = min(screen_width, screen_height)
 surface = pygame.display.set_mode((screen_width,screen_height),
                                   pygame.FULLSCREEN)
 screen_display = pygame.display
@@ -13,21 +13,21 @@ screen_display.set_caption('Mǽrstánas_python')
 
 text_color = "white"
 color_light = "ivory4"
-title_font = pygame.font.Font('NotoSans-Regular.ttf', (round(width * .035)))
-text_font = pygame.font.Font('NotoSans-Regular.ttf', (round(width * .025)))
+title_font = pygame.font.Font('NotoSans-Regular.ttf', (round(board_size * .035)))
+text_font = pygame.font.Font('NotoSans-Regular.ttf', (round(board_size * .025)))
 
 game_title = title_font.render('Mǽrstánas', True, text_color)
 one_player_first = text_font.render('1 player (first)', True, text_color)
 one_player_second = text_font.render('1 player (second)', True, text_color)
 two_player = text_font.render('2 player game', True, text_color)
 quit_text = text_font.render('quit', True, text_color)
-offset = int(round((width / 100) - 2))
+offset = int(round((board_size / 100) - 2))
 
-b_width = int(round((width / offset) * 2))
+b_width = int(round((board_size / offset) * 2))
 b_height = int(round(b_width / 5))
 
-b_left_pos = int(round((width / 2) - (b_width / 2)))
-top_pos = int(round(width * .1))
+b_left_pos = int(round((board_size / 2) - (b_width / 2)))
+top_pos = int(round(board_size * .1))
 b1_y_pos = int(top_pos + (b_height * 2))
 b2_y_pos = int(top_pos + (b_height * 3))
 b3_y_pos = int(top_pos + (b_height * 4))
