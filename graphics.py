@@ -64,9 +64,9 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
     else:
         result_txt = winner.capitalize()+" wins!"
 
-    results_dict = dict(line1=["Player 1 "+player1+" score: "+str(score_p1),
+    results_dict = dict(line1=["Player 1 ("+player1+") score: "+str(score_p1),
                                top_pos],
-                        line2=["Player 2 "+player2+" score: "+str(score_p2),
+                        line2=["Player 2 ("+player2+") score: "+str(score_p2),
                                int(top_pos + (b_height * 2))],
                         line3=[result_txt,
                                int(top_pos + (b_height * 4))],
