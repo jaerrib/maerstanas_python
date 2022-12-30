@@ -33,9 +33,6 @@ b2_y_pos = int(top_pos + (b_height * 3))
 b3_y_pos = int(top_pos + (b_height * 4))
 b4_y_pos = int(top_pos + (b_height * 5))
 
-player_type = ["Human", "Computer"]
-colors = ["tan", "tan4", "black", "white"]
-
 
 def check_hover_status():
     if b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
@@ -72,19 +69,19 @@ def determine_action():
 
     if b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and b1_y_pos <= mouse[1] <= (b1_y_pos + b_height):
-        game_loop(colors, ["Human", "Computer"])
+        game_loop(["Human", "Computer"])
     elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and b2_y_pos <= mouse[1] <= (b2_y_pos + b_height):
-        game_loop(colors, ["Computer", "Human"])
+        game_loop(["Computer", "Human"])
     elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and b3_y_pos <= mouse[1] <= (b3_y_pos + b_height):
-        game_loop(colors, ["Human", "Human"])
+        game_loop(["Human", "Human"])
     elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and b4_y_pos <= mouse[1] <= (b4_y_pos + b_height):
         pygame.quit()
     elif b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
             and top_pos <= mouse[1] <= (top_pos + b_height):
-        game_loop(colors, ["Computer", "Computer"])
+        game_loop(["Computer", "Computer"])
 
 
 while True:

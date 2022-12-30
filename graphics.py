@@ -24,13 +24,6 @@ cell_modifier = int(round(cell_size * .1))
 stone_size = int(round(cell_size * .80))
 stone_dimensions = (stone_size, stone_size)
 
-dark_stone = pygame.image.load("images/dark_stone.svg")
-dark_stone = pygame.transform.smoothscale(dark_stone, stone_dimensions)
-light_stone = pygame.image.load("images/light_stone.svg")
-light_stone = pygame.transform.smoothscale(light_stone, stone_dimensions)
-board_img = pygame.image.load("images/board.svg")
-board_img = pygame.transform.smoothscale(board_img, (board_size, board_size))
-
 offset = int(round((board_size / 100) - 2))
 b_width = int(round(board_size / 2))
 b_height = int(round(((board_size / offset) * 2) / 5))
@@ -137,24 +130,22 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
 
 
 def draw_stone(color, x_pos, y_pos):
-
-    print(x_pos, y_pos)
-
-
-    if color == "black":
-        surface.blit(dark_stone, (x_pos, y_pos))
-    if color == "white":
-        surface.blit(light_stone, (x_pos, y_pos))
+    stone = pygame.image.load("images/"+color+"_stone.svg")
+    stone = pygame.transform.smoothscale(stone, stone_dimensions)
+    surface.blit(stone, (x_pos, y_pos))
     pygame.display.flip()
 
 
-def game_loop(color_scheme, players):
+def game_loop(players):
     board = Board()
     active_player = 1
     player1 = players[0]
     player2 = players[1]
+    board_img = pygame.image.load("images/board.svg")
+    board_img = pygame.transform.smoothscale(board_img,
+                                             (board_size, board_size))
     surface.blit(board_img, (0,0))
-    colors = [color_scheme[2], color_scheme[3]]
+    colors = ["dark", "light"]
     running = True
 
     while running:
