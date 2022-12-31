@@ -4,6 +4,7 @@ from pygame import mixer
 mixer.init()
 invalid_move = mixer.Sound("sound/invalid.ogg")
 
+
 def convert_row_to_num(character):
     """
     Converts player's letter input to a number usable by various functions.

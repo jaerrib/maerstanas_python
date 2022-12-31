@@ -10,7 +10,7 @@ display_data = pygame.display.Info()
 screen_width, screen_height = (display_data.current_w, display_data.current_h)
 board_size = min(screen_width, screen_height) * .9
 
-surface = pygame.display.set_mode((screen_width,screen_height),
+surface = pygame.display.set_mode((screen_width, screen_height),
                                   pygame.FULLSCREEN)
 
 stone_click = pygame.mixer.Sound("sound/stone.ogg")
@@ -98,7 +98,7 @@ def draw_stones(board):
     colors = ["dark", "light"]
     length = len(board.move_list)
     stones = {}
-    for i in range(0,length):
+    for i in range(0, length):
         key = str(i)
         active_color = colors[(board.move_list[key][2]) - 1]
         if i == length - 1:
@@ -153,7 +153,7 @@ def game_loop(players):
     board_img = pygame.image.load("images/board.svg")
     board_img = pygame.transform.smoothscale(board_img,
                                              (board_size, board_size))
-    surface.blit(board_img, (0,0))
+    surface.blit(board_img, (0, 0))
     running = True
 
     while running:
@@ -164,7 +164,7 @@ def game_loop(players):
                     running = False
                 else:
                     ai_row, ai_col = computer_move(board.data)
-                    assign_move(board,ai_row,ai_col,active_player)
+                    assign_move(board, ai_row, ai_col, active_player)
                     draw_stones(board)
                     active_player = change_player(active_player)
                     pygame.mixer.Sound.play(stone_click)
@@ -175,7 +175,7 @@ def game_loop(players):
                     players[active_player - 1] == "Human":
                 x, y = pygame.mouse.get_pos()
                 converted_pos = convert_pos(x, y)
-                if valid_move(board.data,converted_pos[3],converted_pos[2]):
+                if valid_move(board.data, converted_pos[3], converted_pos[2]):
                     assign_move(board,
                                 converted_pos[3],
                                 converted_pos[2],
