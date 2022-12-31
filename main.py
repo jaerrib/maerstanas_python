@@ -6,7 +6,7 @@ pygame.init()
 display_data = pygame.display.Info()
 screen_width, screen_height = (display_data.current_w, display_data.current_h)
 board_size = min(screen_width, screen_height)
-surface = pygame.display.set_mode((screen_width,screen_height),
+surface = pygame.display.set_mode((screen_width, screen_height),
                                   pygame.FULLSCREEN)
 screen_display = pygame.display
 screen_display.set_caption("Mǽrstánas_python")
@@ -40,7 +40,7 @@ for key in options:
 def check_hover_status():
     for i in options:
         if b_left_pos <= mouse[0] <= (b_left_pos + b_width) \
-            and options[i][1] <= mouse[1] <= options[i][1] + b_height:
+                and options[i][1] <= mouse[1] <= options[i][1] + b_height:
             pygame.draw.rect(
                 surface,
                 color_light,
@@ -73,5 +73,5 @@ while True:
         surface.blit(game_title, (b_left_pos + offset, top_pos + offset))
         for key in text_surfaces:
             surface.blit(text_surfaces[key],
-                         (b_left_pos+offset, options[key][1]+offset))
+                         (b_left_pos + offset, options[key][1] + offset))
         pygame.display.update()
