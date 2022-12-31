@@ -2,6 +2,7 @@ class Board:
 
     def __init__(self):
         self.data = []
+        self.move_list = {}
         self.create()
 
     def create(self):

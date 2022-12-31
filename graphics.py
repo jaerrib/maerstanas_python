@@ -2,7 +2,7 @@ import pygame
 from board import Board
 from numpy import trunc
 from game_logic import valid_move, determine_winner, change_player, \
-    computer_move, remaining_moves, check_score
+    computer_move, remaining_moves, check_score, assign_move
 
 pygame.init()
 
@@ -94,10 +94,26 @@ def display_game_results(winner, score_p1, score_p2, player1, player2):
     pygame.display.flip()
 
 
-def draw_stone(color, x_pos, y_pos):
-    stone = pygame.image.load("images/"+color+"_stone.svg")
-    stone = pygame.transform.smoothscale(stone, stone_dimensions)
-    surface.blit(stone, (x_pos, y_pos))
+def draw_stones(board):
+    colors = ["dark", "light"]
+    length = len(board.move_list)
+    stones = {}
+    for i in range(0,length):
+        key = str(i)
+        active_color = colors[(board.move_list[key][2]) - 1]
+        if i == length - 1:
+            stones[key] = pygame.image.load(
+                "images/last_played_" + active_color + ".svg")
+        else:
+            stones[key] = pygame.image.load("images/"+active_color+"_stone.svg")
+        stones[key] = pygame.transform.smoothscale(stones[key],
+                                                   stone_dimensions)
+        col_pos = board.move_list[key][1] - 1
+        row_pos = board.move_list[key][0] - 1
+        x_draw = (col_pos * cell_size) + cell_modifier
+        y_draw = (row_pos * cell_size) + cell_modifier
+        surface.blit(stones[key], (x_draw, y_draw))
+    pygame.display.flip()
 
 
 def display_score(board, players):
@@ -138,23 +154,18 @@ def game_loop(players):
     board_img = pygame.transform.smoothscale(board_img,
                                              (board_size, board_size))
     surface.blit(board_img, (0,0))
-    colors = ["dark", "light"]
     running = True
 
     while running:
         for event in pygame.event.get():
-            active_color = colors[active_player - 1]
-
             if players[active_player - 1] == "Computer":
                 pygame.time.wait(500)
                 if len(remaining_moves(board.data)) < 1:
                     running = False
                 else:
-                    ai_row, ai_col = computer_move(board.data,
-                                                   active_player)
-                    x_draw = ((ai_col - 1) * cell_size) + cell_modifier
-                    y_draw = ((ai_row - 1) * cell_size) + cell_modifier
-                    draw_stone(active_color,x_draw,y_draw)
+                    ai_row, ai_col = computer_move(board.data)
+                    assign_move(board,ai_row,ai_col,active_player)
+                    draw_stones(board)
                     active_player = change_player(active_player)
                     pygame.mixer.Sound.play(stone_click)
 
@@ -164,16 +175,15 @@ def game_loop(players):
                     players[active_player - 1] == "Human":
                 x, y = pygame.mouse.get_pos()
                 converted_pos = convert_pos(x, y)
-                if valid_move(board.data,
-                              converted_pos[3],
-                              converted_pos[2],
-                              active_player):
-                    draw_stone(active_color,
-                               converted_pos[0],
-                               converted_pos[1])
+                if valid_move(board.data,converted_pos[3],converted_pos[2]):
+                    assign_move(board,
+                                converted_pos[3],
+                                converted_pos[2],
+                                active_player)
+                    draw_stones(board)
                     active_player = change_player(active_player)
                     pygame.mixer.Sound.play(stone_click)
-                    pygame.time.wait(250)
+                    # pygame.time.wait(250)
             if len(remaining_moves(board.data)) < 1:
                 running = False
             display_score(board.data, players)

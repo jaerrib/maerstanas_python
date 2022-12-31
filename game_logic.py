@@ -94,7 +94,7 @@ def change_player(player):
         return 1
 
 
-def valid_move(board, row_number, col_number, player):
+def valid_move(board, row_number, col_number):
     """
     Determines if a potential move would be valid by doing the following:
     (1) Checking if the coordinates are within the confines of the board
@@ -125,7 +125,6 @@ def valid_move(board, row_number, col_number, player):
             mixer.Sound.play(invalid_move)
             return False
         else:
-            board[row_number][col_number] = player
             return True
 
 
@@ -217,16 +216,16 @@ def determine_winner(board):
     return result, score_p1, score_p2
 
 
-def computer_move(board, computer_player):
+def assign_move(board, row, col, player):
+    board.data[row][col] = player
+    key = ""+str(len(board.move_list))+""
+    board.move_list[key] = [row, col, player]
+
+
+def computer_move(board):
     """
     Pseudo AI placeholder that generates random moves for computer player
     """
-    row = 0
-    col = 0
-    valid = False
-    while not valid:
-        comp_move = secrets.choice(remaining_moves(board))
-        row = comp_move[0]
-        col = comp_move[1]
-        valid = valid_move(board, row, col, computer_player)
+    comp_move = secrets.choice(remaining_moves(board))
+    row, col = comp_move[0], comp_move[1]
     return row, col
