@@ -1,5 +1,6 @@
 import pygame
-from board import Board
+# from board import Board
+from game import Game
 from numpy import trunc
 from game_logic import valid_move, determine_winner, change_player, \
     computer_move, remaining_moves, check_score, assign_move
@@ -146,8 +147,9 @@ def display_score(board, players):
 
 
 def game_loop(players):
-    board = Board()
-    active_player = 1
+    game = Game()
+    board = game.Board()
+    active_player = game.active_player
     player1 = players[0]
     player2 = players[1]
     board_img = pygame.image.load("images/board.svg")
@@ -165,7 +167,7 @@ def game_loop(players):
                 else:
                     ai_row, ai_col = computer_move(board.data)
                     assign_move(board, ai_row, ai_col, active_player)
-                    draw_stones(board)
+                    draw_stones(board.data)
                     active_player = change_player(active_player)
                     pygame.mixer.Sound.play(stone_click)
 

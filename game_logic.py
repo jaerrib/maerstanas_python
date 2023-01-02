@@ -219,7 +219,7 @@ def determine_winner(board):
 
 def assign_move(board, row, col, player):
     board.data[row][col] = player
-    key = ""+str(len(board.move_list))+""
+    key = ""+str(len(remaining_moves(board.data)))+""
     board.move_list[key] = [row, col, player]
 
 
