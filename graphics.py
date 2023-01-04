@@ -167,7 +167,7 @@ def game_loop(players):
                 else:
                     ai_row, ai_col = computer_move(board.data)
                     assign_move(board, ai_row, ai_col, active_player)
-                    draw_stones(board.data)
+                    draw_stones(board)
                     active_player = change_player(active_player)
                     pygame.mixer.Sound.play(stone_click)
 
