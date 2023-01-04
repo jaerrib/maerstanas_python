@@ -221,7 +221,6 @@ def assign_move(board, row, col, player):
     board.data[row][col] = player
     key_pos = len(board.move_list)
     key = ""+str(key_pos)
-    print(key)
     board.move_list[key] = [row, col, player]
 
 
