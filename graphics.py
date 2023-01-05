@@ -159,33 +159,32 @@ def game_loop(players):
     running = True
 
     while running:
-        for event in pygame.event.get():
-            if players[active_player - 1] == "Computer":
-                pygame.time.wait(500)
-                if len(remaining_moves(board.data)) < 1:
-                    running = False
-                else:
-                    ai_row, ai_col = computer_move(board.data)
-                    assign_move(board, ai_row, ai_col, active_player)
-                    draw_stones(board)
-                    active_player = change_player(active_player)
-                    pygame.mixer.Sound.play(stone_click)
-
-            if event.type == pygame.QUIT:
+        if players[active_player - 1] == "Computer":
+            pygame.time.wait(500)
+            if len(remaining_moves(board.data)) < 1:
                 running = False
-            if event.type == pygame.MOUSEBUTTONUP and \
-                    players[active_player - 1] == "Human":
-                x, y = pygame.mouse.get_pos()
-                converted_pos = convert_pos(x, y)
-                if valid_move(board.data, converted_pos[3], converted_pos[2]):
-                    assign_move(board,
-                                converted_pos[3],
-                                converted_pos[2],
-                                active_player)
-                    draw_stones(board)
-                    active_player = change_player(active_player)
-                    pygame.mixer.Sound.play(stone_click)
-                    # pygame.time.wait(250)
+            else:
+                ai_row, ai_col = computer_move(board.data)
+                assign_move(board, ai_row, ai_col, active_player)
+                draw_stones(board)
+                active_player = change_player(active_player)
+                pygame.mixer.Sound.play(stone_click)
+        if players[active_player - 1] == "Human":
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type == pygame.MOUSEBUTTONUP:
+                    x, y = pygame.mouse.get_pos()
+                    converted_pos = convert_pos(x, y)
+                    if valid_move(board.data, converted_pos[3], converted_pos[2]):
+                        assign_move(board,
+                                    converted_pos[3],
+                                    converted_pos[2],
+                                    active_player)
+                        draw_stones(board)
+                        active_player = change_player(active_player)
+                        pygame.mixer.Sound.play(stone_click)
+                        # pygame.time.wait(250)
             if len(remaining_moves(board.data)) < 1:
                 running = False
             display_score(board.data, players)
