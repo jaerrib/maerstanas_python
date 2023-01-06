@@ -144,20 +144,16 @@ class Game:
             player_move = self.board.data[row_number][col_number]
         else:
             # Invalid move - outside board confines
-            # mixer.Sound.play(invalid_move)
             return False
         if player_move != 0:
             # Invalid move - space occupied
-            # mixer.Sound.play(invalid_move)
             return False
         else:
             if self.check_player_hinges(row_number, col_number):
                 # Invalid move - move would cause 4 immediate hinges
-                # mixer.Sound.play(invalid_move)
                 return False
             elif self.check_adjacent_stones(row_number, col_number):
                 # Invalid move - an adjacent stone would have 4 hinges
-                # mixer.Sound.play(invalid_move)
                 return False
             else:
                 return True
@@ -238,12 +234,13 @@ class Game:
     def determine_winner(self):
         score_p1 = self.check_score(1)
         score_p2 = self.check_score(2)
-        if self.score_p1 == self.score_p2:
-            self.result = "tie"
+        if score_p1 == score_p2:
+            result = "tie"
         elif score_p1 > score_p2:
-            self.result = "player 1"
+            result = "player 1"
         else:
-            self.result = "player 2"
+            result = "player 2"
+        self.result = result
         # return result, score_p1, score_p2
 
     def assign_move(self, row, col):
