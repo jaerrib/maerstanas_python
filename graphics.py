@@ -190,7 +190,6 @@ def game_loop(players):
             if len(game.remaining_moves()) < 1:
                 running = False
             display_score(game, players)
-            print(game.score_p1, game.score_p2)
             pygame.display.flip()
 
     game.determine_winner()
