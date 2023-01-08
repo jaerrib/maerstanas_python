@@ -2,7 +2,6 @@ from copy import deepcopy
 import secrets
 
 player_list = ["Computer", "Computer"]
-simulations = 10
 
 
 def assign_result_value(result):
