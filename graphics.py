@@ -1,9 +1,6 @@
 import pygame
-# from board import Board
 from game import Game
 from numpy import trunc
-# from game_logic import valid_move, determine_winner, change_player, \
-#     computer_move, remaining_moves, check_score, assign_move
 from ai_player import get_best_move
 from pygame import mixer
 
@@ -109,8 +106,6 @@ def draw_stones(game):
             active_color = colors[0]
         else:
             active_color = colors[1]
-
-        # active_color = colors[int(game.move_list[key]) - 1]
         if i == length - 1:
             stones[key] = pygame.image.load(
                 "images/last_played_" + active_color + ".svg")
@@ -157,7 +152,6 @@ def display_score(board, players):
 
 def game_loop(players):
     game = Game()
-    # board = game.Board()
     active_player = game.active_player
     player1 = players[0]
     player2 = players[1]
@@ -174,7 +168,6 @@ def game_loop(players):
                 running = False
             else:
                 ai_row, ai_col = get_best_move(game, 100)
-                # ai_row, ai_col = computer_move(board.data)
                 game.assign_move(ai_row, ai_col)
                 draw_stones(game)
                 active_player = game.change_player()
@@ -200,7 +193,6 @@ def game_loop(players):
             print(game.score_p1, game.score_p2)
             pygame.display.flip()
 
-    # winner, score_p1, score_p2 = game.determine_winner()
     game.determine_winner()
     score_p1 = game.check_score(1)
     score_p2 = game.check_score(2)

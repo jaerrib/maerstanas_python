@@ -1,13 +1,8 @@
-# from board import Board
-# from game import Game
-# from game_logic import computer_move
-# from game_logic import remaining_moves, assign_move, change_player, determine_winner, computer_move
 from copy import deepcopy
 import secrets
 
 player_list = ["Computer", "Computer"]
 simulations = 10
-# depth = 3
 
 
 def assign_result_value(result):
@@ -16,13 +11,10 @@ def assign_result_value(result):
     elif result == "player 1":
         return -2
     elif result == "player 2":
-        return 2
+        return 4
 
 
 def computer_move(current_game):
-    """
-    Pseudo AI placeholder that generates random moves for computer player
-    """
     comp_move = secrets.choice(current_game.remaining_moves())
     row, col = comp_move[0], comp_move[1]
     return row, col
@@ -30,11 +22,10 @@ def computer_move(current_game):
 
 def sim_game_loop(current_board, players):
     temp_game = deepcopy(current_board)
-    # temp_game.board = copy(current_board.board)
-    # temp_game.move_list = copy(current_board.move_list)
-    active_player = 2
-    # player1 = players[0]
-    # player2 = players[1]
+    if temp_game.active_player == 1:
+        active_player = 1
+    else:
+        active_player = 2
     counter = 0
     first_row = 0
     first_col = 0
@@ -57,10 +48,7 @@ def sim_game_loop(current_board, players):
 
 
 def get_best_move(current_board, sim_num):
-    # temp_game = Game()
     temp_game = deepcopy(current_board)
-    # temp_game.data = copy(current_board.board.data)
-    # temp_game.move_list = copy(current_board.move_list)
     best_score = 0
     best_row = 0
     best_col = 0
@@ -74,7 +62,3 @@ def get_best_move(current_board, sim_num):
             best_col = first_col
 
     return best_row, best_col
-
-
-# board = Board()
-# print(get_best_move(board, simulations))
