@@ -124,8 +124,7 @@ def draw_stones(game):
 def display_score(board, players):
     player1 = players[0]
     player2 = players[1]
-    score_p1 = board.check_score(1)
-    score_p2 = board.check_score(2)
+    board.update_score()
     text_color = "white"
     box_color = "black"
     vert_pos = board_size + offset
@@ -135,8 +134,8 @@ def display_score(board, players):
                                  (round(board_size * .025)))
 
     score_dict = dict(
-        p1=["Player 1 ("+player1+") score: "+str(score_p1), p1_score_pos],
-        p2=["Player 2 ("+player2+") score: "+str(score_p2), p2_score_pos],
+        p1=["Player 1 ("+player1+") score: "+str(board.score_p1), p1_score_pos],
+        p2=["Player 2 ("+player2+") score: "+str(board.score_p2), p2_score_pos],
     )
 
     text_surfaces = {}
@@ -167,7 +166,7 @@ def game_loop(players):
             if len(game.remaining_moves()) < 1:
                 running = False
             else:
-                ai_row, ai_col = get_best_move(game, 100)
+                ai_row, ai_col = get_best_move(game, 100, 49)
                 game.assign_move(ai_row, ai_col)
                 draw_stones(game)
                 active_player = game.change_player()
@@ -192,12 +191,11 @@ def game_loop(players):
             display_score(game, players)
             pygame.display.flip()
 
+    game.update_score()
     game.determine_winner()
-    score_p1 = game.check_score(1)
-    score_p2 = game.check_score(2)
     display_game_results(game.result,
-                         score_p1,
-                         score_p2,
+                         game.score_p1,
+                         game.score_p2,
                          player1,
                          player2)
     waiting = True

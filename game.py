@@ -231,6 +231,10 @@ class Game:
                         possible_moves.append([row_index, col_index])
         return possible_moves
 
+    def update_score(self):
+        self.score_p1 = self.check_score(1)
+        self.score_p2 = self.check_score(2)
+
     def determine_winner(self):
         score_p1 = self.check_score(1)
         score_p2 = self.check_score(2)
