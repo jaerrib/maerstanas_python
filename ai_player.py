@@ -1,8 +1,6 @@
 from copy import deepcopy
 import secrets
 
-player_list = ["Computer", "Computer"]
-
 
 def assign_result_value(current_game):
     game_value = 0
