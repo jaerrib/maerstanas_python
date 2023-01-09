@@ -102,7 +102,7 @@ def draw_stones(game):
     stones = {}
     for i in range(0, length):
         key = str(i)
-        if i%2 == 0:
+        if i % 2 == 0:
             active_color = colors[0]
         else:
             active_color = colors[1]
