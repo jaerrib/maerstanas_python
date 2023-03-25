@@ -12,7 +12,7 @@ screen_display = pygame.display
 screen_display.set_caption("Mǽrstánas_python")
 
 text_color = "white"
-color_light = "ivory4"
+hover_color = (26, 95, 180)
 display_font = "NotoSans-Regular.ttf"
 title_font = pygame.font.Font(display_font, (round(board_size * .035)))
 text_font = pygame.font.Font(display_font, (round(board_size * .025)))
@@ -43,7 +43,7 @@ def check_hover_status():
                 and options[i][1] <= mouse[1] <= options[i][1] + b_height:
             pygame.draw.rect(
                 surface,
-                color_light,
+                hover_color,
                 [b_left_pos, options[i][1], b_width, b_height]
             )
 
