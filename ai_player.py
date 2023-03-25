@@ -67,10 +67,6 @@ def get_best_move(current_board, sim_num, depth):
         returned_score, first_row, first_col = sim_game_loop(temp_game,
                                                              players,
                                                              depth)
-        if x == 1:
-            best_score = returned_score
-            best_row = first_row
-            best_col = first_col
         if returned_score > best_score:
             best_score = returned_score
             best_row = first_row
