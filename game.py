@@ -73,7 +73,6 @@ class Game:
         if played at a given board position
         """
         adjacent_positions = self.find_adjacent(row_number, col_number)
-        # Counts the number of hinges a potential position would have
         hinges = 0
         for position in range(0, len(adjacent_positions)):
             row_to_check = adjacent_positions[position][0]
@@ -137,10 +136,8 @@ class Game:
         (3) Checking if the move would create 4 immediate hinges
         (4) Checking if the move would cause any adjacent stones to have more
         than 3 hinges
-        If the move is valid, the player number is assigned to the board position
         """
-        if 1 <= row_number < 9 \
-                and 1 <= col_number < 9:
+        if 1 <= row_number < 9  and 1 <= col_number < 9:
             player_move = self.board.data[row_number][col_number]
         else:
             # Invalid move - outside board confines
@@ -165,7 +162,6 @@ class Game:
         """
         calculated_score: int = 0
 
-        # Scores all vertical hinges
         for row_index in range(1, 9):
             for col_index in range(0, 9):
                 board_position = self.board.data[row_index][col_index]
@@ -178,7 +174,6 @@ class Game:
                 elif board_position == 3 and comparison_position == player:
                     calculated_score += 1
 
-        # Scores all horizontal hinges
         for row_index in range(1, 9):
             for col_index in range(0, 9):
                 board_position = self.board.data[row_index][col_index]
@@ -245,7 +240,6 @@ class Game:
         else:
             result = "player 2"
         self.result = result
-        # return result, score_p1, score_p2
 
     def assign_move(self, row, col):
         self.board.data[row][col] = self.active_player
