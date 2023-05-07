@@ -129,19 +129,21 @@
             {% for row in range(1, 8) %}
                 <div class="d-flex">
                     {% for col in range(1, 8) %}
+                        <a href="/process/{{row}}/{{col}}">
                         {% if (row + col) is divisibleby 2 %}
                             <div class="dark_square">
                         {% else %}
                             <div class="light_square">
                         {% endif %}
-                            <a href="/process/{{row}}/{{col}}">
-                            {% if board[row][col] == 1 %}
-                                <img src="{{ url_for('static', filename='img/dark_stone.svg') }}" class="stone" alt="dark stone">
-                            {% elif board[row][col] == 2 %}
-                                <img src="{{ url_for('static', filename='img/light_stone.svg') }}" class="stone" alt="light stone">
-                            {% endif %}
-                            </a>
+
+                        {% if board[row][col] == 1 %}
+                            <img src="{{ url_for('static', filename='img/dark_stone.svg') }}" class="stone" alt="dark stone">
+                        {% elif board[row][col] == 2 %}
+                            <img src="{{ url_for('static', filename='img/light_stone.svg') }}" class="stone" alt="light stone">
+                        {% endif %}
+
                         </div>
+                        </a>
                     {% endfor %}
                 </div>
         {% endfor %}
