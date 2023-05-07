@@ -1,47 +1,15 @@
+from board import Board
+
 class Game:
 
     def __init__(self):
-        self.board = self.Board()
+        self.board = Board()
         self.move_list = {}
         self.move_left = []
         self.score_p1 = 0
         self.score_p2 = 0
         self.result = ""
         self.active_player = 1
-
-    class Board:
-
-        def __init__(self):
-            self.data = []
-            self.move_list = {}
-            self.create()
-
-        def create(self):
-            size = 9
-            empty = 0
-            edge = 3
-            for row_num in range(size):
-                row = []
-                for col_num in range(size):
-                    row.append(empty)
-                self.data.append(row)
-
-            for col_num in range(size):
-                self.data[0][col_num] = edge
-                self.data[8][col_num] = edge
-            for row_num in range(1, size - 1):
-                self.data[row_num][0] = edge
-                self.data[row_num][8] = edge
-
-    class DarkStone:
-
-        def __init__(self):
-            pass
-
-    class LightStone:
-
-        def __int__(self):
-            pass
 
     # def convert_row_to_num(character):
     #     """

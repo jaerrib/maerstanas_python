@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+.container {
+    margin: 0 auto;
+    width: 490px;
+    align-items: center;
+}
+
+/* End Container */
+
+.score {
+    /*background-color: black;*/
+    align-items: center;
+    justify-content: stretch;
+    /*margin: 10px 0;*/
+    /*padding: 10px 5px;*/
+}
+
+ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: whitesmoke;
+    font-weight: bold;
+    list-style-type: none;
+}
+
+
+/*a,*/
+/*a:active,*/
+/*a:hover,*/
+/*a:visited {*/
+/*    color: #cdab8f;*/
+/*}*/
+
+/* End Score */
+
+
+
+
+button:hover {
+    background-color: rgba(0, 0, 128, 0.75);
+}
+
+.row {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.dark_square,
+.light_square {
+    border: 0;
+    font-size: 48px;
+    /*height: 70px;*/
+    /*width: 70px;*/
+    width: 2em;
+    text-align: center;
+    height: 2em;
+    vertical-align: middle;
+    padding: 5px;
+}
+
+.square {
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    padding: 2em;
+}
+
+.stone {
+    max-height: 100%;
+    max-width: 100%;
+    /*width: auto;*/
+    /*height: auto;*/
+    /*top: 0;*/
+    /*bottom: 0;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*margin: auto;*/
+}
+
+/*.square {*/
+/*    border: 0;*/
+/*    font-size: 48px;*/
+/*    height: 70px;*/
+/*    width: 70px;*/
+/*}*/
+
+
+.dark_square {
+    background-color: #6D4C41;
+            /*#63452c;*/
+}
+
+.light_square {
+    background-color: #BCAAA4;
+            /*#cdab8f;*/
+}
+
+/* End Board */
+
+#results {
+    background-color: black;
+    color: white;
+    margin-top: 5px;
+    text-align: center;
+}
+
+/* ENd Results */
