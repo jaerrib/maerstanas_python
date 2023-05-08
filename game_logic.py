@@ -1,0 +1,103 @@
+def find_adjacent(row_number, col_number):
+    """
+    Returns assigned value for positions adjacent to a given board position
+    """
+    adjacent_positions = [
+        [row_number - 1, col_number],
+        [row_number, col_number - 1],
+        [row_number, col_number + 1],
+        [row_number + 1, col_number]
+    ]
+    return adjacent_positions
+
+def valid_move(board, row, col):
+    """
+    Determines if a potential move would be valid by doing the following:
+    (1) Checking if the coordinates are within the confines of the board
+    (2) Checking if the position is occupied
+    (3) Checking if the move would create 4 immediate hinges
+    (4) Checking if the move would cause any adjacent stones to have more
+    than 3 hinges
+    """
+
+    if 1 <= row < 9 and 1 <= col < 9:
+        player_move = board[row][col]
+    else:
+        # Invalid move - outside board confines
+        return False
+    if player_move != 0:
+        # Invalid move - space occupied
+        return False
+    else:
+        if check_player_hinges(board, row, col):
+            # Invalid move - move would cause 4 immediate hinges
+            return False
+        elif check_adjacent_stones(board, row, col):
+            # Invalid move - an adjacent stone would have 4 hinges
+            return False
+        else:
+            return True
+
+
+def check_player_hinges(board, row_number, col_number):
+    """
+    Evaluates the number of hinges a player move would have
+    if played at a given board position
+    """
+    adjacent_positions = find_adjacent(row_number, col_number)
+    hinges = 0
+    for position in range(0, len(adjacent_positions)):
+        row_to_check = adjacent_positions[position][0]
+        col_to_check = adjacent_positions[position][1]
+        position_check = board[row_to_check][col_to_check]
+        if position_check != 0:
+            hinges += 1
+    if hinges > 3:
+        return True
+    else:
+        return False
+
+
+def hinge_check(board, row_number, col_number):
+    """
+    Counts the number of hinges a stone at a given position has
+    """
+    adjacent_positions = find_adjacent(row_number, col_number)
+    hinges = 0
+    for position in range(0, len(adjacent_positions)):
+        row_to_check = adjacent_positions[position][0]
+        col_to_check = adjacent_positions[position][1]
+        position_check = board[row_to_check][col_to_check]
+        if position_check == 3:
+            hinges += 1
+        elif position_check == 1 or position_check == 2:
+            hinges += 1
+    return hinges
+
+
+def check_adjacent_stones(board, row_number, col_number):
+    """
+    Determines if a move made at a given board position would cause any
+    adjacent stones to have more than 3 hinges. Edge and empty/vacant board
+    positions are ignored as they would zero hinges.
+    """
+    adjacent_positions = find_adjacent(row_number, col_number)
+    # Counts the number of hinges each adjacent stone has
+    # Open (value 0) and edge (value 3) positions are ignored
+    for i in range(0, len(adjacent_positions)):
+        row_position = int(adjacent_positions[i][0])
+        col_position = int(adjacent_positions[i][1])
+        board_value = board[row_position][col_position]
+        if board_value == 3 or board_value == 0:
+            pass
+        elif board_value == 1 or board_value == 2:
+            if hinge_check(board, row_position, col_position) >= 3:
+                return True
+    return False
+
+
+def assign_move(board, row, col, active_player):
+    board[row][col] = active_player
+    # key = "" + str(len(self.move_list)) + ""
+    # self.move_list[key] = [row, col]
+    return board
