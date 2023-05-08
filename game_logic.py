@@ -10,34 +10,6 @@ def find_adjacent(row_number, col_number):
     ]
     return adjacent_positions
 
-def valid_move(board, row, col):
-    """
-    Determines if a potential move would be valid by doing the following:
-    (1) Checking if the coordinates are within the confines of the board
-    (2) Checking if the position is occupied
-    (3) Checking if the move would create 4 immediate hinges
-    (4) Checking if the move would cause any adjacent stones to have more
-    than 3 hinges
-    """
-
-    if 1 <= row < 9 and 1 <= col < 9:
-        player_move = board[row][col]
-    else:
-        # Invalid move - outside board confines
-        return False
-    if player_move != 0:
-        # Invalid move - space occupied
-        return False
-    else:
-        if check_player_hinges(board, row, col):
-            # Invalid move - move would cause 4 immediate hinges
-            return False
-        elif check_adjacent_stones(board, row, col):
-            # Invalid move - an adjacent stone would have 4 hinges
-            return False
-        else:
-            return True
-
 
 def check_player_hinges(board, row_number, col_number):
     """
@@ -102,6 +74,125 @@ def change_player(active_player):
     elif active_player == 2:
         active_player = 1
     return active_player
+
+
+def valid_move(board, row, col):
+    """
+    Determines if a potential move would be valid by doing the following:
+    (1) Checking if the coordinates are within the confines of the board
+    (2) Checking if the position is occupied
+    (3) Checking if the move would create 4 immediate hinges
+    (4) Checking if the move would cause any adjacent stones to have more
+    than 3 hinges
+    """
+
+    if 1 <= row < 9 and 1 <= col < 9:
+        player_move = board[row][col]
+    else:
+        # Invalid move - outside board confines
+        return False
+    if player_move != 0:
+        # Invalid move - space occupied
+        return False
+    else:
+        if check_player_hinges(board, row, col):
+            # Invalid move - move would cause 4 immediate hinges
+            return False
+        elif check_adjacent_stones(board, row, col):
+            # Invalid move - an adjacent stone would have 4 hinges
+            return False
+        else:
+            return True
+
+
+def check_score(board, player):
+    """
+    Evaluates the score of current board positions, first looping through the
+    vertical hinges then the horizontal ones.
+    """
+    calculated_score: int = 0
+
+    for row_index in range(1, 9):
+        for col_index in range(0, 9):
+            board_position = board[row_index][col_index]
+            comparison_position = board[row_index - 1][col_index]
+            if comparison_position == player \
+                    and board_position == player:
+                calculated_score += 1
+            elif comparison_position == 3 and board_position == player:
+                calculated_score += 1
+            elif board_position == 3 and comparison_position == player:
+                calculated_score += 1
+
+    for row_index in range(1, 9):
+        for col_index in range(0, 9):
+            board_position = board[row_index][col_index]
+            comparison_position = board[row_index][col_index - 1]
+            if comparison_position == player \
+                    and board_position == player:
+                calculated_score += 1
+            elif comparison_position == 3 and board_position == player:
+                calculated_score += 1
+            elif board_position == 3 and comparison_position == player:
+                calculated_score += 1
+    return calculated_score
+
+
+def viable_moves(board):
+    """
+    Cycles through board positions starting at A1 (1,1). If a position is
+    valid, viable_moves is True and play is allowed to continue. If a
+    position is not valid, the next position is assessed until the entire
+    board has been checked.
+    """
+    for row_index in range(1, 9):
+        for col_index in range(1, 9):
+            if board[row_index][col_index] != 0:
+                pass
+            else:
+                if check_player_hinges(board, row_index, col_index):
+                    pass
+                elif check_adjacent_stones(board, row_index, col_index):
+                    pass
+                else:
+                    return True
+
+
+def remaining_moves(board):
+    """
+    Cycles through board positions starting at A1 (1,1). If a position is
+    a potentially valid move, it is appended to an array which is then used
+    when the pseudo AI randomly selects its move.
+    """
+    possible_moves = []
+    for row_index in range(1, 9):
+        for col_index in range(1, 9):
+            if board[row_index][col_index] != 0:
+                pass
+            else:
+                if check_player_hinges(board, row_index, col_index):
+                    pass
+                elif check_adjacent_stones(board, row_index, col_index):
+                    pass
+                else:
+                    possible_moves.append([row_index, col_index])
+    return possible_moves
+
+
+# def update_score(self):
+#     self.score_p1 = self.check_score(1)
+#     self.score_p2 = self.check_score(2)
+
+
+def determine_winner(score_p1, score_p2):
+    if score_p1 == score_p2:
+        result = "tie"
+    elif score_p1 > score_p2:
+        result = "player 1"
+    else:
+        result = "player 2"
+    return result
+
 
 def assign_move(board, row, col, active_player):
     board[row][col] = active_player
