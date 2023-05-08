@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, session
 from board import Board
-from game_logic import valid_move, assign_move
+from game_logic import valid_move, assign_move, change_player
 # from game import Game
 app = Flask(__name__)
 app.secret_key = "dev"
@@ -31,8 +31,7 @@ def reset():
 def process(row, col):
     if valid_move(session["board"], row, col):
         session["board"] = assign_move(session["board"], row, col, session["active_player"])
-    print(session["board"])
-
+    session["active_player"] = change_player(session["active_player"])
     return redirect("/")
 
 if __name__ == "__main__":

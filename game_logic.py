@@ -96,6 +96,13 @@ def check_adjacent_stones(board, row_number, col_number):
     return False
 
 
+def change_player(active_player):
+    if active_player == 1:
+        active_player = 2
+    elif active_player == 2:
+        active_player = 1
+    return active_player
+
 def assign_move(board, row, col, active_player):
     board[row][col] = active_player
     # key = "" + str(len(self.move_list)) + ""
