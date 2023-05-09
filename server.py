@@ -18,7 +18,8 @@ def index():
     return render_template("index-alt.html",
                            board=session["board"],
                            score_p1=session["score_p1"],
-                           score_p2=session["score_p2"] )
+                           score_p2=session["score_p2"],
+                           active_player=session["active_player"])
 
 @app.route("/reset")
 def reset():
