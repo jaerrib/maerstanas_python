@@ -1,25 +1,23 @@
 from flask import Flask, render_template, redirect, session
-from board import Board
-from game_logic import valid_move, assign_move, change_player, check_score
+from game import Game
+from game_logic import valid_move, assign_move, change_player, update_score
 app = Flask(__name__)
 app.secret_key = "dev"
 
 @app.route("/")
 def index():
-    if "board" not in session:
-        board = Board()
-        session["move_list"] = {}
-        session["move_left"] = []
-        session["score_p1"] = 0
-        session["score_p2"] = 0
-        session["result"] = ""
-        session["active_player"] = 1
-        session["board"] = board.data
-    return render_template("index-alt.html",
-                           board=session["board"],
-                           score_p1=session["score_p1"],
-                           score_p2=session["score_p2"],
-                           active_player=session["active_player"])
+    if "data" not in session:
+        game = Game()
+        session["data"] = {
+            "move_list": game.move_list,
+            "moves_left": game.moves_left,
+            "score_p1": game.score_p1,
+            "score_p2": game.score_p2,
+            "result": game.result,
+            "active_player": game.active_player,
+            "board": game.board.data
+        }
+    return render_template("index-alt.html", data=session["data"])
 
 @app.route("/reset")
 def reset():
@@ -28,11 +26,11 @@ def reset():
 
 @app.route("/process/<int:row>/<int:col>")
 def process(row, col):
-    if valid_move(session["board"], row, col):
-        session["board"] = assign_move(session["board"], row, col, session["active_player"])
-        session["score_p1"] = check_score(session["board"], 1)
-        session["score_p2"] = check_score(session["board"], 2)
-        session["active_player"] = change_player(session["active_player"])
+    if valid_move(session["data"], row, col):
+        session["data"] = assign_move(session["data"], row, col)
+        session["data"] = update_score(session["data"])
+        session["data"] = change_player(session["data"])
+        print(session["data"]["move_list"])
     return redirect("/")
 
 if __name__ == "__main__":

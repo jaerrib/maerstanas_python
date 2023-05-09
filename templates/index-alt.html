@@ -118,10 +118,10 @@
         <div class="container">
         <!-- Score -->
             <div class="d-flex p-1 mt-2">
-                {% set score = [score_p1, score_p2] %}
+                {% set score = [data.score_p1, data.score_p2] %}
                 {% for player in range(1, 3) %}
                     <p class="ms-3">
-                    {% if player == active_player %}
+                    {% if player == data.active_player %}
                         <span class="text-primary fw-bold">
                     {% else %}
                         <span class="text-body">
@@ -142,9 +142,9 @@
                             <div class="light_square">
                         {% endif %}
 
-                        {% if board[row][col] == 1 %}
+                        {% if data.board[row][col] == 1 %}
                             <img src="{{ url_for('static', filename='img/dark_stone.svg') }}" class="stone" alt="dark stone">
-                        {% elif board[row][col] == 2 %}
+                        {% elif data.board[row][col] == 2 %}
                             <img src="{{ url_for('static', filename='img/light_stone.svg') }}" class="stone" alt="light stone">
                         {% endif %}
 

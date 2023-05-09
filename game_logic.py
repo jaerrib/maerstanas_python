@@ -1,3 +1,8 @@
+def convert_num_to_row(num):
+    rows = ["A", "B", "C", "D", "E", "F", "G"]
+    return rows[num - 1]
+
+
 def find_adjacent(row_number, col_number):
     """
     Returns assigned value for positions adjacent to a given board position
@@ -68,15 +73,15 @@ def check_adjacent_stones(board, row_number, col_number):
     return False
 
 
-def change_player(active_player):
-    if active_player == 1:
-        active_player = 2
-    elif active_player == 2:
-        active_player = 1
-    return active_player
+def change_player(data):
+    if data["active_player"] == 1:
+        data["active_player"] = 2
+    elif data["active_player"] == 2:
+        data["active_player"] = 1
+    return data
 
 
-def valid_move(board, row, col):
+def valid_move(data, row, col):
     """
     Determines if a potential move would be valid by doing the following:
     (1) Checking if the coordinates are within the confines of the board
@@ -87,7 +92,7 @@ def valid_move(board, row, col):
     """
 
     if 1 <= row < 9 and 1 <= col < 9:
-        player_move = board[row][col]
+        player_move = data["board"][row][col]
     else:
         # Invalid move - outside board confines
         return False
@@ -95,10 +100,10 @@ def valid_move(board, row, col):
         # Invalid move - space occupied
         return False
     else:
-        if check_player_hinges(board, row, col):
+        if check_player_hinges(data["board"], row, col):
             # Invalid move - move would cause 4 immediate hinges
             return False
-        elif check_adjacent_stones(board, row, col):
+        elif check_adjacent_stones(data["board"], row, col):
             # Invalid move - an adjacent stone would have 4 hinges
             return False
         else:
@@ -179,9 +184,10 @@ def remaining_moves(board):
     return possible_moves
 
 
-# def update_score(self):
-#     self.score_p1 = self.check_score(1)
-#     self.score_p2 = self.check_score(2)
+def update_score(data):
+    data["score_p1"] = check_score(data["board"], 1)
+    data["score_p2"] = check_score(data["board"], 2)
+    return data
 
 
 def determine_winner(score_p1, score_p2):
@@ -194,8 +200,8 @@ def determine_winner(score_p1, score_p2):
     return result
 
 
-def assign_move(board, row, col, active_player):
-    board[row][col] = active_player
-    # key = "" + str(len(self.move_list)) + ""
-    # self.move_list[key] = [row, col]
-    return board
+def assign_move(data, row, col):
+    data["board"][row][col] = data["active_player"]
+    key = "" + str(len(data["move_list"])) + ""
+    data["move_list"][key] = convert_num_to_row(col)+str(row)
+    return data
