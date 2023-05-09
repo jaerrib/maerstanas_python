@@ -28,9 +28,6 @@ def reset():
 def process(row, col):
     if valid_move(session["data"], row, col):
         session["data"] = assign_move(session["data"], row, col)
-        session["data"] = update_score(session["data"])
-        session["data"] = change_player(session["data"])
-        print(session["data"]["move_list"])
     return redirect("/")
 
 if __name__ == "__main__":
