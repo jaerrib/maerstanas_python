@@ -203,7 +203,7 @@ def determine_winner(score_p1, score_p2):
 def assign_move(data, row, col):
     data["board"][row][col] = data["active_player"]
     key = "" + str(len(data["move_list"])) + ""
-    data["move_list"][key] = convert_num_to_row(col)+str(row)
+    data["move_list"][key] = (data["active_player"], convert_num_to_row(col)+str(row))
     data = update_score(data)
     data = change_player(data)
     return data
