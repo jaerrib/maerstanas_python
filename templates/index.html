@@ -5,12 +5,42 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        /*
+        @licstart  The following is the entire license notice for the
+        JavaScript code in this page.
+
+        Copyright (C) 2023 John Beers (jaerrib@tutanota.com)
+
+        The JavaScript code in this page is free software: you can
+        redistribute it and/or modify it under the terms of the GNU
+        General Public License (GNU GPL) as published by the Free Software
+        Foundation, either version 3 of the License, or (at your option)
+        any later version.  The code is distributed WITHOUT ANY WARRANTY;
+        without even the implied warranty of MERCHANTABILITY or FITNESS
+        FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+        As additional permission under GNU GPL version 3 section 7, you
+        may distribute non-source (e.g., minimized or compacted) forms of
+        that code without the copy of the GNU GPL normally required by
+        section 4, provided you include this license notice and a URL
+        through which recipients can access the Corresponding Source.
+
+
+        @licend  The above is the entire license notice
+        for the JavaScript code in this page.
+        */
+    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}" defer></script>
     <title>Mǽrstánas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 </head>
 
 <body>
+    <div class="container">
+
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Mǽrstánas</a>
@@ -31,8 +61,8 @@
                             New Game
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">1 player</a></li>
-                            <li><a class="dropdown-item" href="#">2 players</a></li>
+                            <li><a class="dropdown-item disabled" href="#">1 player</a></li>
+                            <li><a class="dropdown-item" href="/reset">2 players</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -40,7 +70,91 @@
         </div>
     </nav>
 
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="rules" aria-labelledby="rules">
+    <div class="d-flex flex-wrap">
+<!--        Left Col-->
+        <div>
+<!--            Game Area-->
+            <div>
+<!--                Letter Row-->
+            <div class="d-flex">
+            <div class="square"></div>
+            {% for letter in "ABCDEFG" %}
+            <div class="square">{{letter}}</div>
+            {% endfor %}
+            </div>
+<!--                End Letter Row-->
+<!--                Game Board-->
+                {% for row in range(1, 8) %}
+                <div class="d-flex">
+                    <div class="square">{{row}}</div>
+                    {% for col in range(1, 8) %}
+                        <a href="/process/{{row}}/{{col}}">
+                        {% if (row + col) is divisibleby 2 %}
+                            <div class="dark_square">
+                        {% else %}
+                            <div class="light_square">
+                        {% endif %}
+
+                        {% if data.board[row][col] == 1 %}
+                            <img src="{{ url_for('static', filename='img/dark_stone.svg') }}" class="stone" alt="dark stone">
+                        {% elif data.board[row][col] == 2 %}
+                            <img src="{{ url_for('static', filename='img/light_stone.svg') }}" class="stone" alt="light stone">
+                        {% endif %}
+
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+<!--            End Game Board-->
+            </div>
+<!--End Game Area-->
+        </div>
+
+
+
+        <div class="ms-4 w-50">
+      <!-- Score -->
+            <div class="d-flex mt-2">
+                {% set score = [data.score_p1, data.score_p2] %}
+                {% for player in range(1, 3) %}
+                    <h2 class="p-3">
+                    {% if player == data.active_player %}
+                        <span class="text-primary fw-bold">
+                    {% else %}
+                        <span class="text-body">
+                    {% endif %}
+                    Player {{player}}: </span>{{score[player - 1]}}</h2>
+                {% endfor %}
+            </div>
+        <!-- End Score -->
+<!--    Moves-->
+    <div class="row">
+
+        <div class="container mt-1">
+
+            <div class="overflow-auto form-control overflow-y-scroll" style="height: 475px">
+                <h3>Moves:</h3>
+                <p>
+                {% for move in data["move_list"] %}
+                <span class="text-secondary">(Player {{data["move_list"][move][0]}})</span> {{data["move_list"][move][1]}},
+                {% endfor %}
+                {% if data["moves_left"] == [] %}
+                    <span class="text-danger">GAME OVER</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+<!--            End Moves-->
+
+    </div>
+
+
+</div>
+
+    <!-- Rules -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="rules" aria-labelledby="rules">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasExampleLabel">How to Play</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -57,41 +171,33 @@
                 <h3>Objective</h3>
                 <p>Players try to achieve the highest score by making the most number of connections.</p>
                 <h3>Starting the game</h3>
-                <p>The board begins empty (similar to Go). Traditionally, the player using the darker colored stones
-                    would play
-                    first, but players may decide who goes first in whatever manner seems appropriate. Players then
-                    alternate taking
-                    turns.</p>
+                <p>The board begins empty (similar to Go). The player using the darker colored stones
+                    goes first. Players then alternate taking turns.</p>
                 <h2>Playing the game</h2>
                 <p>On a player's turn, the player places one stone (<em>stán</em>) on a square on the game board. Stones
                     (<em>stánas</em>) must be placed within the square, not on the intersections as in Go. Stones may be
-                    placed on any
-                    empty square, either standing alone or adjacent to another stone of either color (creating a
-                    <em>heorr</em> or
-                    "hinge").
+                    placed on any empty square, either standing alone or adjacent to another stone of either color
+                    (creating a <em>heorr</em> or "hinge").
                 </p>
                 <h3>Placement limitations</h3>
                 <p>
                     Stones may have no more than <strong>three</strong> hinges; the fourth side <em>must always remain
-                        free</em>.
-                    Stones may not be placed such that four hinges are created immediately. The edge of the board counts
-                    as
-                    <strong>one</strong> hinge; corners count as <strong>two</strong> because they border two edges.
-                    Play continues
-                    until no more viable moves remain.
+                    free</em>. Stones may not be placed such that four hinges are created immediately. The edge of the
+                    board counts as <strong>one</strong> hinge; corners count as <strong>two</strong> because they
+                    border two edges. Play continues until no more viable moves remain.
                 </p>
                 <h2>Scoring</h2>
                 <p>
                     Players receive one point for each stone or edge that is adjacent to one of their own stones
-                    (<em>freóndlíc
-                        heorr</em> or "friendly hinge"). The player with the highest score wins. Note that tie games are
-                    possible.
+                    (<em>freóndlíc heorr</em> or "friendly hinge"). The player with the highest score wins. Note that
+                    tie games are possible.
                 </p>
                 <h2>License</h2>
                 Mǽrstánas is licensed as <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA</a>
             </div>
         </div>
     </div>
+<!--    End Rules-->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"

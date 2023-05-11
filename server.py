@@ -17,7 +17,7 @@ def index():
             "active_player": game.active_player,
             "board": game.board.data
         }
-    return render_template("index-alt.html", data=session["data"])
+    return render_template("index.html", data=session["data"])
 
 @app.route("/reset")
 def reset():
