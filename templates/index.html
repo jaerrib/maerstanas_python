@@ -61,8 +61,8 @@
                             New Game
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item disabled" href="#">1 player</a></li>
-                            <li><a class="dropdown-item" href="/reset">2 players</a></li>
+                            <li><a class="dropdown-item" href="/new_game/1">1 player</a></li>
+                            <li><a class="dropdown-item" href="/new_game/2">2 players</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -135,10 +135,10 @@
 
             <div class="overflow-auto form-control overflow-y-scroll" style="height: 475px">
                 <h3>Moves:</h3>
+                    {% for move in data["move_list"]|reverse %}
                 <p>
-                {% for move in data["move_list"] %}
-                <span class="text-secondary">(Player {{data["move_list"][move][0]}})</span> {{data["move_list"][move][1]}},
-                {% endfor %}
+                    <span class="text-secondary">{{data["move_list"]|length - loop.index + 1}}.</span> {{data["move_list"][move][1]}} (Player {{data["move_list"][move][0]}})
+                    {% endfor %}
                 {% if data["moves_left"] == [] %}
                     <span class="text-danger">GAME OVER</span>
                     {% endif %}
