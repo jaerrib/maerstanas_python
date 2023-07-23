@@ -47,8 +47,6 @@ def process(row, col):
     if valid_move(session["data"], row, col):
         session["data"] = assign_move(session["data"], row, col)
     session["data"]["game_over"] = session["data"]["moves_left"] == []
-    print(session["data"]["moves_left"])
-    print(session["data"]["game_over"])
     return redirect("/")
 
 if __name__ == "__main__":
