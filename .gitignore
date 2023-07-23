@@ -7,3 +7,6 @@
 __pycache__/board.cpython-311.pyc
 __pycache__/game_logic.cpython-311.pyc
 __pycache__/graphics.cpython-311.pyc
+__pycache__/ai_player.cpython-311.pyc
+.gitignore
+__pycache__/game.cpython-311.pyc
