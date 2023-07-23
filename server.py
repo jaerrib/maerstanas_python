@@ -18,6 +18,7 @@ def index():
             "result": game.result,
             "active_player": game.active_player,
             "board": game.board.data,
+            "game_over": False,
             "player2": session["player2"]
         }
     return render_template("index.html", data=session["data"])
@@ -38,13 +39,16 @@ def new_one_player_game():
 
 @app.route("/reset")
 def reset():
-    session.clear()
+    session.pop("data")
     return redirect("/")
 
 @app.route("/process/<int:row>/<int:col>")
 def process(row, col):
     if valid_move(session["data"], row, col):
         session["data"] = assign_move(session["data"], row, col)
+    session["data"]["game_over"] = session["data"]["moves_left"] == []
+    print(session["data"]["moves_left"])
+    print(session["data"]["game_over"])
     return redirect("/")
 
 if __name__ == "__main__":
