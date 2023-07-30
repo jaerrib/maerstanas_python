@@ -100,10 +100,10 @@
                     <h2 class="p-3">
                         {% if player == data.active_player %}
                         <span class="text-primary fw-bold">
-                            {% else %}
-                            <span class="text-body">
-                                {% endif %}
-                                Player {{player}}: </span>{{score[player - 1]}}
+                        {% else %}
+                        <span class="text-body">
+                        {% endif %}
+                        Player {{player}}: </span>{{score[player - 1]}}
                     </h2>
                     {% endfor %}
                 </div>
@@ -113,10 +113,10 @@
 
                     <div class="container mt-1">
 
-                        <div class="overflow-auto form-control overflow-y-scroll" style="height: 475px">
+                        <div class="overflow-auto form-control overflow-y-scroll" style="height: 25rem">
                             <h3>Moves:</h3>
                             {% if data["game_over"] %}
-                            <h4 class="text-info">GAME OVER</h4>
+                            <h4 class="text-info fw-bold">GAME OVER</h4>
                             {% endif %}
                             {% for move in data["move_list"]|reverse %}
                             <p>
