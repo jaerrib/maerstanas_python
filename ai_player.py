@@ -13,7 +13,8 @@ def assign_result_value(current_game):
     elif current_game.result == "player 2":
         game_value = -2
     difference = abs(score_p1 - score_p2)
-    game_value = game_value * difference
+    adjustment = 48 - len(current_game.move_list)
+    game_value = game_value * difference * adjustment
     return game_value
 
 
@@ -43,9 +44,9 @@ def sim_game_loop(current_board, players, depth):
                     first_row = ai_row
                     first_col = ai_col
                     first_move = False
-                temp_game.assign_move(ai_row, ai_col)
-                temp_game.update_score()
-                active_player = temp_game.change_player()
+            temp_game.assign_move(ai_row, ai_col)
+            temp_game.update_score()
+            active_player = temp_game.change_player()
         depth_counter -= 1
 
     temp_game.determine_winner()
@@ -58,16 +59,16 @@ def sim_game_loop(current_board, players, depth):
 
 def get_best_move(current_board, sim_num, depth):
     temp_game = deepcopy(current_board)
-    best_score = 0
-    best_row = 0
-    best_col = 0
+    # Using -1000 simply ensures that losses and ties are scored
+    # better than the initial assignment
+    best_score = -1000
     players = ["Computer", "Computer"]
 
     for x in range(0, sim_num):
         returned_score, first_row, first_col = sim_game_loop(temp_game,
                                                              players,
                                                              depth)
-        if returned_score > best_score:
+        if returned_score >= best_score:
             best_score = returned_score
             best_row = first_row
             best_col = first_col
