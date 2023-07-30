@@ -1,22 +1,23 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    /*font-family: sans-serif;*/
 }
 
 .dark_square,
 .light_square,
 .square {
-    font-size: 36px;
+    aspect-ratio: 1 / 1;
+    font-size: 2em;
     height: 2em;
     padding: 5px;
     text-align: center;
-    vertical-align: middle;
-    width: 2em;
+    /*vertical-align: middle;*/
+    /*width: 4em;*/
 }
 
 .square {
-    padding: 15px;
+    /*padding: 15px;*/
 }
 
 .side_square {

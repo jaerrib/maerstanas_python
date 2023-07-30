@@ -5,32 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-        /*
-        @licstart  The following is the entire license notice for the
-        JavaScript code in this page.
-
-        Copyright (C) 2023 John Beers (jaerrib@tutanota.com)
-
-        The JavaScript code in this page is free software: you can
-        redistribute it and/or modify it under the terms of the GNU
-        General Public License (GNU GPL) as published by the Free Software
-        Foundation, either version 3 of the License, or (at your option)
-        any later version.  The code is distributed WITHOUT ANY WARRANTY;
-        without even the implied warranty of MERCHANTABILITY or FITNESS
-        FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-        As additional permission under GNU GPL version 3 section 7, you
-        may distribute non-source (e.g., minimized or compacted) forms of
-        that code without the copy of the GNU GPL normally required by
-        section 4, provided you include this license notice and a URL
-        through which recipients can access the Corresponding Source.
-
-
-        @licend  The above is the entire license notice
-        for the JavaScript code in this page.
-        */
-    </script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}" defer></script>
     <title>Mǽrstánas</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -95,10 +69,10 @@
                         {% for col in range(1, 8) %}
                         <a href="/process/{{row}}/{{col}}">
                             {% if (row + col) is divisibleby 2 %}
-                            <div class="dark_square">
+                                <div class="dark_square">
                                 {% else %}
                                 <div class="light_square">
-                                    {% endif %}
+                                {% endif %}
 
                                     {% if data.board[row][col] == 1 %}
                                     <img src="{{ url_for('static', filename='img/dark_stone.svg') }}" class="stone"
@@ -113,7 +87,7 @@
                         {% endfor %}
                     </div>
                     {% endfor %}
-                    <!--            End Game Board-->
+                    <!-- End Game Board -->
                 </div>
                 <!--End Game Area-->
             </div>
@@ -136,7 +110,7 @@
                     {% endfor %}
                 </div>
                 <!-- End Score -->
-                <!--    Moves-->
+                <!-- Moves -->
                 <div class="row">
 
                     <div class="container mt-1">
@@ -150,8 +124,8 @@
                             <p>
                                 <span class="text-secondary">{{data["move_list"]|length - loop.index + 1}}.</span>
                                 {{data["move_list"][move][1]}} (Player {{data["move_list"][move][0]}})
-                                {% endfor %}
                             </p>
+                                {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -170,12 +144,11 @@
             </div>
             <div class="offcanvas-body">
                 <div>
-                    <p><em><strong>Note:</strong> This web version of Mǽrstánas uses the 0.2.0 rule set.</em></p>
+                    <p><em><strong>Note:</strong> This web version of Mǽrstánas currently uses the 0.2.0 rule set.</em></p>
                     <h2>Overview</h2>
                     <p>
                         Mǽrstánas is a free libre open source abstract strategy game where players alternate placing
-                        stones
-                        within the squares of a 7x7 grid with the goal of creating connection points ("hinges") between
+                        stones within the squares of a 7x7 grid with the goal of creating connection points ("hinges") between
                         their own pieces or the edges of the board.
                     </p>
                     <h3>Objective</h3>
@@ -185,30 +158,26 @@
                         goes first. Players then alternate taking turns.</p>
                     <h2>Playing the game</h2>
                     <p>On a player's turn, the player places one stone (<em>stán</em>) on a square on the game board.
-                        Stones
-                        (<em>stánas</em>) must be placed within the square, not on the intersections as in Go. Stones
-                        may be
-                        placed on any empty square, either standing alone or adjacent to another stone of either color
+                        Stones (<em>stánas</em>) must be placed within the square, not on the intersections as in Go. Stones
+                        may be placed on any empty square, either standing alone or adjacent to another stone of either color
                         (creating a <em>heorr</em> or "hinge").
                     </p>
                     <h3>Placement limitations</h3>
                     <p>
                         Stones may have no more than <strong>three</strong> hinges; the fourth side <em>must always
-                            remain
-                            free</em>. Stones may not be placed such that four hinges are created immediately. The edge
-                        of the
-                        board counts as <strong>one</strong> hinge; corners count as <strong>two</strong> because they
+                        remain free</em>. Stones may not be placed such that four hinges are created immediately. The edge
+                        of the board counts as <strong>one</strong> hinge; corners count as <strong>two</strong> because they
                         border two edges. Play continues until no more viable moves remain.
                     </p>
                     <h2>Scoring</h2>
                     <p>
                         Players receive one point for each stone or edge that is adjacent to one of their own stones
                         (<em>freóndlíc heorr</em> or "friendly hinge"). The player with the highest score wins. Note
-                        that
-                        tie games are possible.
+                        that tie games are possible.
                     </p>
                     <h2>License</h2>
-                    Mǽrstánas is licensed as <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA</a>
+                    <p>Mǽrstánas is licensed as <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA</a></p>
+                    <strong><a href="https://codeberg.org/jaerrib/maerstanas">More information about Mǽrstánas</a></strong>
                 </div>
             </div>
         </div>
