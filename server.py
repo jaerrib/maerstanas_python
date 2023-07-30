@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, session
 from game import Game
-from game_logic import valid_move, assign_move, change_player, update_score
+from game_logic import valid_move, assign_move
+from ai_player import get_best_move
 app = Flask(__name__)
 app.secret_key = "dev"
 
@@ -46,6 +47,10 @@ def reset():
 def process(row, col):
     if valid_move(session["data"], row, col):
         session["data"] = assign_move(session["data"], row, col)
+    if (session["data"]["active_player"] == 2) and (session["data"]["player2"] == "computer"):
+        if len(session["data"]["moves_left"]):
+            best_row, best_col = get_best_move(session["data"], 100, 49)
+            session["data"] = assign_move(session["data"], best_row, best_col)
     session["data"]["game_over"] = session["data"]["moves_left"] == []
     return redirect("/")
 

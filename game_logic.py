@@ -1,7 +1,3 @@
-from ai_player import computer_move
-from copy import deepcopy
-from ai_player import sim_game_loop
-
 def convert_num_to_row(num):
     rows = ["A", "B", "C", "D", "E", "F", "G"]
     return rows[num - 1]
@@ -211,30 +207,4 @@ def assign_move(data, row, col):
     data = update_score(data)
     data = change_player(data)
     data["moves_left"] = remaining_moves(data["board"])
-    if (data["active_player"] == 2) and (data["player2"] == "computer"):
-        if not len(data["moves_left"]):
-            return data
-        else:
-        # best_row, best_col = get_best_move(data, 100, 49)
-            best_row, best_col = computer_move(data["moves_left"])
-        # print(best_row, best_col)
-            assign_move(data, best_row, best_col)
     return data
-
-
-def get_best_move(data, sim_num, depth):
-    temp_game = deepcopy(data)
-    best_score = 0
-    best_row = 0
-    best_col = 0
-    players = ["Computer", "Computer"]
-
-    for x in range(0, sim_num):
-        returned_score, first_row, first_col = sim_game_loop(temp_game,
-                                                             players,
-                                                             depth)
-        if returned_score > best_score:
-            best_score = returned_score
-            best_row = first_row
-            best_col = first_col
-    return best_row, best_col

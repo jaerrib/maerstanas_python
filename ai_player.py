@@ -1,10 +1,10 @@
 from copy import deepcopy
-# from game_logic import remaining_moves,\
-#     assign_move,\
-#     update_score,\
-#     change_player,\
-#     determine_winner,\
-#     check_score
+from game_logic import remaining_moves,\
+    assign_move,\
+    update_score,\
+    change_player,\
+    determine_winner,\
+    check_score
 
 import secrets
 
@@ -57,7 +57,7 @@ def sim_game_loop(data, players, depth):
                 temp_game = change_player(temp_game)
         depth_counter -= 1
 
-    temp_game["result"] = determine_winner(temp_game["scorep1"], temp_game["score_p2"])
+    temp_game["result"] = determine_winner(temp_game["score_p1"], temp_game["score_p2"])
     if comparison_player == 1:
         weighted_score = assign_result_value(temp_game)
     else:
@@ -65,19 +65,19 @@ def sim_game_loop(data, players, depth):
     return weighted_score, first_row, first_col
 
 
-# def get_best_move(data, sim_num, depth):
-#     temp_game = deepcopy(data)
-#     best_score = 0
-#     best_row = 0
-#     best_col = 0
-#     players = ["Computer", "Computer"]
-#
-#     for x in range(0, sim_num):
-#         returned_score, first_row, first_col = sim_game_loop(temp_game,
-#                                                              players,
-#                                                              depth)
-#         if returned_score > best_score:
-#             best_score = returned_score
-#             best_row = first_row
-#             best_col = first_col
-#     return best_row, best_col
+def get_best_move(data, sim_num, depth):
+    temp_game = deepcopy(data)
+    best_score = 0
+    best_row = 0
+    best_col = 0
+    players = ["Computer", "Computer"]
+
+    for x in range(0, sim_num):
+        returned_score, first_row, first_col = sim_game_loop(temp_game,
+                                                             players,
+                                                             depth)
+        if returned_score > best_score:
+            best_score = returned_score
+            best_row = first_row
+            best_col = first_col
+    return best_row, best_col
