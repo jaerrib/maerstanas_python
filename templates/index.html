@@ -11,21 +11,17 @@
 </head>
 
 <body>
-    <div class="container">
+    <div>
 
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Mǽrstánas</a>
+            <div class="container-fluid px-5">
+                <a class="navbar-brand fw-bold" href="#">Mǽrstánas</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item" data-bs-toggle="offcanvas" href="#rules" aria-controls="rules">
-                            <a class="nav-link" href="#">Rules</a>
-                        </li>
-
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
@@ -36,7 +32,9 @@
                                 <li><a class="dropdown-item" href="/new_game/2">2 players (local)</a></li>
                             </ul>
                         </li>
-
+                        <li class="nav-item" data-bs-toggle="offcanvas" href="#rules" aria-controls="rules">
+                            <a class="nav-link" href="#">Rules</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/reset">Restart</a>
                         </li>
@@ -47,20 +45,20 @@
             </div>
         </nav>
 
-        <div class="d-flex flex-wrap">
-            <!--        Left Col-->
+        <div class="container d-flex flex-wrap">
+            <!-- Left Col -->
             <div>
-                <!--            Game Area-->
+                <!-- Game Area -->
                 <div>
-                    <!--                Letter Row-->
+                    <!-- Letter Row -->
                     <div class="d-flex">
                         <div class="square"></div>
                         {% for letter in "ABCDEFG" %}
                         <div class="square">{{letter}}</div>
                         {% endfor %}
                     </div>
-                    <!--                End Letter Row-->
-                    <!--                Game Board-->
+                    <!-- End Letter Row -->
+                    <!--  Game Board -->
                     {% for row in range(1, 8) %}
                     <div class="d-flex">
                         <div class="square">{{row}}</div>
@@ -127,7 +125,7 @@
                         </div>
                     </div>
                 </div>
-                <!--            End Moves-->
+                <!-- End Moves -->
 
             </div>
 
