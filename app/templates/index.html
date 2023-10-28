@@ -11,39 +11,9 @@
 </head>
 
 <body>
-    <div>
-
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid px-5">
-                <a class="navbar-brand fw-bold" href="#">Mǽrstánas</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                New Game
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/new_game/1">1 player</a></li>
-                                <li><a class="dropdown-item" href="/new_game/2">2 players (local)</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item" data-bs-toggle="offcanvas" href="#rules" aria-controls="rules">
-                            <a class="nav-link" href="#">Rules</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/reset">Restart</a>
-                        </li>
-
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
+    {% block header %}
+    {% include "header.html" %}
+    {% endblock header %}
 
         <div class="container d-flex flex-wrap">
             <!-- Left Col -->
@@ -64,21 +34,17 @@
                         <div class="square">{{row}}</div>
                         {% for col in range(1, 8) %}
                         <a href="/process/{{row}}/{{col}}">
-                            {% if (row + col) is divisibleby 2 %}
-                                <div class="dark_square">
-                                {% else %}
-                                <div class="light_square">
+                            <div class="square bg-secondary border border-secondary-subtle">
+
+                                {% if data.board[row][col] == 1 %}
+                                <img src="{{ url_for('static', filename='img/dark_stone.svg') }}" class="stone"
+                                    alt="dark stone">
+                                {% elif data.board[row][col] == 2 %}
+                                <img src="{{ url_for('static', filename='img/light_stone.svg') }}" class="stone"
+                                    alt="light stone">
                                 {% endif %}
 
-                                    {% if data.board[row][col] == 1 %}
-                                    <img src="{{ url_for('static', filename='img/dark_stone.svg') }}" class="stone"
-                                        alt="dark stone">
-                                    {% elif data.board[row][col] == 2 %}
-                                    <img src="{{ url_for('static', filename='img/light_stone.svg') }}" class="stone"
-                                        alt="light stone">
-                                    {% endif %}
-
-                                </div>
+                            </div>
                         </a>
                         {% endfor %}
                     </div>
@@ -88,98 +54,42 @@
                 <!--End Game Area-->
             </div>
 
+            <!-- Right Col -->
+            <div class="ms-5 mt-md-3 mt-lg-0 w-50">
 
-
-            <div class="ms-4 w-50">
                 <!-- Score -->
-                <div class="d-flex mt-2">
-                    {% set score = [data.score_p1, data.score_p2] %}
-                    {% for player in range(1, 3) %}
-                    <h2 class="p-3">
-                        {% if player == data.active_player %}
-                        <span class="text-primary fw-bold">
-                        {% else %}
-                        <span class="text-body">
-                        {% endif %}
-                        Player {{player}}: </span>{{score[player - 1]}}
-                    </h2>
-                    {% endfor %}
+               <div class="d-flex mt-1">
+                    <p class="ps-2 text-body-emphasis fs-4 mb-0">Player 1: {{data.score_p1}}</p>
+                    <p class="ps-4 text-body-emphasis fs-4 mb-0">Player 2: {{data.score_p2}}</p>
                 </div>
                 <!-- End Score -->
+
                 <!-- Moves -->
                 <div class="row">
-
-                    <div class="container mt-1">
-
-                        <div class="overflow-auto form-control overflow-y-scroll" style="height: 25rem">
-                            <h3>Moves:</h3>
+                    <div class="container mt-3">
+                        <div class="overflow-auto form-control overflow-y-scroll" style="height: 24.5rem">
+                            <p class="fs-4">Moves:</p>
                             {% if data["game_over"] %}
-                            <h4 class="text-info fw-bold">GAME OVER</h4>
+                                <p class="fs-4 text-info fw-bold">GAME OVER</p>
                             {% endif %}
                             {% for move in data["move_list"]|reverse %}
-                            <p>
-                                <span class="text-secondary">{{data["move_list"]|length - loop.index + 1}}.</span>
-                                {{move[1]}} (Player {{move[0]}})
-                            </p>
-                                {% endfor %}
+                                <p>
+                                    <span class="text-secondary">{{data["move_list"]|length - loop.index + 1}}.</span>
+                                    {{move[1]}} (Player {{move[0]}})
+                                </p>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
                 <!-- End Moves -->
 
             </div>
-
-
         </div>
 
-        <!-- Rules -->
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="rules" aria-labelledby="rules">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasExampleLabel">How to Play</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <div>
-                    <p><em><strong>Note:</strong> This web version of Mǽrstánas currently uses the 0.2.0 rule set.</em></p>
-                    <h2>Overview</h2>
-                    <p>
-                        Mǽrstánas is a free libre open source abstract strategy game where players alternate placing
-                        stones within the squares of a 7x7 grid with the goal of creating connection points ("hinges") between
-                        their own pieces or the edges of the board.
-                    </p>
-                    <h3>Objective</h3>
-                    <p>Players try to achieve the highest score by making the most number of connections.</p>
-                    <h3>Starting the game</h3>
-                    <p>The board begins empty (similar to Go). The player using the darker colored stones
-                        goes first. Players then alternate taking turns.</p>
-                    <h2>Playing the game</h2>
-                    <p>On a player's turn, the player places one stone (<em>stán</em>) on a square on the game board.
-                        Stones (<em>stánas</em>) must be placed within the square, not on the intersections as in Go. Stones
-                        may be placed on any empty square, either standing alone or adjacent to another stone of either color
-                        (creating a <em>heorr</em> or "hinge").
-                    </p>
-                    <h3>Placement limitations</h3>
-                    <p>
-                        Stones may have no more than <strong>three</strong> hinges; the fourth side <em>must always
-                        remain free</em>. Stones may not be placed such that four hinges are created immediately. The edge
-                        of the board counts as <strong>one</strong> hinge; corners count as <strong>two</strong> because they
-                        border two edges. Play continues until no more viable moves remain.
-                    </p>
-                    <h2>Scoring</h2>
-                    <p>
-                        Players receive one point for each stone or edge that is adjacent to one of their own stones
-                        (<em>freóndlíc heorr</em> or "friendly hinge"). The player with the highest score wins. Note
-                        that tie games are possible.
-                    </p>
-                    <h2>License</h2>
-                    <p>Mǽrstánas is licensed as <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA</a></p>
-                    <strong><a href="https://codeberg.org/jaerrib/maerstanas">More information about Mǽrstánas</a></strong>
-                </div>
-            </div>
-        </div>
-        <!--    End Rules-->
+    {% block footer %}
+    {% include "footer.html" %}
+    {% endblock footer %}
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>
 
 </html>
