@@ -9,7 +9,7 @@ app.secret_key = "dev"
 @app.route("/")
 def index():
     if "player2" not in session:
-            session["player2"] = "human"
+            session["player2"] = "computer"
     if "data" not in session:
         game = Game()
         session["data"] = {
@@ -31,13 +31,11 @@ def new_two_player_game():
     session["player2"] = "human"
     return redirect("/")
 
-
 @app.route("/new_game/1")
 def new_one_player_game():
     session.clear()
     session["player2"] = "computer"
     return redirect("/")
-
 
 @app.route("/reset")
 def reset():
