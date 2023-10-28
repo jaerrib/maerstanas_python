@@ -1,5 +1,5 @@
-from board import Board
-from game_logic import remaining_moves
+from app.board import Board
+from app.game_logic import remaining_moves
 
 class Game:
 

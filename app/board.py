@@ -1,10 +1,11 @@
+SIZE = 9
+EMPTY = 0
+EDGE = 3
+
 class Board:
 
     def __init__(self):
         self.data = []
-        SIZE = 9
-        EMPTY = 0
-        EDGE = 3
         for row_num in range(SIZE):
             row = []
             for col_num in range(SIZE):

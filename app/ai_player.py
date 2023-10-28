@@ -1,5 +1,5 @@
 from copy import deepcopy
-from game_logic import remaining_moves,assign_move, determine_winner, check_score
+from app.game_logic import remaining_moves,assign_move, determine_winner, check_score
 import secrets
 
 
