@@ -1,42 +1,17 @@
 * {
     margin: 0;
     padding: 0;
-    /*font-family: sans-serif;*/
 }
 
-.dark_square,
-.light_square,
 .square {
     aspect-ratio: 1 / 1;
-    font-size: 2em;
+    font-size: 1.75em;
     height: 2em;
-    padding: 5px;
+    padding: 2px 0 2px 0;
     text-align: center;
-    /*vertical-align: middle;*/
-    /*width: 4em;*/
-}
-
-.square {
-    /*padding: 15px;*/
-}
-
-.side_square {
-    font-size: 36px;
-    padding: 15px;
-    /*min-width: 90px;*/
 }
 
 .stone {
     max-height: 100%;
     max-width: 100%;
-}
-
-.dark_square {
-    background-color: #6D4C41;
-            /*#63452c;*/
-}
-
-.light_square {
-    background-color: #BCAAA4;
-            /*#cdab8f;*/
 }
