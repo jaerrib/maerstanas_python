@@ -1,5 +1,8 @@
 from copy import deepcopy
-from app.game_logic import remaining_moves,assign_move, determine_winner, check_score
+from app.game_logic import (remaining_moves,
+                            assign_move,
+                            determine_winner,
+                            check_score)
 import secrets
 
 
@@ -46,7 +49,10 @@ def sim_game_loop(data, players, depth):
         temp_game = assign_move(temp_game, ai_row, ai_col)
         depth_counter -= 1
 
-    temp_game["result"] = determine_winner(temp_game["score_p1"], temp_game["score_p2"])
+    temp_game["result"] = determine_winner(
+        temp_game["score_p1"],
+        temp_game["score_p2"]
+    )
     if comparison_player == 1:
         weighted_score = assign_result_value(temp_game)
     else:

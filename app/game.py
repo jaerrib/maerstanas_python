@@ -1,6 +1,7 @@
 from app.board import Board
 from app.game_logic import remaining_moves
 
+
 class Game:
 
     def __init__(self):

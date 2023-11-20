@@ -2,6 +2,7 @@ SIZE = 9
 EMPTY = 0
 EDGE = 3
 
+
 class Board:
 
     def __init__(self):
