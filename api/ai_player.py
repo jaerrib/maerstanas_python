@@ -1,5 +1,5 @@
 from copy import deepcopy
-from app.game_logic import (remaining_moves,
+from api.game_logic import (remaining_moves,
                             assign_move,
                             determine_winner,
                             check_score)

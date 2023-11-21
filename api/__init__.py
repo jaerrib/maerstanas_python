@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, session
-from app.game import Game
-from app.game_logic import valid_move, assign_move
-from app.ai_player import get_best_move
+from api.game import Game
+from api.game_logic import valid_move, assign_move
+from api.ai_player import get_best_move
 
 app = Flask(__name__)
 app.secret_key = "dev"
