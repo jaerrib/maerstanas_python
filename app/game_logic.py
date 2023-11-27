@@ -110,7 +110,7 @@ def valid_move(data, row, col):
             return True
 
 
-def check_score(board, player):
+def check_score(board, score_type, player):
     """
     Evaluates the score of current board positions, first looping through the
     vertical hinges then the horizontal ones.
@@ -125,9 +125,9 @@ def check_score(board, player):
                     and board_position == player:
                 calculated_score += 1
             elif comparison_position == 3 and board_position == player:
-                calculated_score += 1
+                calculated_score += score_type
             elif board_position == 3 and comparison_position == player:
-                calculated_score += 1
+                calculated_score += score_type
 
     for row_index in range(1, 9):
         for col_index in range(0, 9):
@@ -137,9 +137,9 @@ def check_score(board, player):
                     and board_position == player:
                 calculated_score += 1
             elif comparison_position == 3 and board_position == player:
-                calculated_score += 1
+                calculated_score += score_type
             elif board_position == 3 and comparison_position == player:
-                calculated_score += 1
+                calculated_score += score_type
     return calculated_score
 
 
@@ -185,8 +185,8 @@ def remaining_moves(board):
 
 
 def update_score(data):
-    data["score_p1"] = check_score(data["board"], player=1)
-    data["score_p2"] = check_score(data["board"], player=2)
+    data["score_p1"] = check_score(board=data["board"], score_type=data["scoring_type"], player=1)
+    data["score_p2"] = check_score(board=data["board"], score_type=data["scoring_type"], player=2)
     return data
 
 
