@@ -11,8 +11,11 @@ app.secret_key = "dev"
 def index():
     if "player2" not in session:
         session["player2"] = "computer"
+    if "scoring" not in session:
+        session["scoring"] = 1
     if "data" not in session:
         game = Game()
+        game.scoring_type = session["scoring"]
         session["data"] = {
             "move_list": game.move_list,
             "moves_left": game.moves_left,
@@ -22,22 +25,19 @@ def index():
             "active_player": game.active_player,
             "board": game.board.data,
             "game_over": False,
-            "player2": session["player2"]
+            "player2": session["player2"],
+            "scoring_type": game.scoring_type,
         }
     return render_template("index.html", data=session["data"])
 
 
-@app.route("/new_game/2")
-def new_two_player_game():
+@app.route("/new_game/<int:players>/<scoring_type>")
+def new_game(players, scoring_type):
     session.clear()
-    session["player2"] = "human"
-    return redirect("/")
-
-
-@app.route("/new_game/1")
-def new_one_player_game():
-    session.clear()
-    session["player2"] = "computer"
+    player_type = ["computer", "human"]
+    session["player2"] = player_type[players - 1]
+    if scoring_type == "simple":
+        session["scoring"] = 0
     return redirect("/")
 
 

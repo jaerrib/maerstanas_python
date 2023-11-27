@@ -8,8 +8,8 @@ import secrets
 
 def assign_result_value(current_game):
     game_value = 0
-    score_p1 = check_score(current_game["board"], player=1)
-    score_p2 = check_score(current_game["board"], player=2)
+    score_p1 = check_score(board=current_game["board"], score_type=current_game["scoring_type"], player=1)
+    score_p2 = check_score(board=current_game["board"], score_type=current_game["scoring_type"], player=2)
     if current_game["result"] == "tie":
         game_value = 1
     elif current_game["result"] == "player 1":
