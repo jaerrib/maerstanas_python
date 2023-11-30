@@ -61,3 +61,20 @@ def process(row, col):
             session["data"] = assign_move(session["data"], best_row, best_col)
     session["data"]["game_over"] = session["data"]["moves_left"] == []
     return redirect("/")
+
+
+@app.route("/move/<int:row>/<int:col>")
+def move(row, col):
+    if valid_move(session["data"], row, col):
+        stone_color = ["dark_stone", "light_stone"]
+        stone = stone_color[session["data"]["active_player"] - 1]
+        stone_string = f"""
+        <img src = "static/img/{stone}.svg" class ="stone" alt = "{stone}">
+        """
+        session["data"] = assign_move(session["data"], row, col)
+        session["data"]["game_over"] = session["data"]["moves_left"] == []
+        response = stone_string
+        return response
+    return None
+
+

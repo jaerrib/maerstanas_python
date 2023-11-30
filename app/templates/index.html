@@ -8,6 +8,7 @@
     <title>Mǽrstánas</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='js/htmx.min.js.js') }}"></script>
 </head>
 
 <body>
@@ -17,41 +18,12 @@
 
         <div class="container d-flex flex-wrap">
             <!-- Left Col -->
-            <div>
-                <!-- Game Area -->
-                <div>
-                    <!-- Letter Row -->
-                    <div class="d-flex">
-                        <div class="square"></div>
-                        {% for letter in "ABCDEFG" %}
-                        <div class="square">{{letter}}</div>
-                        {% endfor %}
-                    </div>
-                    <!-- End Letter Row -->
-                    <!--  Game Board -->
-                    {% for row in range(1, 8) %}
-                    <div class="d-flex">
-                        <div class="square">{{row}}</div>
-                        {% for col in range(1, 8) %}
-                        <a href="/process/{{row}}/{{col}}">
-                            <div class="square bg-secondary border border-secondary-subtle">
+            <div id="game_area">
 
-                                {% if data.board[row][col] == 1 %}
-                                <img src="{{ url_for('static', filename='img/dark_stone.svg') }}" class="stone"
-                                    alt="dark stone">
-                                {% elif data.board[row][col] == 2 %}
-                                <img src="{{ url_for('static', filename='img/light_stone.svg') }}" class="stone"
-                                    alt="light stone">
-                                {% endif %}
+            {% block game_area %}
+            {% include "game_area.html" %}
+            {% endblock game_area %}
 
-                            </div>
-                        </a>
-                        {% endfor %}
-                    </div>
-                    {% endfor %}
-                    <!-- End Game Board -->
-                </div>
-                <!--End Game Area-->
             </div>
 
             <!-- Right Col -->
