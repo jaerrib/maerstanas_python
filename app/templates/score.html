@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='js/htmx.min.js.js') }}"></script>
+</head>
+
+<body>
+    {% block score %}
+    <!-- Score -->
+    <div id="score" hx-swap-oob="true" class="d-flex mt-1">
+        <p class="ps-2 text-body-emphasis fs-4 mb-0">Player 1: {{data.score_p1}}</p>
+        <p class="ps-4 text-body-emphasis fs-4 mb-0">Player 2: {{data.score_p2}}</p>
+    </div>
+    <!-- End Score -->
+    {% endblock score %}
+</body>
+
+</html>

@@ -68,13 +68,35 @@ def move(row, col):
     if valid_move(session["data"], row, col):
         stone_color = ["dark_stone", "light_stone"]
         stone = stone_color[session["data"]["active_player"] - 1]
+        session["data"] = assign_move(session["data"], row, col)
+        score_p1 = session["data"]["score_p1"]
+        score_p2 = session["data"]["score_p2"]
+        moves_left = session["data"]["moves_left"]
+        session["data"]["game_over"] = len(moves_left) == 0
         stone_string = f"""
         <img src = "static/img/{stone}.svg" class ="stone" alt = "{stone}">
         """
-        session["data"] = assign_move(session["data"], row, col)
-        session["data"]["game_over"] = session["data"]["moves_left"] == []
-        response = stone_string
+        score_string = f"""
+        <div id="score" hx-swap-oob="true" class="d-flex mt-1">
+            <p class="ps-2 text-body-emphasis fs-4 mb-0">Player 1: {score_p1}</p>
+            <p class="ps-4 text-body-emphasis fs-4 mb-0">Player 2: {score_p2}</p>
+        </div>
+        """
+        move_string = f'<div id="moves" hx-swap-oob="true">'
+        if session["data"]["game_over"]:
+            move_string += f'<p class="fs-4 text-info fw-bold">GAME OVER</p>'
+        counter = 1
+        reverse_move_list = reversed(session["data"]["move_list"])
+        for each_move in reverse_move_list:
+            move_num = len(session["data"]["move_list"]) - counter + 1
+            move_string += f"""
+                <p>
+                    <span class="text-secondary">{move_num}.</span>
+                    {each_move[1]} (Player {each_move[0]})
+                </p>
+            """
+            counter += 1
+        move_string += f"</div>"
+        response = stone_string + score_string + move_string
         return response
     return None
-
-

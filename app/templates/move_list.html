@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='js/htmx.min.js.js') }}"></script>
+</head>
+
+<body>
+    {% block moves %}
+    <!-- Moves -->
+    <div class="row">
+        <div class="container mt-3">
+            <div class="overflow-auto form-control overflow-y-scroll" style="height: 24.5rem">
+                <p class="fs-4">Moves:</p>
+                <div id="moves">
+                    {% if data["game_over"] %}
+                        <p class="fs-4 text-info fw-bold">GAME OVER</p>
+                    {% endif %}
+                    {% for move in data["move_list"]|reverse %}
+                        <p>
+                            <span class="text-secondary">{{data["move_list"]|length - loop.index + 1}}.</span>
+                            {{move[1]}} (Player {{move[0]}})
+                        </p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Moves -->
+    {% endblock moves %}
+</body>
+
+</html>
