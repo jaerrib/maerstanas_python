@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, session
 from app.game import Game
-from app.game_logic import valid_move, assign_move
+from app.game_logic import valid_move, assign_move, convert_num_to_row
 from app.ai_player import get_best_move
 
 app = Flask(__name__)
@@ -99,4 +99,40 @@ def move(row, col):
         move_string += f"</div>"
         response = stone_string + score_string + move_string
         return response
-    return None
+    else:
+        row_char = convert_num_to_row(row)
+        response = f"""
+        <div id="errors" hx-swap-oob="true" class="text-danger fs=4">{row_char}{col} is an illegal move</div>
+        """
+        return response
+
+
+@app.route("/build-board")
+def build_board():
+    game_area = '<div id="game_area">'
+
+    letter_area = f"""
+        <!-- Letter Row -->
+            <div class="d-flex">
+            <div class="square"></div>\n
+    """
+    for row in range(1, len(session["data"]) - 2):
+        row_char = convert_num_to_row(row)
+        letter_area += f'<div class="square">{row_char}</div>'
+    letter_area += "</div>"
+    board_area = f"""
+        
+    """
+    for row in range(1, len(session["data"]) - 2):
+        board_area += f"""
+            <div class="d-flex">
+                <div class="square">{row}</div>
+        """
+        for col in range(1, len(session["data"]) - 2):
+            board_area += f"""
+                <div class="square bg-secondary border border-secondary-subtle" hx-get="/move/{row}/{col}" hx-swap="innerHTML"></div>
+            """
+        board_area += "</div>"
+
+    response = game_area + letter_area + board_area + "</div>"
+    return response
