@@ -90,8 +90,8 @@ def valid_move(data, row, col):
     (4) Checking if the move would cause any adjacent stones to have more
     than 3 hinges
     """
-
-    if 1 <= row < 9 and 1 <= col < 9:
+    size = len(data["board"])
+    if 1 <= row < size and 1 <= col < size:
         player_move = data["board"][row][col]
     else:
         # Invalid move - outside board confines
@@ -116,9 +116,9 @@ def check_score(board, score_type, player):
     vertical hinges then the horizontal ones.
     """
     calculated_score: int = 0
-
-    for row_index in range(1, 9):
-        for col_index in range(0, 9):
+    size = len(board)
+    for row_index in range(1, size):
+        for col_index in range(0, size):
             board_position = board[row_index][col_index]
             comparison_position = board[row_index - 1][col_index]
             if comparison_position == player \
@@ -129,8 +129,8 @@ def check_score(board, score_type, player):
             elif board_position == 3 and comparison_position == player:
                 calculated_score += score_type
 
-    for row_index in range(1, 9):
-        for col_index in range(0, 9):
+    for row_index in range(1, size):
+        for col_index in range(0, size):
             board_position = board[row_index][col_index]
             comparison_position = board[row_index][col_index - 1]
             if comparison_position == player \
@@ -150,8 +150,9 @@ def viable_moves(board):
     position is not valid, the next position is assessed until the entire
     board has been checked.
     """
-    for row_index in range(1, 9):
-        for col_index in range(1, 9):
+    size = len(board)
+    for row_index in range(1, size):
+        for col_index in range(1, size):
             if board[row_index][col_index] != 0:
                 pass
             else:
@@ -170,8 +171,9 @@ def remaining_moves(board):
     when the pseudo AI randomly selects its move.
     """
     possible_moves = []
-    for row_index in range(1, 9):
-        for col_index in range(1, 9):
+    size = len(board)
+    for row_index in range(1, size):
+        for col_index in range(1, size):
             if board[row_index][col_index] != 0:
                 pass
             else:

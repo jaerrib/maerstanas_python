@@ -14,7 +14,7 @@ def index():
     if "scoring" not in session:
         session["scoring"] = 1
     if "data" not in session:
-        game = Game()
+        game = Game(9)
         game.scoring_type = session["scoring"]
         session["data"] = {
             "move_list": game.move_list,
