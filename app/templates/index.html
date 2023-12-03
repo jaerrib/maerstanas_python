@@ -18,29 +18,19 @@
 
         <div class="container d-flex flex-wrap">
             <!-- Left Col -->
-            <div id="game_area">
-
             {% block game_area %}
             {% include "game_area.html" %}
             {% endblock game_area %}
 
-            </div>
-
             <!-- Right Col -->
             <div class="ms-5 mt-md-3 mt-lg-0 w-50">
-
-                <div>
                 {% block score %}
                 {% include "score.html" %}
                 {% endblock score %}
-                </div>
 
-                <div>
                 {% block moves %}
                 {% include "move_list.html" %}
                 {% endblock moves %}
-                </div>
-
             </div>
         </div>
 
