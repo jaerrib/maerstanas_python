@@ -1,5 +1,5 @@
 def convert_num_to_row(num):
-    rows = ["A", "B", "C", "D", "E", "F", "G"]
+    rows = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     return rows[num - 1]
 
 
