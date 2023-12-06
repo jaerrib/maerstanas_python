@@ -100,11 +100,11 @@ def move(row, col):
         response = stone_string + score_string + move_string
         return response
     else:
-        row_char = convert_num_to_row(row)
-        response = f"""
-        <div id="errors" hx-swap-oob="true" class="text-danger fs=4">{row_char}{col} is an illegal move</div>
-        """
-        return response
+        # row_char = convert_num_to_row(row)
+        # response = f"""
+        # <div id="errors" hx-swap-oob="true" class="text-danger fs=4">{row_char}{col} is an illegal move</div>
+        # """
+        return None
 
 
 @app.route("/build-board")
