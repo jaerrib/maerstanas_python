@@ -114,7 +114,7 @@ def build_board():
     letter_area = f"""
         <!-- Letter Row -->
             <div class="d-flex">
-            <div class="square"></div>\n
+            <div class="square"></div>
     """
     for row in range(1, len(session["data"]) - 2):
         row_char = convert_num_to_row(row)
@@ -130,8 +130,16 @@ def build_board():
         """
         for col in range(1, len(session["data"]) - 2):
             board_area += f"""
-                <div class="square bg-secondary border border-secondary-subtle" hx-get="/move/{row}/{col}" hx-swap="innerHTML"></div>
+                <div class="square bg-secondary border border-secondary-subtle" hx-get="/move/{row}/{col}" hx-swap="innerHTML">
             """
+            board_val = session["data"]["board"][row][col]
+            if 0 < board_val < 3:
+                stone_color = ["dark_stone", "light_stone"]
+                stone = stone_color[session["data"]["board"][row][col] - 1]
+                board_area += f"""
+                <img src = "static/img/{stone}.svg" class ="stone" alt = "{stone}">
+                """
+            board_area += "</div>"
         board_area += "</div>"
 
     response = game_area + letter_area + board_area + "</div>"
