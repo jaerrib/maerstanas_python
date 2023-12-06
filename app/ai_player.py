@@ -75,5 +75,4 @@ def get_best_move(data, sim_num, depth):
             best_score = returned_score
             best_row = first_row
             best_col = first_col
-    print(best_score)
     return best_row, best_col
