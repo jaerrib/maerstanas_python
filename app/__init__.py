@@ -61,3 +61,39 @@ def process(row, col):
             session["data"] = assign_move(session["data"], best_row, best_col)
     session["data"]["game_over"] = session["data"]["moves_left"] == []
     return redirect("/")
+
+
+@app.route("/stone/<int:player>/<int:stone>")
+def stone_selector():
+    pass
+
+
+@app.route("/new_upgrade_game")
+def new_upgrade_game():
+    session.clear()
+    session["player2"] = "human"
+    return redirect("/upgrade")
+
+
+@app.route("/upgrade")
+def upgrade_game():
+    if "player2" not in session:
+        session["player2"] = "computer"
+    if "scoring" not in session:
+        session["scoring"] = 1
+    if "data" not in session:
+        game = Game()
+        game.scoring_type = session["scoring"]
+        session["data"] = {
+            "move_list": game.move_list,
+            "moves_left": game.moves_left,
+            "score_p1": game.score_p1,
+            "score_p2": game.score_p2,
+            "result": game.result,
+            "active_player": game.active_player,
+            "board": game.board.data,
+            "game_over": False,
+            "player2": session["player2"],
+            "scoring_type": game.scoring_type,
+        }
+    return render_template("upgrade-game.html", data=session["data"])

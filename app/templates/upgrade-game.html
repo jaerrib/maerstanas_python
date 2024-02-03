@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mǽrstánas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+
+<body>
+    {% block header %}
+    {% include "header.html" %}
+    {% endblock header %}
+
+        <div class="container d-flex flex-wrap">
+            <!-- Left Col -->
+            <div>
+                <!-- Game Area -->
+                <div>
+                    <!-- Letter Row -->
+                    <div class="d-flex">
+                        <div class="square"></div>
+                        {% for letter in "ABCDEFG" %}
+                        <div class="square">{{letter}}</div>
+                        {% endfor %}
+                    </div>
+                    <!-- End Letter Row -->
+                    <!--  Game Board -->
+                    {% for row in range(1, 8) %}
+                    <div class="d-flex">
+                        <div class="square">{{row}}</div>
+                        {% for col in range(1, 8) %}
+                        <a href="/process/{{row}}/{{col}}">
+                            <div class="square bg-secondary border border-secondary-subtle">
+
+                                {% if data.board[row][col] == 1 %}
+                                <img src="{{ url_for('static', filename='img/dark_stone.svg') }}" class="stone"
+                                    alt="dark stone">
+                                {% elif data.board[row][col] == 2 %}
+                                <img src="{{ url_for('static', filename='img/light_stone.svg') }}" class="stone"
+                                    alt="light stone">
+                                {% endif %}
+
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    <!-- End Game Board -->
+                    <hr>
+                    <!-- Stone Selection -->
+                    <div class="d-flex">
+                        <div class="square"></div>
+                        <div class="square"><a href="/stone/1/0"><img src="{{ url_for('static', filename='img/dark_stone.svg') }}" class="stone" alt="dark stone"></a></div>
+                        <div class="square"><a href="/stone/1/1"><img src="{{ url_for('static', filename='img/dark_thunder_stone.svg') }}" class="stone" alt="dark thunder stone"></a><</div>
+                        <div class="square"><a href="/stone/1/2"><img src="{{ url_for('static', filename='img/dark_woden_stone.svg') }}" class="stone" alt="dark Woden stone"></a><</div>
+                        <div class="square"></div>
+                        <div class="square"><a href="/stone/1/0"><img src="{{ url_for('static', filename='img/light_stone.svg') }}" class="stone" alt="light stone"></a><</div>
+                        <div class="square"><a href="/stone/1/1"><img src="{{ url_for('static', filename='img/light_thunder_stone.svg') }}" class="stone" alt="light thunder stone"></a><</div>
+                        <div class="square"><a href="/stone/1/2"><img src="{{ url_for('static', filename='img/light_woden_stone.svg') }}" class="stone" alt="light Woden stone"></a><</div>
+                    </div>
+                    <!-- End Stone Selection -->
+                </div>
+                <!--End Game Area-->
+            </div>
+
+            <!-- Right Col -->
+            <div class="ms-5 mt-md-3 mt-lg-0 w-50">
+
+                <!-- Score -->
+               <div class="d-flex mt-1">
+                    <p class="ps-2 text-body-emphasis fs-4 mb-0">Player 1: {{data.score_p1}}</p>
+                    <p class="ps-4 text-body-emphasis fs-4 mb-0">Player 2: {{data.score_p2}}</p>
+                </div>
+                <!-- End Score -->
+
+                <!-- Moves -->
+                <div class="row">
+                    <div class="container mt-3">
+                        <div class="overflow-auto form-control overflow-y-scroll" style="height: 24.5rem">
+                            <p class="fs-4">Moves:</p>
+                            {% if data["game_over"] %}
+                                <p class="fs-4 text-info fw-bold">GAME OVER</p>
+                            {% endif %}
+                            {% for move in data["move_list"]|reverse %}
+                                <p>
+                                    <span class="text-secondary">{{data["move_list"]|length - loop.index + 1}}.</span>
+                                    {{move[1]}} (Player {{move[0]}})
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <!-- End Moves -->
+
+            </div>
+        </div>
+
+    {% block footer %}
+    {% include "footer.html" %}
+    {% endblock footer %}
+
+</body>
+
+</html>
