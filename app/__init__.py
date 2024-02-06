@@ -23,6 +23,8 @@ def index():
             "score_p2": game.score_p2,
             "result": game.result,
             "active_player": game.active_player,
+            "active_stone": game.active_stone,
+            "stone": game.stone,
             "board": game.board.data,
             "game_over": False,
             "player2": session["player2"],
@@ -64,8 +66,10 @@ def process(row, col):
 
 
 @app.route("/stone/<int:player>/<int:stone>")
-def stone_selector():
-    pass
+def stone_selector(player, stone):
+    if session["data"]["active_player"] == player:
+        session["data"]["active_stone"] = stone
+    return redirect("/upgrade")
 
 
 @app.route("/new_upgrade_game")
@@ -91,6 +95,8 @@ def upgrade_game():
             "score_p2": game.score_p2,
             "result": game.result,
             "active_player": game.active_player,
+            "active_stone": game.active_stone,
+            "stone": game.stone,
             "board": game.board.data,
             "game_over": False,
             "player2": session["player2"],
