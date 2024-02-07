@@ -15,3 +15,4 @@ class Game:
         self.active_stone = 1
         self.stone = (self.active_player, self.active_stone)
         self.scoring_type = 1
+        self.ruleset = "0.4"

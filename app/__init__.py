@@ -16,6 +16,7 @@ def index():
     if "data" not in session:
         game = Game()
         game.scoring_type = session["scoring"]
+        game.ruleset = session["ruleset"]
         session["data"] = {
             "move_list": game.move_list,
             "moves_left": game.moves_left,
@@ -29,17 +30,22 @@ def index():
             "game_over": False,
             "player2": session["player2"],
             "scoring_type": game.scoring_type,
+            "ruleset": game.ruleset,
         }
     return render_template("index.html", data=session["data"])
 
 
-@app.route("/new_game/<int:players>/<scoring_type>")
-def new_game(players, scoring_type):
+@app.route("/new_game/<int:players>/<scoring_type>/<ruleset>")
+def new_game(players, scoring_type, ruleset):
     session.clear()
     player_type = ["computer", "human"]
     session["player2"] = player_type[players - 1]
     if scoring_type == "simple":
         session["scoring"] = 0
+    if ruleset == "02":
+        session["ruleset"] = "0.2"
+    else:
+        session["ruleset"] = "0.4"
     return redirect("/")
 
 
@@ -67,39 +73,6 @@ def process(row, col):
 
 @app.route("/stone/<int:player>/<int:stone>")
 def stone_selector(player, stone):
-    if session["data"]["active_player"] == player:
+    if session["data"]["ruleset"] == "0.4" and session["data"]["active_player"] == player:
         session["data"]["active_stone"] = stone
-    return redirect("/upgrade")
-
-
-@app.route("/new_upgrade_game")
-def new_upgrade_game():
-    session.clear()
-    session["player2"] = "human"
-    return redirect("/upgrade")
-
-
-@app.route("/upgrade")
-def upgrade_game():
-    if "player2" not in session:
-        session["player2"] = "computer"
-    if "scoring" not in session:
-        session["scoring"] = 1
-    if "data" not in session:
-        game = Game()
-        game.scoring_type = session["scoring"]
-        session["data"] = {
-            "move_list": game.move_list,
-            "moves_left": game.moves_left,
-            "score_p1": game.score_p1,
-            "score_p2": game.score_p2,
-            "result": game.result,
-            "active_player": game.active_player,
-            "active_stone": game.active_stone,
-            "stone": game.stone,
-            "board": game.board.data,
-            "game_over": False,
-            "player2": session["player2"],
-            "scoring_type": game.scoring_type,
-        }
-    return render_template("upgrade-game.html", data=session["data"])
+    return redirect("/")

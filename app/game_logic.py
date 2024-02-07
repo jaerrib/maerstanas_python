@@ -27,7 +27,7 @@ def check_player_hinges(board, row_number, col_number):
         row_to_check = adjacent_positions[position][0]
         col_to_check = adjacent_positions[position][1]
         position_check = board[row_to_check][col_to_check]
-        if position_check != 0:
+        if position_check[0] != 0:
             hinges += 1
     if hinges > 3:
         return True
@@ -45,9 +45,9 @@ def hinge_check(board, row_number, col_number):
         row_to_check = adjacent_positions[position][0]
         col_to_check = adjacent_positions[position][1]
         position_check = board[row_to_check][col_to_check]
-        if position_check == 3:
+        if position_check[0] == 3:
             hinges += 1
-        elif position_check == 1 or position_check == 2:
+        elif position_check[0] == 1 or position_check[0] == 2:
             hinges += 1
     return hinges
 
@@ -65,9 +65,9 @@ def check_adjacent_stones(board, row_number, col_number):
         row_position = int(adjacent_positions[i][0])
         col_position = int(adjacent_positions[i][1])
         board_value = board[row_position][col_position]
-        if board_value == 3 or board_value == 0:
+        if board_value[0] == 3 or board_value[0] == 0:
             pass
-        elif board_value == 1 or board_value == 2:
+        elif board_value[0] == 1 or board_value[0] == 2:
             if hinge_check(board, row_position, col_position) >= 3:
                 return True
     return False
@@ -96,7 +96,7 @@ def valid_move(data, row, col):
     else:
         # Invalid move - outside board confines
         return False
-    if player_move != 0:
+    if player_move[0] != 0:
         # Invalid move - space occupied
         return False
     else:
@@ -122,23 +122,23 @@ def check_score(board, score_type, player):
             board_position = board[row_index][col_index]
             comparison_position = board[row_index - 1][col_index]
             if comparison_position == player \
-                    and board_position == player:
+                    and board_position[0] == player:
                 calculated_score += 1
-            elif comparison_position == 3 and board_position == player:
+            elif comparison_position[0] == 3 and board_position[0] == player:
                 calculated_score += score_type
-            elif board_position == 3 and comparison_position == player:
+            elif board_position[0] == 3 and comparison_position[0] == player:
                 calculated_score += score_type
 
     for row_index in range(1, 9):
         for col_index in range(0, 9):
             board_position = board[row_index][col_index]
             comparison_position = board[row_index][col_index - 1]
-            if comparison_position == player \
-                    and board_position == player:
+            if comparison_position[0] == player \
+                    and board_position[0] == player:
                 calculated_score += 1
-            elif comparison_position == 3 and board_position == player:
+            elif comparison_position[0] == 3 and board_position[0] == player:
                 calculated_score += score_type
-            elif board_position == 3 and comparison_position == player:
+            elif board_position[0] == 3 and comparison_position[0] == player:
                 calculated_score += score_type
     return calculated_score
 
@@ -172,7 +172,7 @@ def remaining_moves(board):
     possible_moves = []
     for row_index in range(1, 9):
         for col_index in range(1, 9):
-            if board[row_index][col_index] != 0:
+            if board[row_index][col_index][0] != 0:
                 pass
             else:
                 if check_player_hinges(board, row_index, col_index):
@@ -201,7 +201,7 @@ def determine_winner(score_p1, score_p2):
 
 
 def assign_move(data, row, col):
-    data["board"][row][col] = data["active_player"]
+    data["board"][row][col] = (data["active_player"], data["active_stone"])
     data["move_list"].append(
         (data["active_player"], convert_num_to_row(col)+str(row))
     )
