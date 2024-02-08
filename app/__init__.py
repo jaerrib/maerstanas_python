@@ -1,7 +1,8 @@
 from flask import Flask, render_template, redirect, session
+
+from app.ai_player import get_best_move
 from app.game import Game
 from app.game_logic import valid_move, assign_move
-from app.ai_player import get_best_move
 
 app = Flask(__name__)
 app.secret_key = "dev"
@@ -59,13 +60,11 @@ def reset():
 def process(row, col):
     if valid_move(session["data"], row, col):
         session["data"] = assign_move(session["data"], row, col)
-    if ((session["data"]["active_player"] == 2) and
-            (session["data"]["player2"] == "computer")):
+    if (session["data"]["active_player"] == 2) and (
+        session["data"]["player2"] == "computer"
+    ):
         if len(session["data"]["moves_left"]):
-            best_row, best_col = get_best_move(
-                session["data"],
-                sim_num=100,
-                depth=49)
+            best_row, best_col = get_best_move(session["data"], sim_num=100, depth=49)
             session["data"] = assign_move(session["data"], best_row, best_col)
     session["data"]["game_over"] = session["data"]["moves_left"] == []
     return redirect("/")
@@ -73,6 +72,9 @@ def process(row, col):
 
 @app.route("/stone/<int:player>/<int:stone>")
 def stone_selector(player, stone):
-    if session["data"]["ruleset"] == "0.4" and session["data"]["active_player"] == player:
+    if (
+        session["data"]["ruleset"] == "0.4"
+        and session["data"]["active_player"] == player
+    ):
         session["data"]["active_stone"] = stone
     return redirect("/")

@@ -11,7 +11,7 @@ def find_adjacent(row_number, col_number):
         [row_number - 1, col_number],
         [row_number, col_number - 1],
         [row_number, col_number + 1],
-        [row_number + 1, col_number]
+        [row_number + 1, col_number],
     ]
     return adjacent_positions
 
@@ -121,8 +121,7 @@ def check_score(board, score_type, player):
         for col_index in range(0, 9):
             board_position = board[row_index][col_index]
             comparison_position = board[row_index - 1][col_index]
-            if comparison_position == player \
-                    and board_position[0] == player:
+            if comparison_position == player and board_position[0] == player:
                 calculated_score += 1
             elif comparison_position[0] == 3 and board_position[0] == player:
                 calculated_score += score_type
@@ -133,8 +132,7 @@ def check_score(board, score_type, player):
         for col_index in range(0, 9):
             board_position = board[row_index][col_index]
             comparison_position = board[row_index][col_index - 1]
-            if comparison_position[0] == player \
-                    and board_position[0] == player:
+            if comparison_position[0] == player and board_position[0] == player:
                 calculated_score += 1
             elif comparison_position[0] == 3 and board_position[0] == player:
                 calculated_score += score_type
@@ -185,8 +183,12 @@ def remaining_moves(board):
 
 
 def update_score(data):
-    data["score_p1"] = check_score(board=data["board"], score_type=data["scoring_type"], player=1)
-    data["score_p2"] = check_score(board=data["board"], score_type=data["scoring_type"], player=2)
+    data["score_p1"] = check_score(
+        board=data["board"], score_type=data["scoring_type"], player=1
+    )
+    data["score_p2"] = check_score(
+        board=data["board"], score_type=data["scoring_type"], player=2
+    )
     return data
 
 
@@ -203,7 +205,7 @@ def determine_winner(score_p1, score_p2):
 def assign_move(data, row, col):
     data["board"][row][col] = (data["active_player"], data["active_stone"])
     data["move_list"].append(
-        (data["active_player"], convert_num_to_row(col)+str(row))
+        (data["active_player"], convert_num_to_row(col) + str(row))
     )
     data = update_score(data)
     data = change_player(data)
