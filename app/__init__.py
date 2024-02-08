@@ -32,6 +32,7 @@ def index():
             "player2": session["player2"],
             "scoring_type": game.scoring_type,
             "ruleset": game.ruleset,
+            "special_stones": game.special_stones,
         }
     return render_template("index.html", data=session["data"])
 
