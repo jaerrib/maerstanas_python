@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, session
 
 from app.ai_player import get_best_move
 from app.game import Game
-from app.game_logic import valid_move, assign_move
+from app.game_logic import valid_move, assign_move, change_stone
 
 app = Flask(__name__)
 app.secret_key = "dev"
@@ -77,5 +77,5 @@ def stone_selector(player, stone):
         session["data"]["ruleset"] == "0.4"
         and session["data"]["active_player"] == player
     ):
-        session["data"]["active_stone"] = stone
+        session["data"] = change_stone(session["data"], stone)
     return redirect("/")

@@ -78,6 +78,7 @@ def change_player(data):
         data["active_player"] = 2
     elif data["active_player"] == 2:
         data["active_player"] = 1
+    data["active_stone"] = 1
     return data
 
 
@@ -210,4 +211,9 @@ def assign_move(data, row, col):
     data = update_score(data)
     data = change_player(data)
     data["moves_left"] = remaining_moves(data["board"])
+    return data
+
+
+def change_stone(data, stone):
+    data["active_stone"] = stone
     return data
