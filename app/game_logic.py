@@ -82,7 +82,7 @@ def change_player(data):
     return data
 
 
-def valid_move(data, row, col):
+def check_default_stone(data, row, col):
     """
     Determines if a potential move would be valid by doing the following:
     (1) Checking if the coordinates are within the confines of the board
@@ -91,7 +91,6 @@ def valid_move(data, row, col):
     (4) Checking if the move would cause any adjacent stones to have more
     than 3 hinges
     """
-
     if 1 <= row < 9 and 1 <= col < 9:
         player_move = data["board"][row][col]
     else:
@@ -111,6 +110,45 @@ def valid_move(data, row, col):
             return True
 
 
+def check_thunder_stone(data, row, col):
+    """
+    Determines if a potential move would be valid by doing the following:
+    (1) Checking if the coordinates are within the confines of the board
+    (2) Checking if the position is occupied
+    """
+    if 1 <= row < 9 and 1 <= col < 9:
+        player_move = data["board"][row][col]
+    else:
+        # Invalid move - outside board confines
+        return False
+    # Return if the chosen space is occupied
+    return player_move[0] == 0
+
+
+def check_woden_stone(data, row, col):
+    """
+    Determines if a potential move would be valid by doing the following:
+    (1) Checking if the coordinates are within the confines of the board
+    (2) Checking if the position is occupied by an opponent's stone
+    """
+    if 1 <= row < 9 and 1 <= col < 9:
+        player_move = data["board"][row][col]
+    else:
+        # Invalid move - outside board confines
+        return False
+    # Return if the chosen space is occupied by opponent's stone
+    return player_move[1] != 0 and player_move[0] != data["active_player"]
+
+
+def valid_move(data, row, col):
+    if data["active_stone"] == 1:
+        return check_default_stone(data, row, col)
+    if data["active_stone"] == 2:
+        return check_thunder_stone(data, row, col)
+    if data["active_stone"] == 3:
+        return check_woden_stone(data, row, col)
+
+
 def check_score(board, score_type, player):
     """
     Evaluates the score of current board positions, first looping through the
@@ -122,11 +160,11 @@ def check_score(board, score_type, player):
         for col_index in range(0, 9):
             board_position = board[row_index][col_index]
             comparison_position = board[row_index - 1][col_index]
-            if comparison_position == player and board_position[0] == player:
+            if comparison_position[0] == player and board_position[0] == player:
                 calculated_score += 1
             elif comparison_position[0] == 3 and board_position[0] == player:
                 calculated_score += score_type
-            elif board_position[0] == 3 and comparison_position[0] == player:
+            elif comparison_position[0] == player and board_position[0] == 3:
                 calculated_score += score_type
 
     for row_index in range(1, 9):
@@ -137,7 +175,7 @@ def check_score(board, score_type, player):
                 calculated_score += 1
             elif comparison_position[0] == 3 and board_position[0] == player:
                 calculated_score += score_type
-            elif board_position[0] == 3 and comparison_position[0] == player:
+            elif comparison_position[0] == player and board_position[0] == 3:
                 calculated_score += score_type
     return calculated_score
 
@@ -203,7 +241,21 @@ def determine_winner(score_p1, score_p2):
     return result
 
 
+def thunder_attack(data, row, col):
+    adjacent_positions = find_adjacent(row, col)
+    for position in adjacent_positions:
+        if data["board"][position[0]][position[1]] != (3, 3):
+            data["board"][position[0]][position[1]] = (0, 0)
+    return data
+
+
 def assign_move(data, row, col):
+    if data["active_stone"] == 2:
+        thunder_attack(data, row, col)
+    if data["active_stone"] == 2 or data["active_stone"] == 3:
+        data["special_stones"][f"player{data['active_player']}"].remove(
+            data["active_stone"]
+        )
     data["board"][row][col] = (data["active_player"], data["active_stone"])
     stones = ["default stone", "thunder stone", "Woden stone"]
     played_stone = stones[data["active_stone"] - 1]
