@@ -1,59 +1,92 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 </head>
 
 <body>
-    {% block header %}
-    <div class="container">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary rounded-bottom p-2 mb-3 shadow-sm">
-                <div class="container-fluid">
-                    <a class="navbar-brand fw-bold" href="/">Mǽrstánas</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    New Game
-                                </a>
-                                <ul class="dropdown-menu p-3">
-                                    <li class="fw-bold">Default Scoring</li>
-                                    <li><a class="dropdown-item" href="/new_game/1/default/02">1 player</a></li>
-                                    <li><a class="dropdown-item" href="/new_game/2/default/02">2 players (local)</a></li>
-                                    <li><hr></li>
-                                    <li class="fw-bold">Simple Scoring</li>
-                                    <li><a class="dropdown-item" href="/new_game/1/simple/02">1 player</a></li>
-                                    <li><a class="dropdown-item" href="/new_game/2/simple/02">2 players (local)</a></li>
-                                    <li><hr></li>
-                                    <li class="fw-bold">0.4 Ruleset with Default Scoring</li>
-                                    <li><a class="dropdown-item" href="/new_game/2/default/04">2 players (local)</a></li>
-                                </ul>
+{% block header %}
+<div class="container">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary rounded-bottom p-2 mb-3 shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/">Mǽrstánas</a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end"
+                 id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#"
+                           role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            New Game
+                        </a>
+                        <ul class="dropdown-menu p-3">
+                            <li class="fw-bold">Default Scoring</li>
+                            <li><a class="dropdown-item"
+                                   href="/new_game/1/default/02">1 player</a>
                             </li>
-                            <li class="nav-item" data-bs-toggle="offcanvas" href="#rules" aria-controls="rules">
-                                <a class="nav-link" href="#">Rules</a>
+                            <li><a class="dropdown-item"
+                                   href="/new_game/2/default/02">2 players
+                                (local)</a></li>
+                            <li>
+                                <hr>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/reset">Restart</a>
+                            <li class="fw-bold">Simple Scoring</li>
+                            <li><a class="dropdown-item"
+                                   href="/new_game/1/simple/02">1 player</a>
                             </li>
+                            <li><a class="dropdown-item"
+                                   href="/new_game/2/simple/02">2 players
+                                (local)</a></li>
+                            <li>
+                                <hr>
+                            </li>
+                            <li class="fw-bold">0.4 Ruleset with Default
+                                Scoring
+                            </li>
+                            <li><a class="dropdown-item"
+                                   href="/new_game/2/default/04">2 players
+                                (local)</a></li>
+                            <li>
+                                <hr>
+                            </li>
+                            <li class="fw-bold">0.4 Ruleset with Default
+                                Scoring
+                            </li>
+                            <li><a class="dropdown-item"
+                                   href="/new_game/2/simple/04">2 players
+                                (local)</a></li>
                         </ul>
-                    </div>
-                </div>
-            </nav>
-    </div>
+                    </li>
+                    <li class="nav-item" data-bs-toggle="offcanvas"
+                        href="#rules" aria-controls="rules">
+                        <a class="nav-link" href="#">Rules</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reset">Restart</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
 
-        <!-- Rules -->
-        {% block rules %}
-        {% include "rules.html" %}
-        {% endblock rules %}
-        <!-- End Rules-->
+<!-- Rules -->
+{% block rules %}
+{% include "rules.html" %}
+{% endblock rules %}
+<!-- End Rules-->
 
-    {% endblock header %}
+{% endblock header %}
 <script src="{{ url_for('static',filename='js/bootstrap.bundle.min.js') }}"></script>
 </body>
 
