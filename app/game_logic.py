@@ -257,7 +257,7 @@ def assign_move(data, row, col):
             data["active_stone"]
         )
     data["board"][row][col] = (data["active_player"], data["active_stone"])
-    stones = ["default stone", "thunder stone", "Woden stone"]
+    stones = ["standard " "stone", "thunder-stone", "Woden-stone"]
     played_stone = stones[data["active_stone"] - 1]
     data["move_list"].append(
         (
