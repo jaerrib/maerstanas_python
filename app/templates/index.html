@@ -71,11 +71,9 @@
             </div>
             {% endfor %}
             <!-- End Game Board -->
-            {% if data.ruleset == "0.4" %}
             {% block stone_selection %}
             {% include "stone-selection.html" %}
             {% endblock stone_selection %}
-            {% endif %}
         </div>
         <!--End Game Area-->
     </div>

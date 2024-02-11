@@ -18,6 +18,9 @@ def index():
         game = Game()
         game.scoring_type = session["scoring"]
         game.ruleset = session["ruleset"]
+        if game.ruleset == "0.2":
+            game.special_stones["player1"] = [1]
+            game.special_stones["player2"] = [1]
         session["data"] = {
             "move_list": game.move_list,
             "moves_left": game.moves_left,
@@ -53,7 +56,8 @@ def new_game(players, scoring_type, ruleset):
 
 @app.route("/reset")
 def reset():
-    session.pop("data")
+    if session["data"]:
+        session.pop("data")
     return redirect("/")
 
 
