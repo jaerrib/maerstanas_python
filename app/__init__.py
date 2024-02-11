@@ -22,7 +22,7 @@ def index():
     if "scoring" not in session:
         session["scoring"] = 1
     if "ruleset" not in session:
-        session["ruleset"] = "0.4"
+        session["ruleset"] = "0.2"
     if "data" not in session:
         game = Game()
         game.scoring_type = session["scoring"]
