@@ -14,6 +14,8 @@ def index():
         session["player2"] = "computer"
     if "scoring" not in session:
         session["scoring"] = 1
+    if "ruleset" not in session:
+        session["ruleset"] = "0.4"
     if "data" not in session:
         game = Game()
         game.scoring_type = session["scoring"]
@@ -56,8 +58,7 @@ def new_game(players, scoring_type, ruleset):
 
 @app.route("/reset")
 def reset():
-    if session["data"]:
-        session.pop("data")
+    session.pop("data")
     return redirect("/")
 
 
