@@ -1,0 +1,100 @@
+{% block stone_selection %}
+<!-- Stone Selection -->
+<hr>
+<div class="d-flex">
+    <div class="square"></div>
+    <div class="square">
+        {% if data.active_stone == 1 and data.active_player == 1 %}
+        <a href="/stone/1/1"><img
+                src="{{ url_for('static', filename='img/dark_stone.svg') }}"
+                class="stone stone-selected" alt="dark stone"></a>
+        {% else %}
+        <a href="/stone/1/1"><img
+                src="{{ url_for('static', filename='img/dark_stone.svg') }}"
+                class="stone" alt="dark stone"></a>
+        {% endif %}
+    </div>
+
+    <div class="square">
+        {% if data.active_stone == 2 and data.active_player == 1 %}
+        <a href="/stone/1/2"><img
+                src="{{ url_for('static', filename='img/dark_thunder_stone.svg') }}"
+                class="stone stone-selected" alt="dark thunder stone"></a>
+        {% elif 2 in data.special_stones["player1"] %}
+        <a href="/stone/1/2"><img
+                src="{{ url_for('static', filename='img/dark_thunder_stone.svg') }}"
+                class="stone" alt="dark thunder stone"></a>
+        {% else %}
+        <img
+                src="{{ url_for('static', filename='img/dark_thunder_stone.svg') }}"
+                class="stone stone-disabled"
+                alt="dark thunder stone">
+        {% endif %}
+    </div>
+
+    <div class="square">
+        {% if data.active_stone == 3 and data.active_player == 1 %}
+        <a href="/stone/1/3"><img
+                src="{{ url_for('static', filename='img/dark_woden_stone.svg') }}"
+                class="stone stone-selected" alt="dark woden stone"></a>
+        {% elif 3 in data.special_stones["player1"] %}
+        <a href="/stone/1/3"><img
+                src="{{ url_for('static', filename='img/dark_woden_stone.svg') }}"
+                class="stone" alt="dark woden stone"></a>
+        {% else %}
+        <img
+                src="{{ url_for('static', filename='img/dark_woden_stone.svg') }}"
+                class="stone stone-disabled"
+                alt="dark woden stone">
+        {% endif %}
+    </div>
+
+    <div class="square"></div>
+    <div class="square">
+        {% if data.active_stone == 1 and data.active_player == 2 %}
+        <a href="/stone/2/1"><img
+                src="{{ url_for('static', filename='img/light_stone.svg') }}"
+                class="stone stone-selected" alt="light stone"></a>
+        {% else %}
+        <a href="/stone/2/1"><img
+                src="{{ url_for('static', filename='img/light_stone.svg') }}"
+                class="stone" alt="light stone"></a>
+        {% endif %}
+    </div>
+
+    <div class="square">
+        {% if data.active_stone == 2 and data.active_player == 2 %}
+        <a href="/stone/2/2"><img
+                src="{{ url_for('static', filename='img/light_thunder_stone.svg') }}"
+                class="stone stone-selected" alt="light thunder stone"></a>
+        {% elif 2 in data.special_stones["player2"] %}
+        <a href="/stone/2/2"><img
+                src="{{ url_for('static', filename='img/light_thunder_stone.svg') }}"
+                class="stone" alt="light thunder stone"></a>
+        {% else %}
+        <img
+                src="{{ url_for('static', filename='img/light_thunder_stone.svg') }}"
+                class="stone stone-disabled"
+                alt="light thunder stone">
+        {% endif %}
+    </div>
+
+    <div class="square">
+        {% if data.active_stone == 3 and data.active_player == 2 %}
+        <a href="/stone/2/3"><img
+                src="{{ url_for('static', filename='img/light_woden_stone.svg') }}"
+                class="stone stone-selected" alt="light woden stone"></a>
+        {% elif 3 in data.special_stones["player2"] %}
+        <a href="/stone/2/3"><img
+                src="{{ url_for('static', filename='img/light_woden_stone.svg') }}"
+                class="stone" alt="light woden stone"></a>
+        {% else %}
+        <img
+                src="{{ url_for('static', filename='img/light_woden_stone.svg') }}"
+                class="stone stone-disabled"
+                alt="light woden stone">
+        {% endif %}
+    </div>
+</div>
+<!-- End Stone Selection -->
+{% endblock stone_selection %}

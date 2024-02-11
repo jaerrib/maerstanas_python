@@ -15,3 +15,11 @@
     max-height: 100%;
     max-width: 100%;
 }
+
+.stone-selected {
+    outline: 2px solid var(--bs-primary);
+}
+
+.stone-disabled {
+    opacity: 0.1;
+}

@@ -1,67 +1,129 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-</head>
-
-<body>
-
-    {% block rules %}
-    <!-- Rules -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="rules" aria-labelledby="rules">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasExampleLabel">How to Play</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div>
-                <p><em><strong>Note:</strong> This web version of Mǽrstánas currently uses the 0.2.0 rule set.</em></p>
-                <h2>Overview</h2>
-                <p>
-                    Mǽrstánas is a free libre open source abstract strategy game where players alternate placing
-                    stones within the squares of a 7x7 grid with the goal of creating connection points ("hinges") between
-                    their own pieces or the edges of the board.
-                </p>
-                <h3>Objective</h3>
-                <p>Players try to achieve the highest score by making the most number of connections.</p>
-                <h3>Starting the game</h3>
-                <p>The board begins empty (similar to Go). The player using the darker colored stones
-                    goes first. Players then alternate taking turns.</p>
-                <h2>Playing the game</h2>
-                <p>On a player's turn, the player places one stone (<em>stán</em>) on a square on the game board.
-                    Stones (<em>stánas</em>) must be placed within the square, not on the intersections as in Go. Stones
-                    may be placed on any empty square, either standing alone or adjacent to another stone of either color
-                    (creating a <em>heorr</em> or "hinge").
-                </p>
-                <h3>Placement limitations</h3>
-                <p>
-                    Stones may have no more than <strong>three</strong> hinges; the fourth side <em>must always
-                    remain free</em>. Stones may not be placed such that four hinges are created immediately. The edge
-                    of the board counts as <strong>one</strong> hinge; corners count as <strong>two</strong> because they
-                    border two edges. Play continues until no more viable moves remain.
-                </p>
-                <h2>Scoring</h2>
-                <p>In all scoring methods, the player with the highest score wins. Note that tie games are possible.</p>
-                <h3>Default Method</h3>
-                <p>
-                    Players receive one point for each stone or edge that is adjacent to one of their own stones
-                    (<em>freóndlíc heorr</em> or "friendly hinge").
-                </p>
-                <h3>Simple Method</h3>
-                <p>
-                    <strong>Edges are not scored.</strong> Players only receive points for stones that are adjacent to one
-                    of their own stones.
-                </p>
-                <h2>License</h2>
-                <p>Mǽrstánas is licensed as <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA</a></p>
-                <strong><a href="https://jaerrib.codeberg.page/maerstanas/" target="_blank">More information about Mǽrstánas</a></strong>
-            </div>
+{% block rules %}
+<!-- Rules -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="rules"
+     aria-labelledby="rules">
+    <div class="offcanvas-header">
+        <h1 class="offcanvas-title" id="offcanvasExampleLabel">How to Play</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div>
+            <p class="text-warning fw-bold">Currently playing with ruleset
+                version {{ data.ruleset }}</p>
+            <h2>Overview</h2>
+            <p>
+                Mǽrstánas is a free libre open source abstract strategy game
+                where players alternate placing stones within the squares of a
+                7x7 grid with the goal of creating connection points ("hinges")
+                between their own pieces or the edges of the board.
+            </p>
+            <hr>
+            <h3>Objective</h3>
+            <p>
+                Players try to achieve the highest score by making the most
+                number of connections.
+            </p>
+            <h3>Starting the game</h3>
+            <p>
+                The board begins empty (similar to Go). The player using the
+                darker colored stones goes first. Players then alternate taking
+                turns.
+            </p>
+            <h2>Playing the game</h2>
+            <p>
+                On a player's turn, the player places one stone (<em>stán</em>)
+                on a square on the game board. Stones (<em>stánas</em>) must be
+                placed within the square, not on the intersections as in Go.
+                Stones may be placed on any empty square, either standing alone
+                or adjacent to another stone of either color (creating a <em>heorr</em>
+                or "hinge").
+            </p>
+            <h3>Placement limitations</h3>
+            <p>
+                Stones may have no more than <strong>three</strong> hinges; the
+                fourth side <em>must always remain free</em>. Stones may not be
+                placed such that four hinges are created immediately. The edge
+                of the board counts as <strong>one</strong> hinge; corners count
+                as <strong>two</strong> because they border two edges. Play
+                continues until no more viable moves remain.
+            </p>
+            <h3>Special Stones</h3>
+            <p class="fw-light">(Available with version 0.4
+                only)</p>
+            <h4>Thunder-stone rules</h4>
+            <ul>
+                <li>
+                    Players each have <strong>one</strong> thunder-stone (<em>Þunor-stán</em>),
+                    which may be placed on the board during their turn <strong>instead
+                    of a regular stone</strong>.
+                </li>
+                <li>
+                    Thunder-stones are the exception to the four hinge
+                    limitation. This is because, when placed, a thunder-stone
+                    removes any and all stones orthogonally adjacent to its
+                    position, whether they belong to the player or the opponent.
+                </li>
+                <li>
+                    Stones which have been removed from the board are returned
+                    to the respective players and do not count as captures or
+                    contribute to scoring in any way.
+                </li>
+                <li>
+                    After placement, thunder-stones hinges and scoring are
+                    treated the same as normal stones.
+                </li>
+            </ul>
+            <h4>Woden-stone rules</h4>
+            <ul>
+                <li>
+                    Players each have <strong>one</strong> Woden-stone (<em>wóden-stán</em>),
+                    which may be placed on the board during their turn <strong>instead
+                    of a regular stone</strong>.
+                </li>
+                <li>
+                    Unlike standard and thunder-stones, which are placed on an
+                    open square, players use the Woden-stone to
+                    <strong>replace</strong> one of their opponent's stones
+                    already on the board.
+                </li>
+                <li>
+                    Being able to swap out an opponent's stone can create unique
+                    scoring and blocking opportunities, so waiting to use the
+                    Woden-stone until later in the game may offer greater
+                    strategic advantage.
+                </li>
+                <li>
+                    After placement, Woden-stones are scored the same as normal
+                    stones.
+                </li>
+            </ul>
+            <hr>
+            <h2>Scoring</h2>
+            <p>In all scoring methods, the player with the highest score wins.
+                Note that tie games are possible.</p>
+            <h3>Default Method</h3>
+            <p>
+                Players receive one point for each stone or edge that is
+                adjacent to one of their own stones
+                (<em>freóndlíc heorr</em> or "friendly hinge").
+            </p>
+            <h3>Simple Method</h3>
+            <p>
+                <strong>Edges are not scored.</strong> Players only receive
+                points for stones that are adjacent to one
+                of their own stones.
+            </p>
+            <hr>
+            <h2>License</h2>
+            <p>Mǽrstánas is licensed as <a
+                    href="https://creativecommons.org/licenses/by-sa/4.0/"
+                    target="_blank">CC BY-SA</a></p>
+            <strong><a href="https://jaerrib.codeberg.page/maerstanas/"
+                       target="_blank">More information about
+                Mǽrstánas</a></strong>
         </div>
     </div>
-        <!--    End Rules-->
-    {% endblock rules %}
-</body>
-
-</html>
+</div>
+<!--    End Rules-->
+{% endblock rules %}

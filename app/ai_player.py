@@ -1,15 +1,17 @@
-from copy import deepcopy
-from app.game_logic import (remaining_moves,
-                            assign_move,
-                            determine_winner,
-                            check_score)
 import secrets
+from copy import deepcopy
+
+from app.game_logic import remaining_moves, assign_move, determine_winner, check_score
 
 
 def assign_result_value(current_game):
     game_value = 0
-    score_p1 = check_score(board=current_game["board"], score_type=current_game["scoring_type"], player=1)
-    score_p2 = check_score(board=current_game["board"], score_type=current_game["scoring_type"], player=2)
+    score_p1 = check_score(
+        board=current_game["board"], score_type=current_game["scoring_type"], player=1
+    )
+    score_p2 = check_score(
+        board=current_game["board"], score_type=current_game["scoring_type"], player=2
+    )
     if current_game["result"] == "tie":
         game_value = 1
     elif current_game["result"] == "player 1":
@@ -49,10 +51,7 @@ def sim_game_loop(data, players, depth):
         temp_game = assign_move(temp_game, ai_row, ai_col)
         depth_counter -= 1
 
-    temp_game["result"] = determine_winner(
-        temp_game["score_p1"],
-        temp_game["score_p2"]
-    )
+    temp_game["result"] = determine_winner(temp_game["score_p1"], temp_game["score_p2"])
     if comparison_player == 1:
         weighted_score = assign_result_value(temp_game)
     else:
@@ -68,12 +67,9 @@ def get_best_move(data, sim_num, depth):
     players = ["Computer", "Computer"]
 
     for x in range(0, sim_num):
-        returned_score, first_row, first_col = sim_game_loop(temp_game,
-                                                             players,
-                                                             depth)
+        returned_score, first_row, first_col = sim_game_loop(temp_game, players, depth)
         if returned_score >= best_score:
             best_score = returned_score
             best_row = first_row
             best_col = first_col
-    print(best_score)
     return best_row, best_col
