@@ -79,11 +79,9 @@ def process(row, col):
         if len(session["data"]["moves_left"]):
             best_row, best_col = get_best_move(session["data"], sim_num=100, depth=49)
             session["data"] = assign_move(session["data"], best_row, best_col)
-    session["data"]["game_over"] = is_game_over(session["data"])
-    print("Is game over?", session["data"]["game_over"])
     if player_must_pass(session["data"]):
         change_player(session["data"])
-    # session["data"]["game_over"] = session["data"]["moves_left"] == []
+    session["data"]["game_over"] = is_game_over(session["data"])
     return redirect("/")
 
 

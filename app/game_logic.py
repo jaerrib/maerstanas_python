@@ -277,20 +277,13 @@ def change_stone(data, stone):
 
 
 def is_game_over(data):
-    player1_has_special_stones = (
-        2 in data["special_stones"]["player1"] or 3 in data["special_stones"]["player1"]
-    )
-    player2_has_special_stones = (
-        2 in data["special_stones"]["player2"] or 3 in data["special_stones"]["player2"]
-    )
-    default_moves_are_left = remaining_moves(data["board"])
-    print(player1_has_special_stones, data["special_stones"]["player1"])
-    print(player2_has_special_stones, data["special_stones"]["player2"])
-    print(default_moves_are_left, data["moves_left"])
+    player1_has_special_stones = len(data["special_stones"]["player1"]) > 1
+    player2_has_special_stones = len(data["special_stones"]["player2"]) > 1
+    default_moves_are_left = remaining_moves(data["board"]) != []
     return (
         not player1_has_special_stones
         and not player2_has_special_stones
-        and default_moves_are_left
+        and not default_moves_are_left
     )
 
 
