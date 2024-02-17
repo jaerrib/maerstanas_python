@@ -2,7 +2,14 @@ from flask import Flask, render_template, redirect, session
 
 from app.ai_player import get_best_move
 from app.game import Game
-from app.game_logic import valid_move, assign_move, change_stone
+from app.game_logic import (
+    valid_move,
+    assign_move,
+    change_stone,
+    is_game_over,
+    change_player,
+    player_must_pass,
+)
 
 app = Flask(__name__)
 app.secret_key = "dev"
@@ -72,7 +79,9 @@ def process(row, col):
         if len(session["data"]["moves_left"]):
             best_row, best_col = get_best_move(session["data"], sim_num=100, depth=49)
             session["data"] = assign_move(session["data"], best_row, best_col)
-    session["data"]["game_over"] = session["data"]["moves_left"] == []
+    if player_must_pass(session["data"]):
+        change_player(session["data"])
+    session["data"]["game_over"] = is_game_over(session["data"])
     return redirect("/")
 
 

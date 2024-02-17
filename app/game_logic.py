@@ -274,3 +274,20 @@ def assign_move(data, row, col):
 def change_stone(data, stone):
     data["active_stone"] = stone
     return data
+
+
+def is_game_over(data):
+    player1_has_special_stones = len(data["special_stones"]["player1"]) > 1
+    player2_has_special_stones = len(data["special_stones"]["player2"]) > 1
+    default_moves_are_left = remaining_moves(data["board"]) != []
+    return (
+        not player1_has_special_stones
+        and not player2_has_special_stones
+        and not default_moves_are_left
+    )
+
+
+def player_must_pass(data):
+    player_num = str(data["active_player"])
+    no_special_stones = len(data["special_stones"]["player" + player_num]) == 1
+    return no_special_stones and data["moves_left"] == []
