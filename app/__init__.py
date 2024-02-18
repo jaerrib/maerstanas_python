@@ -76,8 +76,11 @@ def process(row, col):
     if (session["data"]["active_player"] == 2) and (
         session["data"]["player2"] == "computer"
     ):
-        if len(session["data"]["moves_left"]):
-            best_row, best_col = get_best_move(session["data"], sim_num=100, depth=49)
+        if not is_game_over(session["data"]):
+            best_stone, best_row, best_col = get_best_move(
+                session["data"], sim_num=100, depth=49
+            )
+            session["data"]["active_stone"] = best_stone
             session["data"] = assign_move(session["data"], best_row, best_col)
     if player_must_pass(session["data"]):
         change_player(session["data"])

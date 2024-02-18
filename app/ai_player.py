@@ -1,7 +1,15 @@
 import secrets
 from copy import deepcopy
 
-from app.game_logic import remaining_moves, assign_move, determine_winner, check_score
+from app.game_logic import (
+    remaining_moves,
+    assign_move,
+    determine_winner,
+    check_score,
+    possible_thunder_stone_moves,
+    possible_woden_stone_moves,
+    is_game_over,
+)
 
 
 def assign_result_value(current_game):
@@ -24,10 +32,39 @@ def assign_result_value(current_game):
     return game_value
 
 
-def computer_move(moves_left):
-    comp_move = secrets.choice(moves_left)
+def get_available_moves(temp_game):
+    active_player = temp_game["active_player"]
+    standard_moves = temp_game["moves_left"]
+    thunder_moves = []
+    woden_moves = []
+    if 2 in temp_game["special_stones"]["player" + str(active_player)]:
+        thunder_moves.append(possible_thunder_stone_moves(temp_game))
+    if 3 in temp_game["special_stones"]["player" + str(active_player)]:
+        woden_moves.append(possible_woden_stone_moves(temp_game))
+    thunder_moves = [item for sublist in thunder_moves for item in sublist]
+    woden_moves = [item for sublist in woden_moves for item in sublist]
+    possible_moves = standard_moves + thunder_moves + woden_moves
+    moves = {
+        "standard": standard_moves,
+        "thunder": thunder_moves,
+        "woden": woden_moves,
+        "possible": possible_moves,
+    }
+    return moves
+
+
+def computer_move(temp_game):
+    stone = 1
+    moves = get_available_moves(temp_game)
+    # possible_moves = [item for sublist in all_possible for item in sublist]
+    comp_move = secrets.choice(moves["possible"])
     row, col = comp_move[0], comp_move[1]
-    return row, col
+    if comp_move in moves["thunder"] and len(moves["standard"]) < 12:
+        stone = 2
+    elif comp_move in moves["woden"]:
+        stone = 3
+    # print(f"Computer plays: {stone} at {comp_move}")
+    return stone, row, col
 
 
 def sim_game_loop(data, players, depth):
@@ -39,14 +76,17 @@ def sim_game_loop(data, players, depth):
         active_player = 2
     first_move = True
     temp_game["moves_left"] = remaining_moves(temp_game["board"])
-    depth_counter = min(depth, len(temp_game["moves_left"]))
+    moves = get_available_moves(temp_game)
+    depth_counter = min(depth, len(moves["possible"]))
     while depth_counter >= 1:
         if players[active_player - 1] == "Computer":
-            if len(temp_game["moves_left"]) >= 1:
-                ai_row, ai_col = computer_move(temp_game["moves_left"])
+            if not is_game_over(temp_game):
+                if len(moves["possible"]) >= 1:
+                    ai_stone, ai_row, ai_col = computer_move(temp_game)
                 if first_move:
                     first_row = ai_row
                     first_col = ai_col
+                    first_stone = ai_stone
                     first_move = False
         temp_game = assign_move(temp_game, ai_row, ai_col)
         depth_counter -= 1
@@ -56,7 +96,7 @@ def sim_game_loop(data, players, depth):
         weighted_score = assign_result_value(temp_game)
     else:
         weighted_score = -(assign_result_value(temp_game))
-    return weighted_score, first_row, first_col
+    return weighted_score, first_stone, first_row, first_col
 
 
 def get_best_move(data, sim_num, depth):
@@ -67,9 +107,12 @@ def get_best_move(data, sim_num, depth):
     players = ["Computer", "Computer"]
 
     for x in range(0, sim_num):
-        returned_score, first_row, first_col = sim_game_loop(temp_game, players, depth)
+        returned_score, first_stone, first_row, first_col = sim_game_loop(
+            temp_game, players, depth
+        )
         if returned_score >= best_score:
             best_score = returned_score
             best_row = first_row
             best_col = first_col
-    return best_row, best_col
+            best_stone = first_stone
+    return best_stone, best_row, best_col

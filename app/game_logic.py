@@ -131,7 +131,7 @@ def check_woden_stone(data, row, col):
     (1) Checking if the coordinates are within the confines of the board
     (2) Checking if the position is occupied by an opponent's stone
     """
-    if 1 <= row < 9 and 1 <= col < 9:
+    if 1 <= row < 8 and 1 <= col < 8:
         player_move = data["board"][row][col]
     else:
         # Invalid move - outside board confines
@@ -180,24 +180,22 @@ def check_score(board, score_type, player):
     return calculated_score
 
 
-def viable_moves(board):
-    """
-    Cycles through board positions starting at A1 (1,1). If a position is
-    valid, viable_moves is True and play is allowed to continue. If a
-    position is not valid, the next position is assessed until the entire
-    board has been checked.
-    """
+def possible_thunder_stone_moves(data):
+    possible_moves = []
     for row_index in range(1, 9):
         for col_index in range(1, 9):
-            if board[row_index][col_index] != 0:
-                pass
-            else:
-                if check_player_hinges(board, row_index, col_index):
-                    pass
-                elif check_adjacent_stones(board, row_index, col_index):
-                    pass
-                else:
-                    return True
+            if check_thunder_stone(data, row_index, col_index):
+                possible_moves.append([row_index, col_index])
+    return possible_moves
+
+
+def possible_woden_stone_moves(data):
+    possible_moves = []
+    for row_index in range(1, 9):
+        for col_index in range(1, 9):
+            if check_woden_stone(data, row_index, col_index):
+                possible_moves.append([row_index, col_index])
+    return possible_moves
 
 
 def remaining_moves(board):
@@ -257,7 +255,7 @@ def assign_move(data, row, col):
             data["active_stone"]
         )
     data["board"][row][col] = (data["active_player"], data["active_stone"])
-    stones = ["standard " "stone", "thunder-stone", "Woden-stone"]
+    stones = ["standard stone", "thunder-stone", "Woden-stone"]
     played_stone = stones[data["active_stone"] - 1]
     data["move_list"].append(
         (

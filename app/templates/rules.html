@@ -19,18 +19,18 @@
                 between their own pieces or the edges of the board.
             </p>
             <hr>
-            <h3>Objective</h3>
+            <h3 class="mt-5">Objective</h3>
             <p>
                 Players try to achieve the highest score by making the most
                 number of connections.
             </p>
-            <h3>Starting the game</h3>
+            <h3 class="mt-5">Starting the game</h3>
             <p>
                 The board begins empty (similar to Go). The player using the
                 darker colored stones goes first. Players then alternate taking
                 turns.
             </p>
-            <h2>Playing the game</h2>
+            <h2 class="mt-5">Playing the game</h2>
             <p>
                 On a player's turn, the player places one stone (<em>stán</em>)
                 on a square on the game board. Stones (<em>stánas</em>) must be
@@ -39,7 +39,7 @@
                 or adjacent to another stone of either color (creating a <em>heorr</em>
                 or "hinge").
             </p>
-            <h3>Placement limitations</h3>
+            <h3 class="mt-5">Placement limitations</h3>
             <p>
                 Stones may have no more than <strong>three</strong> hinges; the
                 fourth side <em>must always remain free</em>. Stones may not be
@@ -48,10 +48,13 @@
                 as <strong>two</strong> because they border two edges. Play
                 continues until no more viable moves remain.
             </p>
-            <h3>Special Stones</h3>
+            <h3 class="mt-5">Special Stones</h3>
             <p class="fw-light">(Available with version 0.4
                 only)</p>
-            <h4>Thunder-stone rules</h4>
+            <h4>Thunder-stone
+                <img src="{{ url_for('static', filename='img/light_thunder_stone.svg') }}"
+                     class="stone" alt="thunder-stone" width="35px">
+            </h4>
             <ul>
                 <li>
                     Players each have <strong>one</strong> thunder-stone (<em>Þunor-stán</em>),
@@ -74,7 +77,10 @@
                     treated the same as normal stones.
                 </li>
             </ul>
-            <h4>Woden-stone rules</h4>
+            <h4>Woden-stone
+                <img src="{{ url_for('static', filename='img/light_woden_stone.svg') }}"
+                     class="stone" alt="Woden-stone" width="35px">
+            </h4>
             <ul>
                 <li>
                     Players each have <strong>one</strong> Woden-stone (<em>wóden-stán</em>),
@@ -99,7 +105,7 @@
                 </li>
             </ul>
             <hr>
-            <h2>Scoring</h2>
+            <h2 class="mt-5">Scoring</h2>
             <p>In all scoring methods, the player with the highest score wins.
                 Note that tie games are possible.</p>
             <h3>Default Method</h3>
@@ -115,10 +121,13 @@
                 of their own stones.
             </p>
             <hr>
-            <h2>License</h2>
-            <p>Mǽrstánas is licensed as <a
+            <h2 class="mt-5">License</h2>
+            <p>Mǽrstánas the game is licensed as <a
                     href="https://creativecommons.org/licenses/by-sa/4.0/"
-                    target="_blank">CC BY-SA</a></p>
+                    target="_blank">CC BY-SA</a> while the code for this
+                web-based version is licensed under the <a
+                        href="https://www.gnu.org/licenses/agpl-3.0.html"
+                        target="_blank">AGPL</a>.</p>
             <strong><a href="https://jaerrib.codeberg.page/maerstanas/"
                        target="_blank">More information about
                 Mǽrstánas</a></strong>
