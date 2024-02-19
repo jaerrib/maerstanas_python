@@ -2,13 +2,14 @@ import secrets
 from copy import deepcopy
 
 from app.game_logic import (
-    remaining_moves,
     assign_move,
     determine_winner,
     check_score,
     possible_thunder_stone_moves,
     possible_woden_stone_moves,
     is_game_over,
+    player_must_pass,
+    change_player,
 )
 
 
@@ -56,14 +57,12 @@ def get_available_moves(temp_game):
 def computer_move(temp_game):
     stone = 1
     moves = get_available_moves(temp_game)
-    # possible_moves = [item for sublist in all_possible for item in sublist]
     comp_move = secrets.choice(moves["possible"])
     row, col = comp_move[0], comp_move[1]
     if comp_move in moves["thunder"] and len(moves["standard"]) < 12:
         stone = 2
     elif comp_move in moves["woden"]:
         stone = 3
-    # print(f"Computer plays: {stone} at {comp_move}")
     return stone, row, col
 
 
@@ -75,12 +74,12 @@ def sim_game_loop(data, players, depth):
     else:
         active_player = 2
     first_move = True
-    temp_game["moves_left"] = remaining_moves(temp_game["board"])
     moves = get_available_moves(temp_game)
     depth_counter = min(depth, len(moves["possible"]))
     while depth_counter >= 1:
         if players[active_player - 1] == "Computer":
-            if not is_game_over(temp_game):
+            if not is_game_over(temp_game) and not player_must_pass(temp_game):
+                moves = get_available_moves(temp_game)
                 if len(moves["possible"]) >= 1:
                     ai_stone, ai_row, ai_col = computer_move(temp_game)
                 if first_move:
@@ -88,7 +87,9 @@ def sim_game_loop(data, players, depth):
                     first_col = ai_col
                     first_stone = ai_stone
                     first_move = False
-        temp_game = assign_move(temp_game, ai_row, ai_col)
+                temp_game = assign_move(temp_game, ai_row, ai_col)
+            if player_must_pass(temp_game):
+                change_player(temp_game)
         depth_counter -= 1
 
     temp_game["result"] = determine_winner(temp_game["score_p1"], temp_game["score_p2"])

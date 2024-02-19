@@ -73,17 +73,17 @@ def reset():
 def process(row, col):
     if valid_move(session["data"], row, col):
         session["data"] = assign_move(session["data"], row, col)
+    if player_must_pass(session["data"]):
+        change_player(session["data"])
     if (session["data"]["active_player"] == 2) and (
         session["data"]["player2"] == "computer"
     ):
-        if not is_game_over(session["data"]):
+        if not is_game_over(session["data"]) and not player_must_pass(session["data"]):
             best_stone, best_row, best_col = get_best_move(
                 session["data"], sim_num=100, depth=49
             )
             session["data"]["active_stone"] = best_stone
             session["data"] = assign_move(session["data"], best_row, best_col)
-    if player_must_pass(session["data"]):
-        change_player(session["data"])
     session["data"]["game_over"] = is_game_over(session["data"])
     return redirect("/")
 
