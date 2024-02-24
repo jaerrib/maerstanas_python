@@ -1,23 +1,7 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+{% extends "base.html" %}
+{% block main_content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mǽrstánas</title>
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-</head>
-
-<body>
-{% block header %}
-{% include "header.html" %}
-{% endblock header %}
-
-<div class="container d-flex flex-wrap">
+<div class="container d-flex flex-wrap justify-content-start">
     <!-- Left Col -->
     <div>
         <!-- Game Area -->
@@ -79,7 +63,7 @@
     </div>
 
     <!-- Right Col -->
-    <div class="ms-5 mt-md-3 mt-lg-0 w-50">
+    <div class="ms-5 mt-md-3 mt-lg-0 w-auto flex-fill">
 
         <!-- Score -->
         <div class="d-flex mt-1">
@@ -92,7 +76,7 @@
 
         <!-- Moves -->
         <div class="row">
-            <div class="container mt-3">
+            <div class="mt-3">
                 <div class="overflow-auto form-control overflow-y-scroll"
                      style="height: 24.5rem">
                     <p class="fs-4">Moves:</p>
@@ -113,10 +97,4 @@
     </div>
 </div>
 
-{% block footer %}
-{% include "footer.html" %}
-{% endblock footer %}
-
-</body>
-
-</html>
+{% endblock main_content %}
