@@ -9,6 +9,7 @@ from app.game_logic import (
     is_game_over,
     change_player,
     player_must_pass,
+    convert_num_to_row,
 )
 
 app = Flask(__name__)
@@ -96,3 +97,22 @@ def stone_selector(player, stone):
     ):
         session["data"] = change_stone(session["data"], stone)
     return redirect("/")
+
+
+@app.route("/suggest", methods=["POST"])
+def suggest():
+    if not is_game_over(session["data"]) and not player_must_pass(session["data"]):
+        best_stone, best_row, best_col = get_best_move(
+            session["data"], sim_num=100, depth=49
+        )
+        stones = ["standard stone", "thunder-stone", "Woden-stone"]
+        suggested_stone = stones[best_stone - 1]
+        converted_row = convert_num_to_row(best_row)
+        suggested_move = f"{suggested_stone} at {converted_row}{best_col}"
+
+    response = f"""
+    <div id="suggestion" class="ms-4 text-body-emphasis fs-6 mb-0 mt-1 p-0">
+        {suggested_move}
+    </div>
+    """
+    return response
