@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mǽrstánas</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+
+<body>
+{% block header %} {% include "header.html" %} {% endblock header %}
+
+{% block main_content %} {% endblock main_content %}
+
+{% block footer %} {% include "footer.html" %} {% endblock footer %}
+</body>
+<script src="{{ url_for('static',filename='js/bootstrap.bundle.min.js') }}"></script>
+</html>

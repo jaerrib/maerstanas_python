@@ -42,7 +42,9 @@
                             <li class="fw-bold">0.4 Ruleset with Default
                                 Scoring
                             </li>
-                            <li><a class="dropdown-item" href="/new_game/1/default/04">1 player</a></li>
+                            <li><a class="dropdown-item"
+                                   href="/new_game/1/default/04">1 player</a>
+                            </li>
                             <li><a class="dropdown-item"
                                    href="/new_game/2/default/04">2 players
                                 (local)</a></li>
@@ -52,7 +54,9 @@
                             <li class="fw-bold">0.4 Ruleset with Simple
                                 Scoring
                             </li>
-                            <li><a class="dropdown-item" href="/new_game/1/simple/04">1 player</a></li>
+                            <li><a class="dropdown-item"
+                                   href="/new_game/1/simple/04">1 player</a>
+                            </li>
                             <li><a class="dropdown-item"
                                    href="/new_game/2/simple/04">2 players
                                 (local)</a></li>
@@ -71,14 +75,6 @@
     </nav>
 </div>
 
-<!-- Rules -->
-{% block rules %}
-{% include "rules.html" %}
-{% endblock rules %}
-<!-- End Rules-->
+{% block rules %}{% include "rules.html" %}{% endblock rules %}
 
 {% endblock header %}
-<script src="{{ url_for('static',filename='js/bootstrap.bundle.min.js') }}"></script>
-</body>
-
-</html>

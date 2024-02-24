@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-</head>
-
-<body>
 {% block footer %}
 <div class="container">
     <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
@@ -19,7 +8,7 @@
                     &copy; 2022-2024 John Beers
                 </li>
                 <li class="nav-item mb-2">
-                    <span class="fs-6 text-secondary">v20240219.0</span>
+                    <span class="fs-6 text-secondary">v20240223.0</span>
                 </li>
             </ul>
         </div>
@@ -54,7 +43,6 @@
                         target="_blank"
                         class="nav-link p-0 text-body-secondary">Python /
                     Flask</a></li>
-                <!--<li class="nav-item mb-2"><a href="https://codeberg.org/jaerrib/maerstanas-webapp" target="_blank" class="nav-link p-0 text-body-secondary">Python / Django</a></li>-->
                 <li class="nav-item mb-2"><a
                         href="https://codeberg.org/jaerrib/maerstanas_python/src/branch/pygame"
                         target="_blank"
@@ -80,12 +68,8 @@
                         target="_blank"
                         class="nav-link p-0 text-body-secondary">Mastodon</a>
                 </li>
-                <!--<li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary"></a></li>-->
             </ul>
         </div>
     </footer>
 </div>
 {% endblock footer %}
-</body>
-
-</html>
