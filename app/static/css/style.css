@@ -23,3 +23,12 @@
 .stone-disabled {
     opacity: 0.1;
 }
+
+#suggestion.htmx-added {
+    opacity: 0;
+}
+
+#suggestion {
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
