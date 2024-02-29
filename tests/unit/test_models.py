@@ -1,14 +1,15 @@
 import unittest
 
+from app.board import Board
 from app.game import Game
 
 
-class TestGame(unittest.TestCase):
+class TestBoaerd(unittest.TestCase):
 
-    def test_new_game(self):
-        game = Game()
+    def test_new_board(self):
+        board = Board()
         self.assertEqual(
-            game.board.data,
+            board.data,
             [
                 [
                     (3, 3),
@@ -111,6 +112,12 @@ class TestGame(unittest.TestCase):
                 ],
             ],
         )
+
+
+class TestGame(unittest.TestCase):
+
+    def test_new_game(self):
+        game = Game()
         self.assertEqual(game.move_list, [])
         self.assertEqual(game.score_p1, 0)
         self.assertEqual(game.score_p2, 0)
