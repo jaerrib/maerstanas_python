@@ -4,7 +4,7 @@ from app.board import Board
 from app.game import Game
 
 
-class TestBoaerd(unittest.TestCase):
+class TestBoard(unittest.TestCase):
 
     def test_new_board(self):
         board = Board()
