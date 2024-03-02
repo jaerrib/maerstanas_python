@@ -20,3 +20,6 @@ class Game:
             "player1": [1, 2, 3],
             "player2": [1, 2, 3],
         }
+
+    def __getitem__(self, key):
+        return self.__dict__[key]
