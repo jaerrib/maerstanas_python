@@ -170,3 +170,43 @@ class GameLogicTest(unittest.TestCase):
         self.assertEqual(
             check_score(board=self.game.board.data, score_type=1, player=2), 16
         )
+
+    def test_remaining_moves(self):
+        possible_moves = remaining_moves(self.game.board.data)
+        self.assertEqual(
+            possible_moves,
+            [[3, 1], [4, 4], [5, 1], [5, 5], [5, 7], [6, 6], [6, 7], [7, 7]],
+        )
+
+    def test_check_thunder_stone(self):
+        self.assertEqual(check_thunder_stone(self.game, row=3, col=1), True)
+        self.assertEqual(check_thunder_stone(self.game, row=1, col=1), False)
+        self.assertEqual(check_thunder_stone(self.game, row=2, col=6), False)
+
+    def test_check_woden_stone(self):
+        # Check a location occupied by the active player's stone
+        self.assertEqual(check_woden_stone(self.game, row=1, col=1), False)
+        # Check a location occupied by an opponent's stone
+        self.assertEqual(check_woden_stone(self.game, row=1, col=5), True)
+        # Check an empty square
+        self.assertEqual(check_woden_stone(self.game, row=2, col=1), False)
+        # Check an invalid board position
+        self.assertEqual(check_woden_stone(self.game, row=13, col=2), False)
+
+    def test_check_valid_move(self):
+        # Check various positions with a standard stone being active
+        self.game.active_stone = 1
+        self.assertEqual(valid_move(self.game, row=1, col=1), False)
+        self.assertEqual(valid_move(self.game, row=0, col=0), False)
+        self.assertEqual(valid_move(self.game, row=6, col=6), True)
+        # Check various positions with a thunder-stone being active
+        self.game.active_stone = 2
+        self.assertEqual(check_thunder_stone(self.game, row=3, col=1), True)
+        self.assertEqual(check_thunder_stone(self.game, row=1, col=1), False)
+        self.assertEqual(check_thunder_stone(self.game, row=2, col=6), False)
+        # Check various positions with a woden-stone being active
+        self.game.active_stone = 3
+        self.assertEqual(check_woden_stone(self.game, row=4, col=1), False)
+        self.assertEqual(check_woden_stone(self.game, row=1, col=5), True)
+        self.assertEqual(check_woden_stone(self.game, row=2, col=1), False)
+        self.assertEqual(check_woden_stone(self.game, row=13, col=2), False)

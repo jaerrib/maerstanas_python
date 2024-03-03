@@ -40,7 +40,7 @@ def index():
             "active_player": game.active_player,
             "active_stone": game.active_stone,
             "stone": game.stone,
-            "board": game.board.data,
+            "board": game.board,
             "game_over": False,
             "player2": session["player2"],
             "scoring_type": game.scoring_type,

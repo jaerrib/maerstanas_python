@@ -92,7 +92,7 @@ def check_default_stone(data, row, col):
     than 3 hinges
     """
     if 1 <= row < 9 and 1 <= col < 9:
-        player_move = data["board"][row][col]
+        player_move = data["board"]["data"][row][col]
     else:
         # Invalid move - outside board confines
         return False
@@ -100,10 +100,10 @@ def check_default_stone(data, row, col):
         # Invalid move - space occupied
         return False
     else:
-        if check_player_hinges(data["board"], row, col):
+        if check_player_hinges(data["board"]["data"], row, col):
             # Invalid move - move would cause 4 immediate hinges
             return False
-        elif check_adjacent_stones(data["board"], row, col):
+        elif check_adjacent_stones(data["board"]["data"], row, col):
             # Invalid move - an adjacent stone would have 4 hinges
             return False
         else:
@@ -117,7 +117,7 @@ def check_thunder_stone(data, row, col):
     (2) Checking if the position is occupied
     """
     if 1 <= row < 9 and 1 <= col < 9:
-        player_move = data["board"][row][col]
+        player_move = data["board"]["data"][row][col]
     else:
         # Invalid move - outside board confines
         return False
@@ -132,7 +132,7 @@ def check_woden_stone(data, row, col):
     (2) Checking if the position is occupied by an opponent's stone
     """
     if 1 <= row < 8 and 1 <= col < 8:
-        player_move = data["board"][row][col]
+        player_move = data["board"]["data"][row][col]
     else:
         # Invalid move - outside board confines
         return False

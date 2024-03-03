@@ -19,3 +19,6 @@ class Board:
         for row_num in range(1, SIZE - 1):
             self.data[row_num][0] = EDGE
             self.data[row_num][8] = EDGE
+
+    def __getitem__(self, key):
+        return self.__dict__[key]
