@@ -16,10 +16,14 @@ from app.game_logic import (
 def assign_result_value(current_game):
     game_value = 0
     score_p1 = check_score(
-        board=current_game["board"], score_type=current_game["scoring_type"], player=1
+        board=current_game["board"]["data"],
+        score_type=current_game["scoring_type"],
+        player=1,
     )
     score_p2 = check_score(
-        board=current_game["board"], score_type=current_game["scoring_type"], player=2
+        board=current_game["board"]["data"],
+        score_type=current_game["scoring_type"],
+        player=2,
     )
     if current_game["result"] == "tie":
         game_value = 1
@@ -55,7 +59,7 @@ def get_available_moves(temp_game):
 
 
 def computer_move(temp_game):
-    stone = 1
+    # stone = 1
     moves = get_available_moves(temp_game)
     comp_move = secrets.choice(moves["possible"])
     row, col = comp_move[0], comp_move[1]
@@ -63,6 +67,8 @@ def computer_move(temp_game):
         stone = 2
     elif comp_move in moves["woden"]:
         stone = 3
+    else:
+        stone = 1
     return stone, row, col
 
 

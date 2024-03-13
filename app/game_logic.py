@@ -221,10 +221,10 @@ def remaining_moves(board):
 
 def update_score(data):
     data["score_p1"] = check_score(
-        board=data["board"], score_type=data["scoring_type"], player=1
+        board=data["board"]["data"], score_type=data["scoring_type"], player=1
     )
     data["score_p2"] = check_score(
-        board=data["board"], score_type=data["scoring_type"], player=2
+        board=data["board"]["data"], score_type=data["scoring_type"], player=2
     )
     return data
 
@@ -242,8 +242,8 @@ def determine_winner(score_p1, score_p2):
 def thunder_attack(data, row, col):
     adjacent_positions = find_adjacent(row, col)
     for position in adjacent_positions:
-        if data["board"][position[0]][position[1]] != (3, 3):
-            data["board"][position[0]][position[1]] = (0, 0)
+        if data["board"]["data"][position[0]][position[1]] != (3, 3):
+            data["board"]["data"][position[0]][position[1]] = (0, 0)
     return data
 
 
@@ -254,7 +254,7 @@ def assign_move(data, row, col):
         data["special_stones"][f"player{data['active_player']}"].remove(
             data["active_stone"]
         )
-    data["board"][row][col] = (data["active_player"], data["active_stone"])
+    data["board"]["data"][row][col] = (data["active_player"], data["active_stone"])
     stones = ["standard stone", "thunder-stone", "Woden-stone"]
     played_stone = stones[data["active_stone"] - 1]
     data["move_list"].append(
@@ -265,7 +265,7 @@ def assign_move(data, row, col):
     )
     data = update_score(data)
     data = change_player(data)
-    data["moves_left"] = remaining_moves(data["board"])
+    data["moves_left"] = remaining_moves(data["board"]["data"])
     return data
 
 
@@ -277,7 +277,7 @@ def change_stone(data, stone):
 def is_game_over(data):
     player1_has_special_stones = len(data["special_stones"]["player1"]) > 1
     player2_has_special_stones = len(data["special_stones"]["player2"]) > 1
-    default_moves_are_left = remaining_moves(data["board"]) != []
+    default_moves_are_left = remaining_moves(data["board"]["data"]) != []
     return (
         not player1_has_special_stones
         and not player2_has_special_stones

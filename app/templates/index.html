@@ -21,31 +21,31 @@
                 {% for col in range(1, 8) %}
                 <a href="/process/{{row}}/{{col}}">
                     <div class="square bg-secondary border border-secondary-subtle">
-                        {% if data.board[row][col][0] == 1 and
-                        data.board[row][col][1] == 1 %}
+                        {% if data.board.data[row][col][0] == 1 and
+                        data.board.data[row][col][1] == 1 %}
                         <img src="{{ url_for('static', filename='img/dark_stone.svg') }}"
                              class="stone"
                              alt="dark stone">
-                        {% elif data.board[row][col][0] == 1 and
-                        data.board[row][col][1] == 2 %}
+                        {% elif data.board.data[row][col][0] == 1 and
+                        data.board.data[row][col][1] == 2 %}
                         <img src="{{ url_for('static', filename='img/dark_thunder_stone.svg') }}"
                              class="stone"
                              alt="dark thunder stone">
-                        {% elif data.board[row][col][0] == 1 and
-                        data.board[row][col][1] == 3 %}
+                        {% elif data.board.data[row][col][0] == 1 and
+                        data.board.data[row][col][1] == 3 %}
                         <img src="{{ url_for('static', filename='img/dark_woden_stone.svg') }}"
                              class="stone"
                              alt="dark woden stone">
-                        {% elif data.board[row][col][0] == 2 and
-                        data.board[row][col][1] == 1 %}
+                        {% elif data.board.data[row][col][0] == 2 and
+                        data.board.data[row][col][1] == 1 %}
                         <img src="{{ url_for('static', filename='img/light_stone.svg') }}"
                              class="stone" alt="light stone">
-                        {% elif data.board[row][col][0] == 2 and
-                        data.board[row][col][1] == 2 %}
+                        {% elif data.board.data[row][col][0] == 2 and
+                        data.board.data[row][col][1] == 2 %}
                         <img src="{{ url_for('static', filename='img/light_thunder_stone.svg') }}"
                              class="stone" alt="light thunder stone">
-                        {% elif data.board[row][col][0] == 2 and
-                        data.board[row][col][1] == 3 %}
+                        {% elif data.board.data[row][col][0] == 2 and
+                        data.board.data[row][col][1] == 3 %}
                         <img src="{{ url_for('static', filename='img/light_woden_stone.svg') }}"
                              class="stone" alt="light woden stone">
                         {% endif %}
