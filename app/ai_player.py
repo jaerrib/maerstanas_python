@@ -55,14 +55,17 @@ def get_available_moves(temp_game):
 
 
 def computer_move(temp_game):
-    stone = 1
     moves = get_available_moves(temp_game)
     comp_move = secrets.choice(moves["possible"])
     row, col = comp_move[0], comp_move[1]
-    if comp_move in moves["thunder"] and len(moves["standard"]) < 12:
+    if (comp_move in moves["thunder"] and len(moves["standard"]) < 12) or (
+        comp_move in moves["thunder"] and comp_move not in moves["standard"]
+    ):
         stone = 2
     elif comp_move in moves["woden"]:
         stone = 3
+    else:
+        stone = 1
     return stone, row, col
 
 
