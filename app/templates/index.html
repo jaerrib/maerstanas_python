@@ -71,13 +71,16 @@
                 {{data.score_p1}}</p>
             <p class="ps-4 text-body-emphasis fs-4 mb-0">Player 2:
                 {{data.score_p2}}</p>
-            <!--            <form hx-post="/suggest" hx-swap="outerHTML"-->
-            <!--                  hx-target="#suggestion">-->
-            <!--                <button type="submit"-->
-            <!--                        class="ms-4 mb-0 btn btn-primary btn-sm">Suggestion-->
-            <!--                </button>-->
-            <!--            </form>-->
-            <!--            <div id="suggestion"></div>-->
+            <form hx-post="/suggest" hx-swap="outerHTML"
+                  hx-target="#suggestion" hx-indicator="#spinner">
+                <button type="submit"
+                        class="ms-4 mb-0 btn btn-primary btn-sm">Suggestion
+                </button>
+            </form>
+            <div id="suggestion" class="ms-5"><img id="spinner"
+                                                   class="htmx-indicator"
+                                                   src="{{ url_for('static', filename='img/bars.svg') }}">
+            </div>
         </div>
         <!-- End Score -->
 

@@ -32,3 +32,16 @@
     opacity: 1;
     transition: opacity 0.5s ease-out;
 }
+
+.htmx-indicator {
+    opacity: 0;
+    transition: opacity 500ms ease-in-out;
+}
+
+.htmx-request .htmx-indicator {
+    opacity: 1
+}
+
+.htmx-request.htmx-indicator {
+    opacity: 1
+}
