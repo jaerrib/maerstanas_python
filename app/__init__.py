@@ -23,7 +23,7 @@ def index():
     if "scoring" not in session:
         session["scoring"] = 1
     if "ruleset" not in session:
-        session["ruleset"] = "0.2"
+        session["ruleset"] = "0.4"
     if "data" not in session:
         game = Game()
         game.scoring_type = session["scoring"]
@@ -101,15 +101,20 @@ def stone_selector(player, stone):
 
 @app.route("/suggest", methods=["POST"])
 def suggest():
-    if not is_game_over(session["data"]) and not player_must_pass(session["data"]):
+    if is_game_over(session["data"]):
+        suggested_move = "Game is over"
+    elif player_must_pass(session["data"]):
+        suggested_move = "Pass"
+    elif not player_must_pass(session["data"]):
         best_stone, best_row, best_col = get_best_move(
             session["data"], sim_num=100, depth=49
         )
         stones = ["standard stone", "thunder-stone", "Woden-stone"]
         suggested_stone = stones[best_stone - 1]
-        converted_row = convert_num_to_row(best_row)
-        suggested_move = f"{suggested_stone} at {converted_row}{best_col}"
-
+        converted_col = convert_num_to_row(best_col)
+        suggested_move = f"{suggested_stone} at {converted_col}{best_row}"
+    else:
+        suggested_move = "Not sure"
     response = f"""
     <div id="suggestion" class="ms-4 text-body-emphasis fs-6 mb-0 mt-1 p-0">
         {suggested_move}

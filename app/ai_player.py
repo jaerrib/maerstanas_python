@@ -58,12 +58,10 @@ def computer_move(temp_game):
     moves = get_available_moves(temp_game)
     comp_move = secrets.choice(moves["possible"])
     row, col = comp_move[0], comp_move[1]
-    if (comp_move in moves["thunder"] and len(moves["standard"]) < 12) or (
-        comp_move in moves["thunder"] and comp_move not in moves["standard"]
-    ):
-        stone = 2
-    elif comp_move in moves["woden"]:
+    if comp_move in moves["woden"] and comp_move not in moves["standard"]:
         stone = 3
+    elif comp_move in moves["thunder"] and comp_move not in moves["standard"]:
+        stone = 2
     else:
         stone = 1
     return stone, row, col
@@ -105,11 +103,10 @@ def sim_game_loop(data, players, depth):
 
 def get_best_move(data, sim_num, depth):
     temp_game = deepcopy(data)
-    # Using -1000 simply ensures that losses and ties are scored
+    # Using -100000 simply ensures that losses and ties are scored
     # better than the initial assignment
-    best_score = -1000
+    best_score = -100000
     players = ["Computer", "Computer"]
-
     for x in range(0, sim_num):
         returned_score, first_stone, first_row, first_col = sim_game_loop(
             temp_game, players, depth
