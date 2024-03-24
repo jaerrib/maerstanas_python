@@ -48,6 +48,9 @@
                         data.board[row][col][1] == 3 %}
                         <img src="{{ url_for('static', filename='img/light_woden_stone.svg') }}"
                              class="stone" alt="light woden stone">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='img/empty.svg') }}"
+                             class="stone" alt="empty square">
                         {% endif %}
                     </div>
                 </a>
