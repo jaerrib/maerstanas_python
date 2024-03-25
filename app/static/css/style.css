@@ -13,13 +13,19 @@
     text-align: center;
 }
 
+.score {
+    font-size: 1em;
+}
+
 @media only screen and (min-width: 768px) {
     .square {
-        aspect-ratio: 1 / 1;
         font-size: 1.75em;
         height: 2em;
         padding: 2px 0 2px 0;
-        text-align: center;
+    }
+
+    .score {
+        font-size: 1.5em;
     }
 }
 
