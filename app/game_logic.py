@@ -1,19 +1,17 @@
 def convert_num_to_row(num):
-    rows = ["A", "B", "C", "D", "E", "F", "G"]
-    return rows[num - 1]
+    return chr(ord("A") + num - 1)
 
 
 def find_adjacent(row_number, col_number):
     """
-    Returns assigned value for positions adjacent to a given board position
+    Returns a list of positions adjacent to a given board position.
     """
-    adjacent_positions = [
-        [row_number - 1, col_number],
-        [row_number, col_number - 1],
-        [row_number, col_number + 1],
-        [row_number + 1, col_number],
+    return [
+        (row_number - 1, col_number),
+        (row_number, col_number - 1),
+        (row_number, col_number + 1),
+        (row_number + 1, col_number),
     ]
-    return adjacent_positions
 
 
 def check_player_hinges(board, row_number, col_number):
@@ -74,10 +72,7 @@ def check_adjacent_stones(board, row_number, col_number):
 
 
 def change_player(data):
-    if data["active_player"] == 1:
-        data["active_player"] = 2
-    elif data["active_player"] == 2:
-        data["active_player"] = 1
+    data["active_player"] = 3 - data["active_player"]
     data["active_stone"] = 1
     return data
 
@@ -89,25 +84,25 @@ def check_default_stone(data, row, col):
     (2) Checking if the position is occupied
     (3) Checking if the move would create 4 immediate hinges
     (4) Checking if the move would cause any adjacent stones to have more
-    than 3 hinges
+        than 3 hinges
     """
-    if 1 <= row < 9 and 1 <= col < 9:
-        player_move = data["board"][row][col]
-    else:
+    # size = len(data["board"][0]) Note for future use
+    if not (1 <= row < 9 and 1 <= col < 9):
         # Invalid move - outside board confines
         return False
+
+    player_move = data["board"][row][col]
     if player_move[0] != 0:
         # Invalid move - space occupied
         return False
-    else:
-        if check_player_hinges(data["board"], row, col):
-            # Invalid move - move would cause 4 immediate hinges
-            return False
-        elif check_adjacent_stones(data["board"], row, col):
-            # Invalid move - an adjacent stone would have 4 hinges
-            return False
-        else:
-            return True
+
+    if check_player_hinges(data["board"], row, col) or check_adjacent_stones(
+        data["board"], row, col
+    ):
+        # Invalid move - either 4 immediate hinges or adjacent stone with 4 hinges
+        return False
+
+    return True
 
 
 def check_thunder_stone(data, row, col):
@@ -242,8 +237,8 @@ def determine_winner(score_p1, score_p2):
 def thunder_attack(data, row, col):
     adjacent_positions = find_adjacent(row, col)
     for position in adjacent_positions:
-        if data["board"][position[0]][position[1]] != (3, 3):
-            data["board"][position[0]][position[1]] = (0, 0)
+        if data["board"][position[0]][position[1]] != [3, 3]:
+            data["board"][position[0]][position[1]] = [0, 0]
     return data
 
 
