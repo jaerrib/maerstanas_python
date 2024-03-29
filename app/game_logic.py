@@ -1,4 +1,4 @@
-def convert_num_to_row(num):
+def convert_num_to_col(num):
     return chr(ord("A") + num - 1)
 
 
@@ -249,7 +249,7 @@ def assign_move(data, row, col):
     data["move_list"].append(
         (
             data["active_player"],
-            convert_num_to_row(col) + str(row) + " - " + played_stone,
+            convert_num_to_col(col) + str(row) + " - " + played_stone,
         )
     )
     data = update_score(data)

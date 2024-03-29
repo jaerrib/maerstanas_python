@@ -9,7 +9,7 @@ from app.game_logic import (
     is_game_over,
     change_player,
     player_must_pass,
-    convert_num_to_row,
+    convert_num_to_col,
 )
 
 app = Flask(__name__)
@@ -75,6 +75,7 @@ def process(row, col):
     if valid_move(session["data"], row, col):
         session["data"] = assign_move(session["data"], row, col)
     if player_must_pass(session["data"]):
+        session["data"]["move_list"].append((session["data"]["active_player"], "Pass"))
         change_player(session["data"])
     if (session["data"]["active_player"] == 2) and (
         session["data"]["player2"] == "computer"
@@ -85,6 +86,10 @@ def process(row, col):
             )
             session["data"]["active_stone"] = best_stone
             session["data"] = assign_move(session["data"], best_row, best_col)
+        else:
+            session["data"]["move_list"].append(
+                (session["data"]["active_player"], "Pass")
+            )
     session["data"]["game_over"] = is_game_over(session["data"])
     return redirect("/")
 
@@ -111,7 +116,7 @@ def suggest():
         )
         stones = ["standard stone", "thunder-stone", "Woden-stone"]
         suggested_stone = stones[best_stone - 1]
-        converted_col = convert_num_to_row(best_col)
+        converted_col = convert_num_to_col(best_col)
         suggested_move = f"{suggested_stone} at {converted_col}{best_row}"
     else:
         suggested_move = "Not sure"
