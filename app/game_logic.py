@@ -7,10 +7,10 @@ def find_adjacent(row_number, col_number):
     Returns a list of positions adjacent to a given board position.
     """
     return [
-        (row_number - 1, col_number),
-        (row_number, col_number - 1),
-        (row_number, col_number + 1),
-        (row_number + 1, col_number),
+        [row_number - 1, col_number],
+        [row_number, col_number - 1],
+        [row_number, col_number + 1],
+        [row_number + 1, col_number],
     ]
 
 
