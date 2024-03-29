@@ -43,9 +43,7 @@ def hinge_check(board, row_number, col_number):
         row_to_check = adjacent_positions[position][0]
         col_to_check = adjacent_positions[position][1]
         position_check = board[row_to_check][col_to_check]
-        if position_check[0] == 3:
-            hinges += 1
-        elif position_check[0] == 1 or position_check[0] == 2:
+        if position_check[0] in [1, 2, 3]:
             hinges += 1
     return hinges
 
@@ -63,11 +61,11 @@ def check_adjacent_stones(board, row_number, col_number):
         row_position = int(adjacent_positions[i][0])
         col_position = int(adjacent_positions[i][1])
         board_value = board[row_position][col_position]
-        if board_value[0] == 3 or board_value[0] == 0:
-            pass
-        elif board_value[0] == 1 or board_value[0] == 2:
-            if hinge_check(board, row_position, col_position) >= 3:
-                return True
+        if (
+            board_value[0] in [1, 2]
+            and hinge_check(board, row_position, col_position) >= 3
+        ):
+            return True
     return False
 
 
@@ -86,7 +84,6 @@ def check_default_stone(data, row, col):
     (4) Checking if the move would cause any adjacent stones to have more
         than 3 hinges
     """
-    # size = len(data["board"][0]) Note for future use
     if not (1 <= row < 9 and 1 <= col < 9):
         # Invalid move - outside board confines
         return False
@@ -154,23 +151,20 @@ def check_score(board, score_type, player):
     for row_index in range(1, 9):
         for col_index in range(0, 9):
             board_position = board[row_index][col_index]
-            comparison_position = board[row_index - 1][col_index]
-            if comparison_position[0] == player and board_position[0] == player:
+            # Check vertical hinges
+            position_above = board[row_index - 1][col_index]
+            if position_above[0] == player and board_position[0] == player:
                 calculated_score += 1
-            elif comparison_position[0] == 3 and board_position[0] == player:
+            elif position_above[0] == 3 and board_position[0] == player:
                 calculated_score += score_type
-            elif comparison_position[0] == player and board_position[0] == 3:
+            elif position_above[0] == player and board_position[0] == 3:
                 calculated_score += score_type
-
-    for row_index in range(1, 9):
-        for col_index in range(0, 9):
-            board_position = board[row_index][col_index]
-            comparison_position = board[row_index][col_index - 1]
-            if comparison_position[0] == player and board_position[0] == player:
+            position_to_left = board[row_index][col_index - 1]
+            if position_to_left[0] == player and board_position[0] == player:
                 calculated_score += 1
-            elif comparison_position[0] == 3 and board_position[0] == player:
+            elif position_to_left[0] == 3 and board_position[0] == player:
                 calculated_score += score_type
-            elif comparison_position[0] == player and board_position[0] == 3:
+            elif position_to_left[0] == player and board_position[0] == 3:
                 calculated_score += score_type
     return calculated_score
 
