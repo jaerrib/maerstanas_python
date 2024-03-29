@@ -1,8 +1,6 @@
 SIZE = 9
 EMPTY = [0, 0]
 EDGE = [3, 3]
-# EMPTY = (0, 0)
-# EDGE = (3, 3)
 
 
 class Board:
