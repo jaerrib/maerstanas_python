@@ -133,12 +133,13 @@ def check_woden_stone(data, row, col):
 
 
 def valid_move(data, row, col):
-    if data["active_stone"] == 1:
-        return check_default_stone(data, row, col)
-    if data["active_stone"] == 2:
-        return check_thunder_stone(data, row, col)
-    if data["active_stone"] == 3:
-        return check_woden_stone(data, row, col)
+    match data["active_stone"]:
+        case 1:
+            return check_default_stone(data, row, col)
+        case 2:
+            return check_thunder_stone(data, row, col)
+        case 3:
+            return check_woden_stone(data, row, col)
 
 
 def check_score(board, score_type, player):
@@ -159,6 +160,7 @@ def check_score(board, score_type, player):
                 calculated_score += score_type
             elif position_above[0] == player and board_position[0] == 3:
                 calculated_score += score_type
+            # Check horizontal hinges
             position_to_left = board[row_index][col_index - 1]
             if position_to_left[0] == player and board_position[0] == player:
                 calculated_score += 1
@@ -171,19 +173,19 @@ def check_score(board, score_type, player):
 
 def possible_thunder_stone_moves(data):
     possible_moves = []
-    for row_index in range(1, 9):
-        for col_index in range(1, 9):
-            if check_thunder_stone(data, row_index, col_index):
-                possible_moves.append([row_index, col_index])
+    for row in range(1, 9):
+        for col in range(1, 9):
+            if check_thunder_stone(data, row, col):
+                possible_moves.append([row, col])
     return possible_moves
 
 
 def possible_woden_stone_moves(data):
     possible_moves = []
-    for row_index in range(1, 9):
-        for col_index in range(1, 9):
-            if check_woden_stone(data, row_index, col_index):
-                possible_moves.append([row_index, col_index])
+    for row in range(1, 9):
+        for col in range(1, 9):
+            if check_woden_stone(data, row, col):
+                possible_moves.append([row, col])
     return possible_moves
 
 

@@ -55,12 +55,16 @@ def new_game(players, scoring_type, ruleset):
     session.clear()
     player_type = ["computer", "human"]
     session["player2"] = player_type[players - 1]
-    if scoring_type == "simple":
-        session["scoring"] = 0
-    if ruleset == "02":
-        session["ruleset"] = "0.2"
-    else:
-        session["ruleset"] = "0.4"
+    match scoring_type:
+        case "simple":
+            session["scoring"] = 0
+        case "default":
+            session["scoring"] = 1
+    match ruleset:
+        case "02":
+            session["ruleset"] = "0.2"
+        case "04":
+            session["ruleset"] = "0.4"
     return redirect("/")
 
 
