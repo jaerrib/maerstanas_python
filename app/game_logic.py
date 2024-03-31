@@ -75,7 +75,7 @@ def change_player(data):
     return data
 
 
-def check_default_stone(data, row, col):
+def check_default_stone(board, row, col):
     """
     Determines if a potential move would be valid by doing the following:
     (1) Checking if the coordinates are within the confines of the board
@@ -88,28 +88,26 @@ def check_default_stone(data, row, col):
         # Invalid move - outside board confines
         return False
 
-    player_move = data["board"][row][col]
+    player_move = board[row][col]
     if player_move[0] != 0:
         # Invalid move - space occupied
         return False
 
-    if check_player_hinges(data["board"], row, col) or check_adjacent_stones(
-        data["board"], row, col
-    ):
+    if check_player_hinges(board, row, col) or check_adjacent_stones(board, row, col):
         # Invalid move - either 4 immediate hinges or adjacent stone with 4 hinges
         return False
 
     return True
 
 
-def check_thunder_stone(data, row, col):
+def check_thunder_stone(board, row, col):
     """
     Determines if a potential move would be valid by doing the following:
     (1) Checking if the coordinates are within the confines of the board
     (2) Checking if the position is occupied
     """
     if 1 <= row < 9 and 1 <= col < 9:
-        player_move = data["board"][row][col]
+        player_move = board[row][col]
     else:
         # Invalid move - outside board confines
         return False
@@ -117,29 +115,29 @@ def check_thunder_stone(data, row, col):
     return player_move[0] == 0
 
 
-def check_woden_stone(data, row, col):
+def check_woden_stone(board, active_player, row, col):
     """
     Determines if a potential move would be valid by doing the following:
     (1) Checking if the coordinates are within the confines of the board
     (2) Checking if the position is occupied by an opponent's stone
     """
     if 1 <= row < 8 and 1 <= col < 8:
-        player_move = data["board"][row][col]
+        player_move = board[row][col]
     else:
         # Invalid move - outside board confines
         return False
     # Return if the chosen space is occupied by opponent's stone
-    return player_move[1] != 0 and player_move[0] != data["active_player"]
+    return player_move[1] != 0 and player_move[0] != active_player
 
 
 def valid_move(data, row, col):
     match data["active_stone"]:
         case 1:
-            return check_default_stone(data, row, col)
+            return check_default_stone(data["board"], row, col)
         case 2:
-            return check_thunder_stone(data, row, col)
+            return check_thunder_stone(data["board"], row, col)
         case 3:
-            return check_woden_stone(data, row, col)
+            return check_woden_stone(data["board"], data["active_player"], row, col)
 
 
 def check_score(board, score_type, player):
@@ -175,7 +173,7 @@ def possible_thunder_stone_moves(data):
     possible_moves = []
     for row in range(1, 9):
         for col in range(1, 9):
-            if check_thunder_stone(data, row, col):
+            if check_thunder_stone(data["board"], row, col):
                 possible_moves.append([row, col])
     return possible_moves
 
@@ -184,7 +182,7 @@ def possible_woden_stone_moves(data):
     possible_moves = []
     for row in range(1, 9):
         for col in range(1, 9):
-            if check_woden_stone(data, row, col):
+            if check_woden_stone(data["board"], data["active_player"], row, col):
                 possible_moves.append([row, col])
     return possible_moves
 

@@ -150,3 +150,52 @@ class GameLogicTest(unittest.TestCase):
         self.assertEqual(hinges, 2)
         hinges = hinge_check(self.game.board.data, row_number=4, col_number=5)
         self.assertEqual(hinges, 1)
+
+    def test_check_adjacent_stones(self):
+        position = check_adjacent_stones(
+            self.game.board.data, row_number=5, col_number=6
+        )
+        self.assertEqual(position, True)
+        position = check_adjacent_stones(
+            self.game.board.data, row_number=6, col_number=5
+        )
+        self.assertEqual(position, True)
+        position = check_adjacent_stones(
+            self.game.board.data, row_number=3, col_number=1
+        )
+        self.assertEqual(position, False)
+
+    def test_check_default_stone(self):
+        self.assertEqual(
+            check_default_stone(self.game.board.data, row=10, col=6), False
+        )
+        self.assertEqual(check_default_stone(self.game.board.data, row=1, col=1), False)
+        self.assertEqual(check_default_stone(self.game.board.data, row=3, col=7), False)
+        self.assertEqual(check_default_stone(self.game.board.data, row=5, col=6), False)
+        self.assertEqual(check_default_stone(self.game.board.data, row=6, col=7), True)
+
+    def test_check_thunder_stone(self):
+        self.assertEqual(
+            check_thunder_stone(self.game.board.data, row=10, col=10), False
+        )
+        self.assertEqual(check_thunder_stone(self.game.board.data, row=1, col=1), False)
+        self.assertEqual(check_thunder_stone(self.game.board.data, row=3, col=1), True)
+        self.assertEqual(check_thunder_stone(self.game.board.data, row=3, col=7), True)
+
+    def test_check_woden_stone(self):
+        self.assertEqual(
+            check_woden_stone(self.game.board.data, active_player=1, row=10, col=10),
+            False,
+        )
+        self.assertEqual(
+            check_woden_stone(self.game.board.data, active_player=1, row=1, col=1),
+            False,
+        )
+        self.assertEqual(
+            check_woden_stone(self.game.board.data, active_player=1, row=3, col=1),
+            False,
+        )
+        self.assertEqual(
+            check_woden_stone(self.game.board.data, active_player=1, row=3, col=6),
+            True,
+        )
