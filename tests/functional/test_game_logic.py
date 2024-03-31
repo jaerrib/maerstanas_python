@@ -110,6 +110,17 @@ class GameLogicTest(unittest.TestCase):
             ],
         ]
 
+    def test_col_conversion(self):
+        self.assertEqual(convert_num_to_col(1), "A")
+        self.assertEqual(convert_num_to_col(2), "B")
+        self.assertEqual(convert_num_to_col(3), "C")
+        self.assertEqual(convert_num_to_col(4), "D")
+        self.assertEqual(convert_num_to_col(5), "E")
+        self.assertEqual(convert_num_to_col(6), "F")
+        self.assertEqual(convert_num_to_col(7), "G")
+        self.assertNotEqual(convert_num_to_col(1), "B")
+        self.assertNotEqual(convert_num_to_col(0), "A")
+
     def test_find_adjacent(self):
         adjacent_positions = find_adjacent(1, 1)
         self.assertEqual(adjacent_positions, [[0, 1], [1, 0], [1, 2], [2, 1]])
