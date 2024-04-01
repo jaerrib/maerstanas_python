@@ -10,6 +10,8 @@
           href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="shortcut icon"
+          href="{{ url_for('static', filename='img/favicon.ico') }}">
 </head>
 
 <body>
@@ -21,4 +23,13 @@
 </body>
 <script src="{{ url_for('static',filename='js/htmx.min.js') }}"></script>
 <script src="{{ url_for('static',filename='js/bootstrap.bundle.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+<script>
+    var endgameModal = new bootstrap.Modal(document.getElementById("endgame-modal"), {})
+    if ('{{data["game_over"]}}' === "True") {
+        endgameModal.show()
+    }
+</script>
 </html>
