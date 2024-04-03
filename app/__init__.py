@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, session
+from flask import Flask, render_template, session, redirect, request
 
 from app.ai_player import get_best_move
 from app.game import Game
@@ -50,21 +50,14 @@ def index():
     return render_template("index.html", data=session["data"])
 
 
-@app.route("/new_game/<int:players>/<scoring_type>/<ruleset>")
-def new_game(players, scoring_type, ruleset):
+@app.route("/new-game", methods=["POST"])
+def new_game():
     session.clear()
+    session["ruleset"] = "0.4" if "stones" in request.form else "0.2"
+    session["scoring"] = 1 if "scoring" in request.form else 0
     player_type = ["computer", "human"]
+    players = int(request.form["players"])
     session["player2"] = player_type[players - 1]
-    match scoring_type:
-        case "simple":
-            session["scoring"] = 0
-        case "default":
-            session["scoring"] = 1
-    match ruleset:
-        case "02":
-            session["ruleset"] = "0.2"
-        case "04":
-            session["ruleset"] = "0.4"
     return redirect("/")
 
 
