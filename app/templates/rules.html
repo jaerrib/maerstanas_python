@@ -8,9 +8,23 @@
     </div>
     <div class="offcanvas-body">
         <div>
-            <p class="text-warning fw-bold">Currently playing with ruleset
-                version {{ data.ruleset }}</p>
-            <h2>Overview</h2>
+            <p class="fs-5">Current game settings:</p>
+            <p class="fw-bold">Special Stones -
+                {% if data.ruleset == "0.4" %}
+                <span class="text-warning">ON</span>
+                {% else %}
+                <span class="text-secondary">OFF</span>
+                {% endif %}
+            </p>
+            <p><span class="fw-bold">Scoring Type - </span>
+                {% if data.scoring_type == 1 %}
+                Default
+                {% else %}
+                Simple
+                {% endif %}
+            </p>
+            <hr>
+            <h2 class="mt-5">Overview</h2>
             <p>
                 Mǽrstánas is a free libre open source abstract strategy game
                 where players alternate placing stones within the squares of a
@@ -38,6 +52,16 @@
                 or adjacent to another stone of either color (creating a <em>heorr</em>
                 or "hinge").
             </p>
+            <h4>Passing Rules</h4>
+            <p>
+                When playing with Special Stones on, the opposing player may
+                have viable moves remaining while the active player may not.
+                When this occurs, the active player <strong>must pass</strong>.
+                The game does this automatically, and the Pass is noted in the
+                Moves section. If the opposing player uses a Thunder-stone,
+                stones are removed from the board so new moves may become
+                available on the player's next turn.
+            </p>
             <h3 class="mt-5">Placement limitations</h3>
             <p>
                 Stones may have no more than <strong>three</strong> hinges; the
@@ -48,8 +72,7 @@
                 continues until no more viable moves remain.
             </p>
             <h3 class="mt-5">Special Stones</h3>
-            <p class="fw-light">(Available with version 0.4
-                only)</p>
+            <p class="fw-light">(Only available when turned on)</p>
             <h4>Thunder-stone
                 <img src="{{ url_for('static', filename='img/light_thunder_stone.svg') }}"
                      class="stone" alt="thunder-stone" width="35px">
@@ -116,8 +139,7 @@
             <h3>Simple Method</h3>
             <p>
                 <strong>Edges are not scored.</strong> Players only receive
-                points for stones that are adjacent to one
-                of their own stones.
+                points for stones that are adjacent to one of their own stones.
             </p>
             <hr>
             <h2 class="mt-5">License</h2>
