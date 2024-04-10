@@ -228,17 +228,17 @@ def determine_winner(score_p1, score_p2):
     return result
 
 
-def thunder_attack(data, row, col):
+def thunder_attack(board, row, col):
     adjacent_positions = find_adjacent(row, col)
     for position in adjacent_positions:
-        if data["board"][position[0]][position[1]] != [3, 3]:
-            data["board"][position[0]][position[1]] = [0, 0]
-    return data
+        if board[position[0]][position[1]] != [3, 3]:
+            board[position[0]][position[1]] = [0, 0]
+    return board
 
 
 def assign_move(data, row, col):
     if data["active_stone"] == 2:
-        thunder_attack(data, row, col)
+        thunder_attack(data["board"], row, col)
     if data["active_stone"] == 2 or data["active_stone"] == 3:
         data["special_stones"][f"player{data['active_player']}"].remove(
             data["active_stone"]
