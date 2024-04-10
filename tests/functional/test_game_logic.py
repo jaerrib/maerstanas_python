@@ -199,3 +199,9 @@ class GameLogicTest(unittest.TestCase):
             check_woden_stone(self.game.board.data, active_player=1, row=3, col=6),
             True,
         )
+
+    def test_remaining_moves(self):
+        self.assertEqual(
+            remaining_moves(self.game.board.data),
+            [[3, 1], [4, 4], [5, 1], [5, 5], [5, 7], [6, 6], [6, 7], [7, 7]],
+        )
