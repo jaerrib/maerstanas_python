@@ -206,6 +206,17 @@ class GameLogicTest(unittest.TestCase):
             [[3, 1], [4, 4], [5, 1], [5, 5], [5, 7], [6, 6], [6, 7], [7, 7]],
         )
 
+    def test_determine_winner(self):
+        self.assertEqual(determine_winner(score_p1=20, score_p2=15), "player 1")
+        self.assertEqual(determine_winner(score_p1=15, score_p2=20), "player 2")
+        self.assertEqual(determine_winner(score_p1=20, score_p2=20), "tie")
+        self.assertNotEqual(determine_winner(score_p1=20, score_p2=15), "player 2")
+        self.assertNotEqual(determine_winner(score_p1=20, score_p2=15), "tie")
+        self.assertNotEqual(determine_winner(score_p1=15, score_p2=20), "player 1")
+        self.assertNotEqual(determine_winner(score_p1=15, score_p2=20), "tie")
+        self.assertNotEqual(determine_winner(score_p1=20, score_p2=20), "player 1")
+        self.assertNotEqual(determine_winner(score_p1=20, score_p2=20), "player 2")
+
     def test_thunder_attack(self):
         self.assertEqual(
             thunder_attack(self.game.board.data, row=1, col=6),
