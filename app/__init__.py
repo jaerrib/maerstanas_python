@@ -123,3 +123,8 @@ def suggest():
     </div>
     """
     return response
+
+
+@app.route("/privacy-policy")
+def privacy_policy():
+    return render_template("privacy-policy.html", data=session["data"])
