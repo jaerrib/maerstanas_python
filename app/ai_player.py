@@ -55,58 +55,59 @@ def get_available_moves(temp_game):
     return moves
 
 
-def is_corner(move, game):
+def is_corner(move, board):
     row, col = move[0], move[1]
     adjacent_positions = find_adjacent(row, col)
     hinges = 0
     for position in range(0, len(adjacent_positions)):
         row_to_check = adjacent_positions[position][0]
         col_to_check = adjacent_positions[position][1]
-        position_check = game["board"][row_to_check][col_to_check]
+        position_check = board[row_to_check][col_to_check]
         if position_check[0] in [3]:
             hinges += 1
     return hinges == 2
 
 
-def is_edge(move, game):
+def is_edge(move, board):
     row, col = move[0], move[1]
     adjacent_positions = find_adjacent(row, col)
+    hinges = 0
     for position in range(0, len(adjacent_positions)):
         row_to_check = adjacent_positions[position][0]
         col_to_check = adjacent_positions[position][1]
-        position_check = game["board"][row_to_check][col_to_check]
+        position_check = board[row_to_check][col_to_check]
         if position_check[0] in [3]:
-            return True
-    return False
+            hinges += 1
+    return hinges == 1
 
 
-def hinges_created(move, game):
+def hinges_created(move, board, active_player):
     row, col = move[0], move[1]
     adjacent_positions = find_adjacent(row, col)
     hinges = 0
     for position in range(0, len(adjacent_positions)):
         row_to_check = adjacent_positions[position][0]
         col_to_check = adjacent_positions[position][1]
-        position_check = game["board"][row_to_check][col_to_check]
-        if position_check[0] == game["active_player"]:
+        position_check = board[row_to_check][col_to_check]
+        if position_check[0] == active_player:
             hinges += 1
     return hinges
 
 
-def stones_blocked(move, game):
+def stones_blocked(move, board, active_player):
     row, col = move[0], move[1]
     adjacent_positions = find_adjacent(row, col)
     hinges = 0
     for position in range(0, len(adjacent_positions)):
         row_to_check = adjacent_positions[position][0]
         col_to_check = adjacent_positions[position][1]
-        position_check = game["board"][row_to_check][col_to_check]
-        if position_check[0] != game["active_player"] and position_check[0] != 3:
+        position_check = board[row_to_check][col_to_check]
+        if position_check[0] == 3 - active_player:
             hinges += 1
     return hinges
 
 
-def stones_removed(move, game):
+def stones_removed(move, board, active_player):
     friendly = 0
     opponent = 0
     row, col = move[0], move[1]
@@ -114,17 +115,17 @@ def stones_removed(move, game):
     for position in range(0, len(adjacent_positions)):
         row_to_check = adjacent_positions[position][0]
         col_to_check = adjacent_positions[position][1]
-        position_check = game["board"][row_to_check][col_to_check]
-        if position_check[0] == game["active_player"]:
+        position_check = board[row_to_check][col_to_check]
+        if position_check[0] == active_player:
             friendly += 1
-        if position_check[0] == 3 - game["active_player"]:
+        if position_check[0] == 3 - active_player:
             opponent += 1
     return friendly, opponent
 
 
 def assign_weights(move_dict, temp_game):
     personality = {
-        "corner_weight": 3,
+        "corner_weight": 4,
         "edge_weight": 2,
         "scoring": 2,
         "blocking": 1,
@@ -132,13 +133,15 @@ def assign_weights(move_dict, temp_game):
         "thunder": 2,
         "sacrifice": 1,
     }
+    board = temp_game["board"]["data"]
+    active_player = temp_game["active_player"]
     for move in move_dict["standard"]:
         weight = 0
         if is_corner(move, temp_game):
             weight += personality["corner_weight"]
         elif is_edge(move, temp_game):
             weight += personality["edge_weight"]
-        weight += personality["scoring"] * hinges_created(move, temp_game)
+        weight += personality["scoring"] * hinges_created(move, board, active_player)
         weight += personality["blocking"] * stones_blocked(move, temp_game)
         move.append(weight)
 
@@ -162,11 +165,10 @@ def assign_weights(move_dict, temp_game):
         friendly_stones, opponent_stones = stones_removed(move, temp_game)
         weight += (
             personality["thunder"]
-            + (personality["sacrifice"] * friendly_stones)
+            - (personality["sacrifice"] * friendly_stones)
             + (personality["sacrifice"] * opponent_stones)
         )
         move.append(weight)
-
     return move_dict
 
 
