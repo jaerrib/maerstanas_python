@@ -169,20 +169,20 @@ def check_score(board, score_type, player):
     return calculated_score
 
 
-def possible_thunder_stone_moves(data):
+def possible_thunder_stone_moves(board):
     possible_moves = []
     for row in range(1, 9):
         for col in range(1, 9):
-            if check_thunder_stone(data["board"], row, col):
+            if check_thunder_stone(board, row, col):
                 possible_moves.append([row, col])
     return possible_moves
 
 
-def possible_woden_stone_moves(data):
+def possible_woden_stone_moves(board, active_player):
     possible_moves = []
     for row in range(1, 9):
         for col in range(1, 9):
-            if check_woden_stone(data["board"], data["active_player"], row, col):
+            if check_woden_stone(board, active_player, row, col):
                 possible_moves.append([row, col])
     return possible_moves
 

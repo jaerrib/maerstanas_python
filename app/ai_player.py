@@ -35,14 +35,15 @@ def assign_result_value(current_game):
 
 
 def get_available_moves(temp_game):
+    board = temp_game["board"]
     active_player = temp_game["active_player"]
     standard_moves = temp_game["moves_left"]
     thunder_moves = []
     woden_moves = []
     if 2 in temp_game["special_stones"]["player" + str(active_player)]:
-        thunder_moves.append(possible_thunder_stone_moves(temp_game))
+        thunder_moves.append(possible_thunder_stone_moves(board))
     if 3 in temp_game["special_stones"]["player" + str(active_player)]:
-        woden_moves.append(possible_woden_stone_moves(temp_game))
+        woden_moves.append(possible_woden_stone_moves(board, active_player))
     thunder_moves = [item for sublist in thunder_moves for item in sublist]
     woden_moves = [item for sublist in woden_moves for item in sublist]
     possible_moves = standard_moves + thunder_moves + woden_moves
@@ -55,7 +56,7 @@ def get_available_moves(temp_game):
     return moves
 
 
-def is_corner(move, board):
+def edge_hinge_count(move, board):
     row, col = move[0], move[1]
     adjacent_positions = find_adjacent(row, col)
     hinges = 0
@@ -63,22 +64,17 @@ def is_corner(move, board):
         row_to_check = adjacent_positions[position][0]
         col_to_check = adjacent_positions[position][1]
         position_check = board[row_to_check][col_to_check]
-        if position_check[0] in [3]:
+        if position_check[0] == 3:
             hinges += 1
-    return hinges == 2
+    return hinges
+
+
+def is_corner(move, board):
+    return edge_hinge_count(move, board) == 2
 
 
 def is_edge(move, board):
-    row, col = move[0], move[1]
-    adjacent_positions = find_adjacent(row, col)
-    hinges = 0
-    for position in range(0, len(adjacent_positions)):
-        row_to_check = adjacent_positions[position][0]
-        col_to_check = adjacent_positions[position][1]
-        position_check = board[row_to_check][col_to_check]
-        if position_check[0] in [3]:
-            hinges += 1
-    return hinges == 1
+    return edge_hinge_count(move, board) == 1
 
 
 def hinges_created(move, board, active_player):
@@ -133,36 +129,36 @@ def assign_weights(move_dict, temp_game):
         "thunder": 2,
         "sacrifice": 1,
     }
-    board = temp_game["board"]["data"]
+    board = temp_game["board"]
     active_player = temp_game["active_player"]
     for move in move_dict["standard"]:
         weight = 0
-        if is_corner(move, temp_game):
+        if is_corner(move, board):
             weight += personality["corner_weight"]
-        elif is_edge(move, temp_game):
+        elif is_edge(move, board):
             weight += personality["edge_weight"]
         weight += personality["scoring"] * hinges_created(move, board, active_player)
-        weight += personality["blocking"] * stones_blocked(move, temp_game)
+        weight += personality["blocking"] * stones_blocked(move, board, active_player)
         move.append(weight)
 
     for move in move_dict["woden"]:
         weight = 0
-        if is_corner(move, temp_game):
+        if is_corner(move, board):
             weight += personality["corner_weight"]
-        elif is_edge(move, temp_game):
+        elif is_edge(move, board):
             weight += personality["edge_weight"]
-        weight += personality["scoring"] * hinges_created(move, temp_game)
-        weight += personality["blocking"] * stones_blocked(move, temp_game)
+        weight += personality["scoring"] * hinges_created(move, board, active_player)
+        weight += personality["blocking"] * stones_blocked(move, board, active_player)
         weight *= personality["woden"]
         move.append(weight)
 
     for move in move_dict["thunder"]:
         weight = 0
-        if is_corner(move, temp_game):
+        if is_corner(move, board):
             weight += personality["corner_weight"]
-        elif is_edge(move, temp_game):
+        elif is_edge(move, board):
             weight += personality["edge_weight"]
-        friendly_stones, opponent_stones = stones_removed(move, temp_game)
+        friendly_stones, opponent_stones = stones_removed(move, board, active_player)
         weight += (
             personality["thunder"]
             - (personality["sacrifice"] * friendly_stones)
