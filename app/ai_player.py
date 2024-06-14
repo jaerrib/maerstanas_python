@@ -121,9 +121,9 @@ def stones_removed(move, board, active_player):
 
 def assign_weights(move_dict, temp_game):
     personality = {
-        "corner_weight": 4,
-        "edge_weight": 2,
-        "scoring": 2,
+        "corner_weight": 8,
+        "edge_weight": 4,
+        "scoring": 3,
         "blocking": 1,
         "woden": 1,
         "thunder": 2,
@@ -161,8 +161,8 @@ def assign_weights(move_dict, temp_game):
         friendly_stones, opponent_stones = stones_removed(move, board, active_player)
         weight += (
             personality["thunder"]
-            - (personality["sacrifice"] * friendly_stones)
-            + (personality["sacrifice"] * opponent_stones)
+            + (personality["sacrifice"] * friendly_stones)
+            - (personality["sacrifice"] * opponent_stones)
         )
         move.append(weight)
     return move_dict
@@ -173,16 +173,16 @@ def weighted_computer_move(temp_game):
     max_weight = -100000
     move_choices = []
     for move in moves["standard"]:
-        if move[0] > max_weight:
+        if move[2] > max_weight:
             max_weight = move[0]
             move_choices.append(move)
     for move in moves["woden"]:
-        if move[0] > max_weight:
-            max_weight = move[0]
+        if move[2] > max_weight:
+            max_weight = move[2]
             move_choices.append(move)
     for move in moves["thunder"]:
-        if move[0] > max_weight:
-            max_weight = move[0]
+        if move[2] > max_weight:
+            max_weight = move[2]
             move_choices.append(move)
     comp_move = secrets.choice(move_choices)
     row, col = comp_move[0], comp_move[1]
