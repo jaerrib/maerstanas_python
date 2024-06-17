@@ -149,7 +149,7 @@ def assign_weights(move_dict, temp_game):
             weight += personality["edge_weight"]
         weight += personality["scoring"] * hinges_created(move, board, active_player)
         weight += personality["blocking"] * stones_blocked(move, board, active_player)
-        weight *= personality["woden"]
+        weight += personality["woden"]
         move.append(weight)
 
     for move in move_dict["thunder"]:
@@ -159,11 +159,11 @@ def assign_weights(move_dict, temp_game):
         elif is_edge(move, board):
             weight += personality["edge_weight"]
         friendly_stones, opponent_stones = stones_removed(move, board, active_player)
-        weight += (
-            personality["thunder"]
-            + (personality["sacrifice"] * friendly_stones)
-            - (personality["sacrifice"] * opponent_stones)
-        )
+        weight += personality["thunder"]
+        if friendly_stones + opponent_stones != 0:
+            weight += (personality["sacrifice"] * friendly_stones) - (
+                personality["sacrifice"] * opponent_stones
+            )
         move.append(weight)
     return move_dict
 
