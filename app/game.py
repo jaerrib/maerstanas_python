@@ -16,6 +16,7 @@ class Game:
         self.stone = (self.active_player, self.active_stone)
         self.scoring_type = 1
         self.ruleset = "0.4"
+        self.difficulty = "normal"
         self.special_stones = {
             "player1": [1, 2, 3],
             "player2": [1, 2, 3],

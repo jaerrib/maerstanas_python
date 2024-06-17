@@ -223,7 +223,10 @@ def sim_game_loop(data, players, depth):
             if not is_game_over(temp_game) and not player_must_pass(temp_game):
                 moves = get_available_moves(temp_game)
                 if len(moves["possible"]) >= 1:
-                    ai_stone, ai_row, ai_col = weighted_computer_move(temp_game)
+                    if temp_game["difficulty"] == "easy":
+                        ai_stone, ai_row, ai_col = computer_move(temp_game)
+                    else:
+                        ai_stone, ai_row, ai_col = weighted_computer_move(temp_game)
                 if first_move:
                     first_row = ai_row
                     first_col = ai_col

@@ -24,10 +24,13 @@ def index():
         session["scoring"] = 1
     if "ruleset" not in session:
         session["ruleset"] = "0.4"
+    if "difficulty" not in session:
+        session["difficulty"] = "normal"
     if "data" not in session:
         game = Game()
         game.scoring_type = session["scoring"]
         game.ruleset = session["ruleset"]
+        game.difficulty = session["difficulty"]
         if game.ruleset == "0.2":
             game.special_stones["player1"] = [1]
             game.special_stones["player2"] = [1]
@@ -45,6 +48,7 @@ def index():
             "player2": session["player2"],
             "scoring_type": game.scoring_type,
             "ruleset": game.ruleset,
+            "difficulty": game.difficulty,
             "special_stones": game.special_stones,
         }
     return render_template("index.html", data=session["data"])
@@ -53,6 +57,7 @@ def index():
 @app.route("/new-game", methods=["POST"])
 def new_game():
     session.clear()
+    session["difficulty"] = "normal" if "difficulty" in request.form else "easy"
     session["ruleset"] = "0.4" if "stones" in request.form else "0.2"
     session["scoring"] = 1 if "scoring" in request.form else 0
     player_type = ["computer", "human"]
