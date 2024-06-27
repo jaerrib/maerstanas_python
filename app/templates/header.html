@@ -66,14 +66,6 @@
                             <p class="fs-6">(Edges count with default
                                 scoring)</p>
                         </div>
-                        <div class="form-check form-switch fs-3 my-4">
-                            <input class="form-check-input" type="checkbox"
-                                   role="switch" id="difficulty" name="difficulty"
-                                   value="on" checked>
-                            <label class="form-check-label"
-                                   for="difficulty">Computer Strength</label>
-                            <p class="fs-6">(Off = Easy, On = Normal)</p>
-                        </div>
                     </div>
                     <div class="my-4">
                         <p class="fs-3 mb-1">Number of Players</p>
@@ -87,6 +79,19 @@
                                id="2player" autocomplete="off" value=2>
                         <label class="btn"
                                for="2player">2-player (local)</label>
+                    </div>
+                    <div class="my-4">
+                        <p class="fs-3 mb-1">Computer Strength</p>
+                        <input type="radio" class="btn-check"
+                               name="difficulty"
+                               id="normal" autocomplete="off" value="normal" checked>
+                        <label class="btn"
+                               for="normal">Normal</label>
+                        <input type="radio" class="btn-check"
+                               name="difficulty"
+                               id="easy" autocomplete="off" value="easy">
+                        <label class="btn"
+                               for="easy">Easy</label>
                     </div>
                 </div>
                 <div class="modal-footer ">

@@ -57,9 +57,9 @@ def index():
 @app.route("/new-game", methods=["POST"])
 def new_game():
     session.clear()
-    session["difficulty"] = "normal" if "difficulty" in request.form else "easy"
     session["ruleset"] = "0.4" if "stones" in request.form else "0.2"
     session["scoring"] = 1 if "scoring" in request.form else 0
+    session["difficulty"] = request.form["difficulty"]
     player_type = ["computer", "human"]
     players = int(request.form["players"])
     session["player2"] = player_type[players - 1]
