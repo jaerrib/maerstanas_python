@@ -10,6 +10,7 @@ from app.game_logic import (
     is_game_over,
     player_must_pass,
     change_player,
+    find_adjacent,
 )
 
 
@@ -34,14 +35,15 @@ def assign_result_value(current_game):
 
 
 def get_available_moves(temp_game):
+    board = temp_game["board"]
     active_player = temp_game["active_player"]
     standard_moves = temp_game["moves_left"]
     thunder_moves = []
     woden_moves = []
     if 2 in temp_game["special_stones"]["player" + str(active_player)]:
-        thunder_moves.append(possible_thunder_stone_moves(temp_game))
+        thunder_moves.append(possible_thunder_stone_moves(board))
     if 3 in temp_game["special_stones"]["player" + str(active_player)]:
-        woden_moves.append(possible_woden_stone_moves(temp_game))
+        woden_moves.append(possible_woden_stone_moves(board, active_player))
     thunder_moves = [item for sublist in thunder_moves for item in sublist]
     woden_moves = [item for sublist in woden_moves for item in sublist]
     possible_moves = standard_moves + thunder_moves + woden_moves
@@ -52,6 +54,145 @@ def get_available_moves(temp_game):
         "possible": possible_moves,
     }
     return moves
+
+
+def edge_hinge_count(move, board):
+    row, col = move[0], move[1]
+    adjacent_positions = find_adjacent(row, col)
+    hinges = 0
+    for position in range(0, len(adjacent_positions)):
+        row_to_check = adjacent_positions[position][0]
+        col_to_check = adjacent_positions[position][1]
+        position_check = board[row_to_check][col_to_check]
+        if position_check[0] == 3:
+            hinges += 1
+    return hinges
+
+
+def is_corner(move, board):
+    return edge_hinge_count(move, board) == 2
+
+
+def is_edge(move, board):
+    return edge_hinge_count(move, board) == 1
+
+
+def hinges_created(move, board, active_player):
+    row, col = move[0], move[1]
+    adjacent_positions = find_adjacent(row, col)
+    hinges = 0
+    for position in range(0, len(adjacent_positions)):
+        row_to_check = adjacent_positions[position][0]
+        col_to_check = adjacent_positions[position][1]
+        position_check = board[row_to_check][col_to_check]
+        if position_check[0] == active_player:
+            hinges += 1
+    return hinges
+
+
+def stones_blocked(move, board, active_player):
+    row, col = move[0], move[1]
+    adjacent_positions = find_adjacent(row, col)
+    hinges = 0
+    for position in range(0, len(adjacent_positions)):
+        row_to_check = adjacent_positions[position][0]
+        col_to_check = adjacent_positions[position][1]
+        position_check = board[row_to_check][col_to_check]
+        if position_check[0] == 3 - active_player:
+            hinges += 1
+    return hinges
+
+
+def stones_removed(move, board, active_player):
+    friendly = 0
+    opponent = 0
+    row, col = move[0], move[1]
+    adjacent_positions = find_adjacent(row, col)
+    for position in range(0, len(adjacent_positions)):
+        row_to_check = adjacent_positions[position][0]
+        col_to_check = adjacent_positions[position][1]
+        position_check = board[row_to_check][col_to_check]
+        if position_check[0] == active_player:
+            friendly += 1
+        if position_check[0] == 3 - active_player:
+            opponent += 1
+    return friendly, opponent
+
+
+def assign_weights(move_dict, temp_game):
+    personality = {
+        "corner_weight": 8,
+        "edge_weight": 4,
+        "scoring": 3,
+        "blocking": 1,
+        "woden": 1,
+        "thunder": 2,
+        "sacrifice": 1,
+    }
+    board = temp_game["board"]
+    active_player = temp_game["active_player"]
+    for move in move_dict["standard"]:
+        weight = 0
+        if is_corner(move, board):
+            weight += personality["corner_weight"]
+        elif is_edge(move, board):
+            weight += personality["edge_weight"]
+        weight += personality["scoring"] * hinges_created(move, board, active_player)
+        weight += personality["blocking"] * stones_blocked(move, board, active_player)
+        move.append(weight)
+
+    for move in move_dict["woden"]:
+        weight = 0
+        if is_corner(move, board):
+            weight += personality["corner_weight"]
+        elif is_edge(move, board):
+            weight += personality["edge_weight"]
+        weight += personality["scoring"] * hinges_created(move, board, active_player)
+        weight += personality["blocking"] * stones_blocked(move, board, active_player)
+        weight += personality["woden"]
+        move.append(weight)
+
+    for move in move_dict["thunder"]:
+        weight = 0
+        if is_corner(move, board):
+            weight += personality["corner_weight"]
+        elif is_edge(move, board):
+            weight += personality["edge_weight"]
+        friendly_stones, opponent_stones = stones_removed(move, board, active_player)
+        weight += personality["thunder"]
+        if friendly_stones + opponent_stones != 0:
+            weight += (personality["sacrifice"] * friendly_stones) - (
+                personality["sacrifice"] * opponent_stones
+            )
+        move.append(weight)
+    return move_dict
+
+
+def weighted_computer_move(temp_game):
+    moves = assign_weights(get_available_moves(temp_game), temp_game)
+    max_weight = -100000
+    move_choices = []
+    for move in moves["standard"]:
+        if move[2] > max_weight:
+            max_weight = move[0]
+            move_choices.append(move)
+    for move in moves["woden"]:
+        if move[2] > max_weight:
+            max_weight = move[2]
+            move_choices.append(move)
+    for move in moves["thunder"]:
+        if move[2] > max_weight:
+            max_weight = move[2]
+            move_choices.append(move)
+    comp_move = secrets.choice(move_choices)
+    row, col = comp_move[0], comp_move[1]
+    if comp_move in moves["woden"] and comp_move not in moves["standard"]:
+        stone = 3
+    elif comp_move in moves["thunder"] and comp_move not in moves["standard"]:
+        stone = 2
+    else:
+        stone = 1
+    return stone, row, col
 
 
 def computer_move(temp_game):
@@ -82,7 +223,10 @@ def sim_game_loop(data, players, depth):
             if not is_game_over(temp_game) and not player_must_pass(temp_game):
                 moves = get_available_moves(temp_game)
                 if len(moves["possible"]) >= 1:
-                    ai_stone, ai_row, ai_col = computer_move(temp_game)
+                    if temp_game["difficulty"] == "easy":
+                        ai_stone, ai_row, ai_col = computer_move(temp_game)
+                    else:
+                        ai_stone, ai_row, ai_col = weighted_computer_move(temp_game)
                 if first_move:
                     first_row = ai_row
                     first_col = ai_col
