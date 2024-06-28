@@ -153,8 +153,8 @@ def assign_weights(move_dict, temp_game):
         friendly_stones, opponent_stones = stones_removed(move, board, active_player)
         weight += personality["thunder"]
         if friendly_stones + opponent_stones != 0:
-            weight += (personality["sacrifice"] * friendly_stones) - (
-                personality["sacrifice"] * opponent_stones
+            weight += (personality["sacrifice"] * opponent_stones) - (
+                personality["sacrifice"] * friendly_stones
             )
         move.append(weight)
     return move_dict
@@ -166,7 +166,7 @@ def weighted_computer_move(temp_game):
     move_choices = []
     for move in moves["standard"]:
         if move[2] > max_weight:
-            max_weight = move[0]
+            max_weight = move[2]
             move_choices.append(move)
     for move in moves["woden"]:
         if move[2] > max_weight:
