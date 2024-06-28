@@ -1,4 +1,3 @@
-import json
 import secrets
 from copy import deepcopy
 
@@ -121,9 +120,7 @@ def stones_removed(move, board, active_player):
 
 
 def assign_weights(move_dict, temp_game):
-    with open("app/personalities.json", "r") as f:
-        data = json.load(f)
-    personality = data["personality"][temp_game["difficulty"]]
+    personality = temp_game["personality"]
     board = temp_game["board"]
     active_player = temp_game["active_player"]
     for move in move_dict["standard"]:
