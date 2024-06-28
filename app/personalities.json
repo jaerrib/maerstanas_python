@@ -1,0 +1,14 @@
+{
+    "personality": {
+        "normal": 
+            {
+                "corner_weight": 8,
+                "edge_weight": 4,
+                "scoring": 3,
+                "blocking": 1,
+                "woden": 1,
+                "thunder": 2,
+                "sacrifice": 1
+            }
+    }
+}
