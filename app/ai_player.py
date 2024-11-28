@@ -125,37 +125,40 @@ def assign_weights(move_dict, temp_game):
     active_player = temp_game["active_player"]
     for move in move_dict["standard"]:
         weight = 0
-        if is_corner(move, board):
-            weight += personality["corner_weight"]
-        elif is_edge(move, board):
-            weight += personality["edge_weight"]
         weight += personality["scoring"] * hinges_created(move, board, active_player)
         weight += personality["blocking"] * stones_blocked(move, board, active_player)
+        if is_corner(move, board):
+            weight *= personality["corner_weight"]
+        elif is_edge(move, board):
+            weight *= personality["edge_weight"]
         move.append(weight)
 
     for move in move_dict["woden"]:
         weight = 0
-        if is_corner(move, board):
-            weight += personality["corner_weight"]
-        elif is_edge(move, board):
-            weight += personality["edge_weight"]
         weight += personality["scoring"] * hinges_created(move, board, active_player)
         weight += personality["blocking"] * stones_blocked(move, board, active_player)
-        weight += personality["woden"]
+        if is_corner(move, board):
+            weight *= personality["corner_weight"]
+        elif is_edge(move, board):
+            weight *= personality["edge_weight"]
+        weight *= personality["woden"]
         move.append(weight)
 
     for move in move_dict["thunder"]:
         weight = 0
-        if is_corner(move, board):
-            weight += personality["corner_weight"]
-        elif is_edge(move, board):
-            weight += personality["edge_weight"]
         friendly_stones, opponent_stones = stones_removed(move, board, active_player)
-        weight += personality["thunder"]
         if friendly_stones + opponent_stones != 0:
             weight += (personality["sacrifice"] * opponent_stones) - (
                 personality["sacrifice"] * friendly_stones
             )
+        else:
+            # lessens likelihood of "wasted" attacks
+            weight *= -1
+        if is_corner(move, board):
+            weight *= personality["corner_weight"]
+        elif is_edge(move, board):
+            weight *= personality["edge_weight"]
+        weight *= personality["thunder"]
         move.append(weight)
     return move_dict
 
@@ -239,9 +242,9 @@ def sim_game_loop(data, players, depth):
 
 def get_best_move(data, sim_num, depth):
     temp_game = deepcopy(data)
-    # Using -100000 simply ensures that losses and ties are scored
+    # Using -inf simply ensures that losses and ties are scored
     # better than the initial assignment
-    best_score = -100000
+    best_score = float("-inf")
     players = ["Computer", "Computer"]
     for x in range(0, sim_num):
         returned_score, first_stone, first_row, first_col = sim_game_loop(

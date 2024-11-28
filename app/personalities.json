@@ -1,24 +1,22 @@
 {
-    "personality": {
-        "normal": 
-            {
-                "corner_weight": 8,
-                "edge_weight": 4,
-                "scoring": 3,
-                "blocking": 1,
-                "woden": 1,
-                "thunder": 2,
-                "sacrifice": 1
-            },
-        "blocker": 
-            {
-                "corner_weight": 8,
-                "edge_weight": 4,
-                "scoring": 3,
-                "blocking": 20,
-                "woden": 1,
-                "thunder": 2,
-                "sacrifice": 1
-            }
+  "personality": {
+    "normal": {
+      "corner_weight": 1,
+      "edge_weight": 1,
+      "scoring": 1,
+      "blocking": 1,
+      "woden": 1,
+      "thunder": 1,
+      "sacrifice": 1
+    },
+    "blocker": {
+      "corner_weight": 1,
+      "edge_weight": 0.75,
+      "scoring": 1,
+      "blocking": 2.5,
+      "woden": 1,
+      "thunder": 1,
+      "sacrifice": 1
     }
+  }
 }

@@ -1,5 +1,7 @@
-from flask import Flask, render_template, session, redirect, request
 import json
+
+from flask import Flask, render_template, session, redirect, request
+
 from app.ai_player import get_best_move
 from app.game import Game
 from app.game_logic import (
@@ -33,7 +35,10 @@ def index():
         game.difficulty = session["difficulty"]
         with open("app/personalities.json", "r") as f:
             data = json.load(f)
-        personality = data["personality"][session["difficulty"]]
+        if session["difficulty"] == "easy":
+            personality = "easy"
+        else:
+            personality = data["personality"][session["difficulty"]]
         if game.ruleset == "0.2":
             game.special_stones["player1"] = [1]
             game.special_stones["player2"] = [1]

@@ -2,6 +2,7 @@ import unittest
 
 from app.ai_player import *
 from app.game import Game
+from app.game_logic import remaining_moves
 
 
 class GameLogicTest(unittest.TestCase):
@@ -109,6 +110,7 @@ class GameLogicTest(unittest.TestCase):
                 [3, 3],
             ],
         ]
+        self.game.moves_left = remaining_moves(self.game.board.data)
 
     def test_is_corner(self):
         self.assertEqual(is_corner([1, 1], self.game.board.data), True)
@@ -172,3 +174,10 @@ class GameLogicTest(unittest.TestCase):
             stones_removed(move=[3, 5], board=self.game.board.data, active_player=2),
             (3, 0),
         )
+
+    def test_weight_list(self):
+        temp_game = deepcopy(self.game).__dict__
+        temp_game["board"] = temp_game["board"].__dict__
+        temp_game["board"] = temp_game["board"]["data"]
+        moves = assign_weights(get_available_moves(temp_game), temp_game)
+        print(moves)
