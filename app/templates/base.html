@@ -17,7 +17,11 @@
 <body>
 {% block header %} {% include "header.html" %} {% endblock header %}
 
-{% block main_content %} {% endblock main_content %}
+<main class="min-vh-100">
+    <div class="container">
+        {% block main_content %} {% endblock main_content %}
+    </div>
+</main>
 
 {% block footer %} {% include "footer.html" %} {% endblock footer %}
 </body>
