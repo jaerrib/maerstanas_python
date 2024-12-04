@@ -84,7 +84,7 @@ def process(row, col):
     ):
         if not is_game_over(session["data"]) and not player_must_pass(session["data"]):
             best_stone, best_row, best_col = get_best_move(
-                session["data"], sim_num=100, depth=49
+                session["data"], sim_num=10, depth=49
             )
             session["data"]["active_stone"] = best_stone
             session["data"] = assign_move(session["data"], best_row, best_col)
@@ -114,7 +114,7 @@ def suggest():
         suggested_move = "Pass"
     elif not player_must_pass(session["data"]):
         best_stone, best_row, best_col = get_best_move(
-            session["data"], sim_num=100, depth=49
+            session["data"], sim_num=10, depth=49
         )
         stones = ["standard stone", "thunder-stone", "Woden-stone"]
         suggested_stone = stones[best_stone - 1]
