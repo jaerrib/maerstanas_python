@@ -150,9 +150,26 @@
         {% endfor %}
         <!-- End Game Board -->
     </div>
-    <div class="col">
+    <div class="col mt-3 mt-lg-0">
+        <!-- Suggestions -->
+        <div class="d-flex flex-column flex-md-row">
+            <div>
+                <form hx-post="/suggest" hx-swap="outerHTML"
+                      hx-target="#suggestion"
+                      hx-indicator="#spinner">
+                    <button type="submit"
+                            class="btn btn-primary btn-sm">
+                        Get a Suggestion
+                    </button>
+                </form>
+            </div>
+            <div id="suggestion" class="ms-5">
+                <img id="spinner" class="htmx-indicator"
+                     src="{{ url_for('static', filename='img/bars.svg') }}">
+            </div>
+        </div>
         <!-- Moves -->
-        <div class="mt-5 overflow-auto form-control overflow-y-scroll"
+        <div class="mt-3 overflow-auto form-control overflow-y-scroll"
              style="height: 24.5rem; max-width: 32rem;">
             <p class="fs-4">Moves:</p>
             {% if data["game_over"] %}
