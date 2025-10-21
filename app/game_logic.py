@@ -146,27 +146,34 @@ def check_score(board, score_type, player):
     vertical hinges then the horizontal ones.
     """
     calculated_score: int = 0
-
     for row_index in range(1, 9):
         for col_index in range(0, 9):
             board_position = board[row_index][col_index]
             # Check vertical hinges
             position_above = board[row_index - 1][col_index]
-            if position_above[0] == player and board_position[0] == player:
-                calculated_score += 1
-            elif position_above[0] == 3 and board_position[0] == player:
-                calculated_score += score_type
-            elif position_above[0] == player and board_position[0] == 3:
-                calculated_score += score_type
+            calculated_score += calculate_position_score(
+                board_position, position_above, player, score_type
+            )
             # Check horizontal hinges
             position_to_left = board[row_index][col_index - 1]
-            if position_to_left[0] == player and board_position[0] == player:
-                calculated_score += 1
-            elif position_to_left[0] == 3 and board_position[0] == player:
-                calculated_score += score_type
-            elif position_to_left[0] == player and board_position[0] == 3:
-                calculated_score += score_type
+            calculated_score += calculate_position_score(
+                board_position, position_to_left, player, score_type
+            )
     return calculated_score
+
+
+def calculate_position_score(board_position, position, player, score_type):
+    """
+    Evaluated the score of a single board position.
+    """
+    score: int = 0
+    if position[0] == player and board_position[0] == player:
+        score += 1
+    elif position[0] == 3 and board_position[0] == player:
+        score += score_type
+    elif position[0] == player and board_position[0] == 3:
+        score += score_type
+    return score
 
 
 def possible_thunder_stone_moves(board):
