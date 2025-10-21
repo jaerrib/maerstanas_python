@@ -138,6 +138,8 @@ def valid_move(data, row, col):
             return check_thunder_stone(data["board"], row, col)
         case 3:
             return check_woden_stone(data["board"], data["active_player"], row, col)
+        case _:
+            return False
 
 
 def check_score(board, score_type, player):
