@@ -229,29 +229,38 @@ def determine_winner(score_p1, score_p2):
 
 
 def thunder_attack(board, row, col):
+    removed_stones = ""
     adjacent_positions = find_adjacent(row, col)
     for position in adjacent_positions:
-        if board[position[0]][position[1]] != [3, 3]:
+        if board[position[0]][position[1]] != [3, 3] and board[position[0]][
+            position[1]
+        ] != [0, 0]:
+            column = convert_num_to_col(position[1])
+            row = position[0]
+            if removed_stones == "":
+                removed_stones += "x"
+            else:
+                removed_stones += "/"
+            removed_stones += f"{column}{row}"
             board[position[0]][position[1]] = [0, 0]
-    return board
+    return removed_stones
 
 
 def assign_move(data, row, col):
+    removed_stones = ""
     if data["active_stone"] == 2:
-        thunder_attack(data["board"], row, col)
+        removed_stones = thunder_attack(data["board"], row, col)
     if data["active_stone"] == 2 or data["active_stone"] == 3:
         data["special_stones"][f"player{data['active_player']}"].remove(
             data["active_stone"]
         )
     data["board"][row][col] = (data["active_player"], data["active_stone"])
-    stones = ["standard stone", "thunder-stone", "Woden-stone"]
+    stones = ["", "T ", "W "]
     played_stone = stones[data["active_stone"] - 1]
-    data["move_list"].append(
-        (
-            data["active_player"],
-            convert_num_to_col(col) + str(row) + " - " + played_stone,
-        )
-    )
+    played_move = f"{played_stone}{convert_num_to_col(col)}{row}"
+    if removed_stones != "":
+        played_move += removed_stones
+    data["move_list"].append((data["active_player"], played_move))
     data = update_score(data)
     data = change_player(data)
     data["moves_left"] = remaining_moves(data["board"])
