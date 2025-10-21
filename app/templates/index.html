@@ -178,7 +178,7 @@
             {% for move in data["move_list"]|reverse %}
             <p>
                 <span class="text-secondary">{{data["move_list"]|length - loop.index + 1}}.</span>
-                {{move[1]}} (Player {{move[0]}})
+                {{move[1]}} <span class="text-body-tertiary">(Player {{move[0]}})</span>
             </p>
             {% endfor %}
         </div>
