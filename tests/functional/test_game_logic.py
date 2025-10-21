@@ -219,6 +219,5 @@ class GameLogicTest(unittest.TestCase):
 
     def test_thunder_attack(self):
         self.assertEqual(
-            thunder_attack(self.game.board.data, row=1, col=6),
-            'xE1/G1/F2'
+            thunder_attack(self.game.board.data, row=1, col=6), "xE1/G1/F2"
         )
